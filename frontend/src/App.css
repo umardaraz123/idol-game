@@ -1,0 +1,17 @@
+.App {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Remove default margins */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

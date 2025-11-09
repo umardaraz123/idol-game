@@ -1,0 +1,345 @@
+.features-section {
+  background: var(--bg-primary);
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.features-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 255, 0.08) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.features-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-family: var(--font-primary);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.title-underline {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  font-family: var(--font-secondary);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.feature-card {
+  background: var(--bg-secondary);
+  padding: 3rem 2rem;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 255, 0.05) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-15px);
+  border-color: var(--neon-blue);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+              0 0 30px rgba(0, 212, 255, 0.3);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+/* Icon Styles */
+.feature-icon-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 2rem;
+}
+
+.feature-icon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(360deg);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+}
+
+.icon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 255, 0.4) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.feature-card:hover .icon-glow {
+  opacity: 1;
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* Content Styles */
+.feature-title {
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+.feature-card:hover .feature-title {
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.feature-description {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.feature-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  transition: width 0.4s ease;
+}
+
+.feature-card:hover .feature-border {
+  width: 80%;
+}
+
+/* Extra Info Card */
+.features-extra {
+  margin-top: 60px;
+}
+
+.extra-card {
+  background: linear-gradient(
+    135deg,
+    rgba(181, 55, 242, 0.15) 0%,
+    rgba(0, 212, 255, 0.15) 100%
+  );
+  border: 2px solid var(--neon-purple);
+  border-radius: 15px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(181, 55, 242, 0.3);
+}
+
+.extra-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+.extra-title {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--neon-purple);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 15px rgba(181, 55, 242, 0.6);
+  position: relative;
+  z-index: 1;
+}
+
+.extra-description {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .features-section {
+    padding: 60px 0;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .feature-card {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .extra-card {
+    padding: 2rem;
+  }
+  
+  .extra-title {
+    font-size: 1.5rem;
+  }
+  
+  .extra-description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-icon-container {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+  
+  .icon-glow {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .feature-title {
+    font-size: 1.3rem;
+  }
+  
+  .feature-description {
+    font-size: 0.95rem;
+  }
+}

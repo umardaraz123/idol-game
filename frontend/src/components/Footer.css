@@ -1,0 +1,293 @@
+.footer {
+  background: var(--bg-secondary);
+  padding: 60px 0 30px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.footer-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 212, 255, 0.1) 50%,
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+.footer .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer Content Grid */
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+/* Brand Section */
+.footer-brand {
+  max-width: 350px;
+}
+
+.footer-logo {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.footer-tagline {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  color: var(--neon-blue);
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.footer-description {
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Social Section */
+.footer-heading {
+  font-family: var(--font-primary);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 45px;
+  height: 45px;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--neon-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--neon-blue);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--neon-blue);
+  transform: scale(0);
+  transition: transform 0.3s ease;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.social-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 212, 255, 0.5);
+  color: var(--bg-primary);
+}
+
+.social-icon:hover::before {
+  transform: scale(1);
+}
+
+/* Contact Section */
+.footer-contact {
+  max-width: 300px;
+}
+
+.contact-text {
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.contact-link {
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--neon-purple);
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  border: 2px solid var(--neon-purple);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--neon-purple);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.contact-link:hover {
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px rgba(181, 55, 242, 0.5);
+}
+
+.contact-link:hover::before {
+  left: 0;
+}
+
+/* Divider */
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neon-blue) 50%,
+    transparent 100%
+  );
+  margin: 30px 0;
+}
+
+/* Bottom Section */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.copyright {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-link {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--neon-blue);
+}
+
+.separator {
+  color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  .footer-contact {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 0 20px;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-brand,
+  .footer-contact {
+    max-width: 100%;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-logo {
+    font-size: 1.5rem;
+  }
+  
+  .footer-tagline {
+    font-size: 1rem;
+  }
+  
+  .footer-heading {
+    font-size: 1.1rem;
+  }
+  
+  .social-icons {
+    justify-content: flex-start;
+  }
+  
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+  
+  .contact-link {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+  
+  .copyright,
+  .footer-link {
+    font-size: 0.85rem;
+  }
+}

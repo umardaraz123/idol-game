@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idol be - Placeholder Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0b0b0f;
+            color: #fff;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .placeholder {
+            border: 2px solid #b537f2;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(181, 55, 242, 0.3);
+        }
+        canvas {
+            width: 100%;
+            display: block;
+        }
+        .info {
+            padding: 15px;
+            background: rgba(18, 18, 24, 0.8);
+        }
+        .info h3 {
+            margin: 0 0 10px 0;
+            color: #00d4ff;
+        }
+        .info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #b8b8c7;
+        }
+        button {
+            background: linear-gradient(135deg, #00d4ff, #b537f2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .instructions {
+            background: rgba(181, 55, 242, 0.1);
+            border: 2px solid #b537f2;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .instructions h2 {
+            color: #b537f2;
+            margin-top: 0;
+        }
+        .instructions ol {
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Idol be - Placeholder Image Generator</h1>
+    
+    <div class="instructions">
+        <h2>How to Use:</h2>
+        <ol>
+            <li>Click "Download" button under each image</li>
+            <li>Save the images to your computer</li>
+            <li>Place them in the <code>public/images/</code> folder of your project</li>
+            <li>Rename them to match the required filenames</li>
+        </ol>
+        <p><strong>Note:</strong> These are temporary placeholders. Replace with actual game assets later!</p>
+    </div>
+
+    <div class="container">
+        <!-- Multiplayer Mode -->
+        <div class="placeholder">
+            <canvas id="multiplayer" width="1920" height="1080"></canvas>
+            <div class="info">
+                <h3>Multiplayer Mode</h3>
+                <p>Filename: <code>multiplayer-mode.jpg</code></p>
+                <p>Size: 1920x1080px</p>
+                <button onclick="downloadCanvas('multiplayer', 'multiplayer-mode.jpg')">Download</button>
+            </div>
+        </div>
+
+        <!-- Multilingual -->
+        <div class="placeholder">
+            <canvas id="multilingual" width="1920" height="1080"></canvas>
+            <div class="info">
+                <h3>Multilingual Support</h3>
+                <p>Filename: <code>multilingual.jpg</code></p>
+                <p>Size: 1920x1080px</p>
+                <button onclick="downloadCanvas('multilingual', 'multilingual.jpg')">Download</button>
+            </div>
+        </div>
+
+        <!-- Fair Play -->
+        <div class="placeholder">
+            <canvas id="fairplay" width="1920" height="1080"></canvas>
+            <div class="info">
+                <h3>Fair Gaming</h3>
+                <p>Filename: <code>fair-play.jpg</code></p>
+                <p>Size: 1920x1080px</p>
+                <button onclick="downloadCanvas('fairplay', 'fair-play.jpg')">Download</button>
+            </div>
+        </div>
+
+        <!-- Ana Character -->
+        <div class="placeholder">
+            <canvas id="ana" width="1080" height="1350"></canvas>
+            <div class="info">
+                <h3>Ana Character</h3>
+                <p>Filename: <code>ana-character.jpg</code></p>
+                <p>Size: 1080x1350px</p>
+                <button onclick="downloadCanvas('ana', 'ana-character.jpg')">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createPlaceholder(canvasId, text, gradient1, gradient2) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, gradient1);
+            gradient.addColorStop(1, gradient2);
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // Add pattern overlay
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const size = Math.random() * 3;
+                ctx.fillRect(x, y, size, size);
+            }
+
+            // Add text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 80px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0, 212, 255, 0.8)';
+            ctx.shadowBlur = 20;
+            ctx.fillText(text, width / 2, height / 2);
+            
+            // Add subtitle
+            ctx.font = '40px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.shadowBlur = 10;
+            ctx.fillText('IDOL BE', width / 2, height / 2 + 80);
+
+            // Add icon
+            ctx.font = '120px Arial';
+            ctx.fillText('🎵', width / 2, height / 2 - 120);
+        }
+
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+
+        // Generate placeholders on load
+        window.onload = function() {
+            createPlaceholder('multiplayer', 'MULTIPLAYER', '#0b0b0f', '#00d4ff');
+            createPlaceholder('multilingual', 'MULTILINGUAL', '#0b0b0f', '#b537f2');
+            createPlaceholder('fairplay', 'FAIR PLAY', '#0b0b0f', '#ff3366');
+            createPlaceholder('ana', 'ANA', '#b537f2', '#ff0080');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+.artist-team-section {
+  background: var(--bg-secondary);
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.artist-team-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(181, 55, 242, 0.08) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.artist-team-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--neon-blue);
+  background: rgba(0, 212, 255, 0.1);
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--neon-blue);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-family: var(--font-primary);
+  font-weight: 900;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.title-underline {
+  width: 120px;
+  height: 5px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  margin: 0 auto 2rem;
+  border-radius: 3px;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  font-family: var(--font-secondary);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.section-note {
+  font-size: 1.1rem;
+  font-family: var(--font-tertiary);
+  color: var(--text-primary);
+  margin-top: 1rem;
+}
+
+.section-note strong {
+  color: var(--neon-blue);
+  font-weight: 700;
+}
+
+/* Presenter Card */
+.team-intro {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.presenter-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 255, 0.1) 0%,
+    rgba(181, 55, 242, 0.1) 100%
+  );
+  border: 2px solid var(--neon-purple);
+  border-radius: 20px;
+  padding: 2.5rem 4rem;
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(181, 55, 242, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.presenter-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 60%
+  );
+  transform: rotate(45deg);
+  animation: shine 4s linear infinite;
+}
+
+.presenter-label {
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--neon-purple);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.presenter-name {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.presenter-role {
+  font-family: var(--font-secondary);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Team Grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  margin-bottom: 60px;
+}
+
+.team-category {
+  background: rgba(26, 26, 36, 0.4);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 15px;
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+}
+
+.team-category:hover {
+  background: rgba(26, 26, 36, 0.6);
+  border-color: var(--neon-blue);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.category-title {
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--neon-blue);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+/* Team Members */
+.team-member,
+.singer-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.2rem;
+  background: rgba(11, 11, 15, 0.4);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--neon-purple);
+  transition: all 0.3s ease;
+}
+
+.team-member:hover,
+.singer-item:hover {
+  background: rgba(11, 11, 15, 0.6);
+  border-left-color: var(--neon-blue);
+  transform: translateX(5px);
+}
+
+.team-members-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-name {
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.member-role {
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Singer Items */
+.singer-item {
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flag {
+  font-size: 1.8rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Gratitude Section */
+.gratitude-section {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(
+    135deg,
+    rgba(181, 55, 242, 0.2) 0%,
+    rgba(0, 212, 255, 0.2) 100%
+  );
+  border: 2px solid var(--neon-blue);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.gratitude-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
+
+.gratitude-title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .artist-team-section {
+    padding: 80px 0;
+  }
+  
+  .presenter-card {
+    padding: 2rem 2.5rem;
+  }
+  
+  .presenter-name {
+    font-size: 1.6rem;
+  }
+  
+  .team-category {
+    padding: 2rem;
+  }
+  
+  .category-title {
+    font-size: 1.3rem;
+  }
+  
+  .gratitude-section {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .presenter-card {
+    padding: 1.5rem 2rem;
+  }
+  
+  .presenter-name {
+    font-size: 1.4rem;
+  }
+  
+  .team-category {
+    padding: 1.5rem;
+  }
+  
+  .team-member,
+  .singer-item {
+    padding: 1rem;
+  }
+  
+  .singer-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .flag {
+    font-size: 1.5rem;
+  }
+}
