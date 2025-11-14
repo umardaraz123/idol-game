@@ -1,6 +1,6 @@
 .artist-team-section {
-  background: var(--bg-secondary);
-  padding: 120px 0;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  padding: clamp(80px, 12vw, 140px) 0;
   position: relative;
   overflow: hidden;
 }
@@ -295,56 +295,125 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .artist-team-section {
-    padding: 80px 0;
+@media (max-width: 991px) {
+  .section-header {
+    margin-bottom: 50px;
   }
   
+  .team-intro {
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 768px) {
   .presenter-card {
     padding: 2rem 2.5rem;
   }
   
   .presenter-name {
-    font-size: 1.6rem;
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+  }
+  
+  .presenter-role {
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
   }
   
   .team-category {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
   }
   
   .category-title {
-    font-size: 1.3rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  }
+  
+  .member-name {
+    font-size: 1.05rem;
+  }
+  
+  .member-role {
+    font-size: 0.9rem;
   }
   
   .gratitude-section {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+  }
+}
+
+@media (max-width: 576px) {
+  .presenter-card {
+    padding: 1.8rem 2rem;
+  }
+  
+  .team-category {
+    padding: 1.8rem 1.3rem;
+  }
+  
+  .team-grid {
+    gap: 2.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .presenter-card {
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 1.5rem;
+  }
+  
+  .presenter-label {
+    font-size: 0.8rem;
   }
   
   .presenter-name {
-    font-size: 1.4rem;
+    font-size: clamp(1.3rem, 4vw, 1.5rem);
   }
   
   .team-category {
-    padding: 1.5rem;
+    padding: 1.5rem 1.2rem;
   }
   
   .team-member,
   .singer-item {
-    padding: 1rem;
+    padding: 1rem 0.8rem;
+    margin-bottom: 0.8rem;
   }
   
   .singer-item {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   
   .flag {
     font-size: 1.5rem;
+    min-width: 35px;
+  }
+  
+  .member-name {
+    font-size: 1rem;
+  }
+  
+  .member-role {
+    font-size: 0.85rem;
+  }
+  
+  .gratitude-section {
+    padding: 1.5rem 1.2rem;
+  }
+  
+  .team-grid {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .presenter-card {
+    padding: 1.2rem;
+  }
+  
+  .section-tag {
+    font-size: 0.75rem;
+    padding: 6px 16px;
   }
 }

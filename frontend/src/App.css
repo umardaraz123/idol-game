@@ -2,6 +2,14 @@
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+  background: var(--bg-primary);
+}
+
+/* Section Wrapper Styles */
+.App section {
+  position: relative;
+  background: transparent;
 }
 
 /* Smooth scrolling behavior */

@@ -1,41 +1,57 @@
-import { FaMicrophone, FaUsers, FaPalette, FaGlobe } from 'react-icons/fa';
-import type { ReactElement } from 'react';
+import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { publicAPI } from '../services/api';
 import './Features.css';
 
 interface Feature {
-  id: number;
-  icon: ReactElement;
-  title: string;
-  description: string;
+  _id: string;
+  title: string; // Localized string from API
+  description: string; // Localized string from API
+  imageUrl?: string;
+  metadata: {
+    order: number;
+    isActive: boolean;
+  };
 }
 
 const Features = () => {
-  const features: Feature[] = [
-    {
-      id: 1,
-      icon: <FaMicrophone />,
-      title: 'Original Music',
-      description: '20 completely original pop songs composed by talented artists from diverse backgrounds.',
-    },
-    {
-      id: 2,
-      icon: <FaUsers />,
-      title: 'Online Multiplayer',
-      description: 'Compete with players worldwide and showcase your singing talents in real-time battles.',
-    },
-    {
-      id: 3,
-      icon: <FaPalette />,
-      title: 'Customize Looks',
-      description: 'Unlock 20+ unique outfits and styles to make your idol stand out from the crowd.',
-    },
-    {
-      id: 4,
-      icon: <FaGlobe />,
-      title: 'Multi-Language',
-      description: 'Available in 7 languages: Spanish, English, Mandarin, Russian, Korean, Japanese, and Hindi.',
-    },
-  ];
+  const { language } = useLanguage();
+  const [features, setFeatures] = useState<Feature[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await publicAPI.getContent(language, { type: 'features' });
+        const contentData = response.data.data.content?.features || [];
+        console.log('Features data received:', contentData);
+        setFeatures(
+          Array.isArray(contentData) 
+            ? contentData.sort((a: any, b: any) => a.metadata.order - b.metadata.order)
+            : []
+        );
+      } catch (error) {
+        console.error('Failed to fetch features:', error);
+        setFeatures([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeatures();
+  }, [language]);
+
+  if (loading) {
+    return (
+      <section className="features-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Loading...</h2>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="features-section">
@@ -53,13 +69,19 @@ const Features = () => {
         <div className="features-grid">
           {features.map((feature, index) => (
             <div
-              key={feature.id}
+              key={feature._id}
               className="feature-card"
               data-aos="fade-up"
               data-aos-delay={index * 100}
             >
               <div className="feature-icon-container">
-                <div className="feature-icon">{feature.icon}</div>
+                <div className="feature-icon">
+                  {feature.imageUrl ? (
+                    <img src={feature.imageUrl} alt={feature.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  ) : (
+                    <span>⭐</span>
+                  )}
+                </div>
                 <div className="icon-glow"></div>
               </div>
               <h3 className="feature-title">{feature.title}</h3>

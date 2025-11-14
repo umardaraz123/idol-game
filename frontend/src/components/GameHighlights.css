@@ -1,6 +1,6 @@
 .game-highlights-section {
-  background: var(--bg-primary);
-  padding: 80px 0 100px;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  padding: clamp(70px, 10vw, 120px) 0 clamp(80px, 12vw, 140px);
   position: relative;
   overflow: hidden;
 }
@@ -173,10 +173,6 @@
   line-height: 1.1;
   letter-spacing: 2px;
   text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-  background: linear-gradient(135deg, #ffffff 0%, var(--neon-blue) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .slide-description-large {
@@ -297,18 +293,27 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1400px) {
+  .slide-wrapper-full,
+  .slide-content-wrapper {
+    height: 550px;
+  }
+}
+
 @media (max-width: 1200px) {
   .slide-text-content {
     left: 6%;
     max-width: 500px;
   }
+  
+  .slide-wrapper-full,
+  .slide-content-wrapper {
+    height: 520px;
+  }
 }
 
 @media (max-width: 991px) {
-  .slide-wrapper-full {
-    height: 500px;
-  }
-  
+  .slide-wrapper-full,
   .slide-content-wrapper {
     height: 500px;
   }
@@ -337,16 +342,13 @@
 }
 
 @media (max-width: 768px) {
-  .game-highlights-section {
-    padding: 60px 0 80px;
+  .section-header {
+    margin-bottom: 50px;
   }
   
-  .slide-wrapper-full {
-    height: 550px;
-  }
-  
+  .slide-wrapper-full,
   .slide-content-wrapper {
-    height: 550px;
+    height: clamp(480px, 70vh, 550px);
   }
   
   .slide-overlay-gradient {
@@ -361,15 +363,17 @@
   
   .slide-text-content {
     top: auto;
-    bottom: 80px;
+    bottom: clamp(70px, 10vh, 90px);
     left: 5%;
     right: 5%;
     transform: none;
     max-width: 100%;
+    padding: 0 10px;
   }
   
   .slide-number {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    margin-bottom: 0.8rem;
   }
   
   .slide-description-large {
@@ -396,27 +400,43 @@
   }
 }
 
-@media (max-width: 480px) {
-  .slide-wrapper-full {
-    height: 500px;
-  }
-  
+@media (max-width: 576px) {
+  .slide-wrapper-full,
   .slide-content-wrapper {
-    height: 500px;
+    height: clamp(450px, 65vh, 500px);
   }
   
   .slide-text-content {
-    bottom: 70px;
+    bottom: clamp(60px, 8vh, 75px);
+    left: 4%;
+    right: 4%;
+    padding: 0;
+  }
+  
+  .slider-container-full {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide-wrapper-full,
+  .slide-content-wrapper {
+    height: clamp(420px, 60vh, 480px);
+  }
+  
+  .slide-text-content {
+    bottom: clamp(55px, 7vh, 70px);
+    left: 4%;
+    right: 4%;
   }
   
   .slide-number {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
   
   .slide-description-large {
-    font-size: 1rem;
     line-height: 1.6;
+    margin-bottom: 1.2rem;
   }
   
   .game-highlights-section .slick-dots {
@@ -440,5 +460,22 @@
   
   .game-highlights-section .slick-next {
     right: 10px;
+  }
+  
+  .game-highlights-section .slick-prev:before,
+  .game-highlights-section .slick-next:before {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .slide-wrapper-full,
+  .slide-content-wrapper {
+    height: clamp(380px, 55vh, 450px);
+  }
+  
+  .slide-decorative-line {
+    width: 70px;
+    height: 3px;
   }
 }

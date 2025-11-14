@@ -1,6 +1,6 @@
 .features-section {
-  background: var(--bg-primary);
-  padding: 100px 0;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  padding: clamp(80px, 12vw, 140px) 0;
   position: relative;
   overflow: hidden;
 }
@@ -284,62 +284,114 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+  }
+}
+
 @media (max-width: 991px) {
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
+  .section-header {
+    margin-bottom: 50px;
+  }
+  
+  .features-extra {
+    margin-top: 50px;
+  }
 }
 
 @media (max-width: 768px) {
-  .features-section {
-    padding: 60px 0;
-  }
-  
   .features-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
   
   .feature-card {
-    padding: 2.5rem 1.5rem;
+    padding: 2.5rem 1.8rem;
+  }
+  
+  .section-subtitle {
+    font-size: clamp(1rem, 2vw, 1.15rem);
   }
   
   .extra-card {
-    padding: 2rem;
+    padding: 2rem 1.5rem;
   }
   
   .extra-title {
-    font-size: 1.5rem;
+    font-size: clamp(1.4rem, 3vw, 1.7rem);
   }
   
   .extra-description {
-    font-size: 1rem;
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+  }
+}
+
+@media (max-width: 576px) {
+  .feature-card {
+    padding: 2.2rem 1.5rem;
+  }
+  
+  .feature-icon-container {
+    margin-bottom: 1.8rem;
+  }
+  
+  .section-header {
+    margin-bottom: 45px;
   }
 }
 
 @media (max-width: 480px) {
   .feature-icon-container {
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
     margin-bottom: 1.5rem;
   }
   
   .feature-icon {
-    width: 80px;
-    height: 80px;
-    font-size: 2rem;
+    width: 85px;
+    height: 85px;
+    font-size: 2.2rem;
   }
   
   .icon-glow {
-    width: 100px;
-    height: 100px;
+    width: 105px;
+    height: 105px;
   }
   
   .feature-title {
-    font-size: 1.3rem;
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    margin-bottom: 0.8rem;
   }
   
   .feature-description {
-    font-size: 0.95rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.7;
+  }
+  
+  .feature-card {
+    padding: 2rem 1.2rem;
+  }
+  
+  .extra-card {
+    padding: 1.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .feature-icon-container {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .feature-icon {
+    width: 75px;
+    height: 75px;
+    font-size: 2rem;
   }
 }

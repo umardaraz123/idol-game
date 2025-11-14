@@ -1,18 +1,124 @@
+import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { publicAPI } from '../services/api';
 import './ArtistTeam.css';
 
+interface TeamMember {
+  _id: string;
+  title: string; // Name (localized)
+  description: string; // Role/Description (localized)
+  subtitle?: string; // Position/Title (localized)
+  imageUrl?: string;
+  metadata: {
+    order: number;
+    isActive: boolean;
+    category?: string;
+  };
+}
+
+interface SectionHeader {
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
 const ArtistTeam = () => {
+  const { language } = useLanguage();
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [sectionHeader, setSectionHeader] = useState<SectionHeader>({
+    title: 'Artistic Team',
+    subtitle: 'THE CREATORS',
+    description: 'Idol be has a wonderful team of artists and creators who have contributed their talent and dedication to the development of this project.'
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch team members
+        const teamResponse = await publicAPI.getContent(language, { type: 'artist_team' });
+        const contentData = teamResponse.data.data.content?.artist_team || [];
+        setMembers(
+          Array.isArray(contentData) 
+            ? contentData.sort((a: any, b: any) => a.metadata.order - b.metadata.order)
+            : []
+        );
+
+        // Try to fetch header content (optional)
+        try {
+          const headerResponse = await publicAPI.getContentByKey('team', language);
+          if (headerResponse?.data?.data?.content) {
+            const header = headerResponse.data.data.content;
+            setSectionHeader({
+              title: header.title || 'Artistic Team',
+              subtitle: header.subtitle || 'THE CREATORS',
+              description: header.description || 'Idol be has a wonderful team of artists and creators who have contributed their talent and dedication to the development of this project.'
+            });
+          }
+        } catch (headerError) {
+          // Header content not found, use defaults - this is okay
+          console.log('Using default artist team header');
+        }
+      } catch (error) {
+        console.error('Failed to fetch team data:', error);
+        setMembers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [language]);
+
+  const getCategoryTitle = (category: string) => {
+    const titles: Record<string, string> = {
+      'game_design': '🎮 Game Design',
+      'programming': '💻 Programming',
+      'music': '🎵 Music',
+      'singers': '🎤 Singers',
+      'other': '✨ Other Contributors'
+    };
+    return titles[category] || '✨ Team';
+  };
+
+  const groupedMembers = members.reduce((acc, member) => {
+    const category = member.metadata.category || 'other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(member);
+    return acc;
+  }, {} as Record<string, TeamMember[]>);
+
+  if (loading) {
+    return (
+      <section className="artist-team-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Loading...</h2>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="artist-team-section">
       <div className="container">
         <div className="section-header" data-aos="fade-up">
-          <div className="section-tag">THE CREATORS</div>
+          <div className="section-tag">{sectionHeader.subtitle}</div>
           <h2 className="section-title">
-            Artistic <span className="text-glow-blue">Team</span>
+            {sectionHeader.title.split(' ').map((word, index, arr) => 
+              index === arr.length - 1 ? (
+                <span key={index} className="text-glow-blue">{word}</span>
+              ) : (
+                <span key={index}>{word} </span>
+              )
+            )}
           </h2>
           <div className="title-underline"></div>
           <p className="section-subtitle">
-            Idol be has a wonderful team of artists and creators who have contributed 
-            their talent and dedication to the development of this project.
+            {sectionHeader.description}
           </p>
           <p className="section-note">
             Idol be is a game created by <strong>real people, no AI involved!</strong> Meet them all:
@@ -28,84 +134,50 @@ const ArtistTeam = () => {
         </div>
 
         <div className="team-grid">
-          <div className="team-category" data-aos="fade-up" data-aos-delay="200">
-            <h3 className="category-title">🎮 Game Design</h3>
-            <div className="team-member">
-              <span className="member-name">Sergio González</span>
-              <span className="member-role">Game Design Document</span>
-            </div>
-          </div>
-
-          <div className="team-category" data-aos="fade-up" data-aos-delay="250">
-            <h3 className="category-title">💻 Programming</h3>
-            <div className="team-member">
-              <span className="member-name">BlackAce Studios</span>
-              <span className="member-role">Harris Sameer</span>
-            </div>
-          </div>
-
-          <div className="team-category" data-aos="fade-up" data-aos-delay="300">
-            <h3 className="category-title">🎵 Music</h3>
-            <div className="team-members-list">
-              <div className="team-member">
-                <span className="member-name">Jaime Llana (DaWave)</span>
-                <span className="member-role">Composer of songs 8, 10, 11, 14, 15, 16, 17, 18, 19, 20 and menu song / Mixing and mastering engineer</span>
-              </div>
-              <div className="team-member">
-                <span className="member-name">Antonio Yuste</span>
-                <span className="member-role">Composer of songs 1 to 7</span>
-              </div>
-              <div className="team-member">
-                <span className="member-name">Millenia Estudios</span>
-                <span className="member-role">Vicente Mezquita - Executive producer, Spanish vocals, and Iñaki Ariste, Spanish vocal recording engineer</span>
-              </div>
-              <div className="team-member">
-                <span className="member-name">NeoMedia Music</span>
-                <span className="member-role">Pedro Catalan and Juan Marpe - Composers of songs 9, 12, 13, credits song, and music for 2D intro and ending animations</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="team-category" data-aos="fade-up" data-aos-delay="350">
-            <h3 className="category-title">🎤 Singers</h3>
-            <div className="team-members-list">
-              <div className="singer-item">
-                <span className="flag">🇬🇧</span>
-                <span className="member-name">Keziadt</span>
-                <span className="member-role">English singer</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇪🇸</span>
-                <span className="member-name">Victoria Bravo</span>
-                <span className="member-role">Spanish singer</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇷🇺</span>
-                <span className="member-name">Elizaveta Protas</span>
-                <span className="member-role">Russian singer and translation</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇰🇷</span>
-                <span className="member-name">Youngin Lee</span>
-                <span className="member-role">Korean singer and translation</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇯🇵</span>
-                <span className="member-name">Nahmida</span>
-                <span className="member-role">Japanese singer, translation arrangements and Japanese-English translation</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇮🇳</span>
-                <span className="member-name">Jade Gupta</span>
-                <span className="member-role">Hindi singer and translation</span>
-              </div>
-              <div className="singer-item">
-                <span className="flag">🇨🇳</span>
-                <span className="member-name">Kristic Cheung</span>
-                <span className="member-role">Chinese singer, translation</span>
+          {Object.entries(groupedMembers).map(([category, categoryMembers], catIndex) => (
+            <div 
+              key={category} 
+              className="team-category" 
+              data-aos="fade-up" 
+              data-aos-delay={200 + (catIndex * 50)}
+            >
+              <h3 className="category-title">{getCategoryTitle(category)}</h3>
+              <div className={category === 'singers' ? 'team-members-list' : ''}>
+                {categoryMembers.map((member) => (
+                  <div 
+                    key={member._id} 
+                    className={category === 'singers' ? 'singer-item' : 'team-member'}
+                  >
+                    {member.imageUrl && (
+                      <img 
+                        src={member.imageUrl} 
+                        alt={member.title} 
+                        className="member-photo"
+                        style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          borderRadius: '50%', 
+                          objectFit: 'cover',
+                          marginRight: '1rem'
+                        }}
+                      />
+                    )}
+                    <span className="member-name">
+                      {member.title}
+                    </span>
+                    {member.subtitle && (
+                      <span className="member-position">
+                        {member.subtitle}
+                      </span>
+                    )}
+                    <span className="member-role">
+                      {member.description}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
         <div className="gratitude-section" data-aos="zoom-in" data-aos-delay="400">

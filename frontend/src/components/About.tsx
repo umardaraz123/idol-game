@@ -1,6 +1,54 @@
+import { useState, useEffect } from 'react';
+import { publicAPI } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import './About.css';
 
+interface AboutContent {
+  title: string;
+  description: string;
+}
+
 const About = () => {
+  const { language } = useLanguage();
+  const [content, setContent] = useState<AboutContent>({
+    title: 'What is Idol be?',
+    description: 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
+  });
+
+  // Fetch content from backend
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const response = await publicAPI.getContent(language);
+        const contentData = response.data.data.content;
+        
+        // Get about_section content
+        const aboutData = contentData?.about_section || [];
+        
+        console.log('About Data:', aboutData, 'Language:', language); // Debug
+        
+        if (aboutData && aboutData.length > 0) {
+          const mainContent = aboutData.find((item: any) => 
+            item.metadata?.category === 'main' || item.metadata?.isFeatured
+          ) || aboutData[0];
+          
+          console.log('Selected About Content:', mainContent); // Debug
+          
+          setContent({
+            title: mainContent?.title || 'What is Idol be?',
+            description: mainContent?.description || 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch About content:', error);
+        // Keep default content on error
+      }
+    };
+
+    fetchContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
+
   return (
     <section id="about" className="about-section">
       <div className="about-bg-particles"></div>
@@ -10,15 +58,10 @@ const About = () => {
           <div className="col-lg-6 col-md-12" data-aos="fade-right" data-aos-duration="1000">
             <div className="about-media-wrapper">
               <div className="media-frame">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="about-video"
-                >
-                  <source src="/videos/idol-gameplay-demo.mp4" type="video/mp4" />
-                </video>
+                <div className="about-placeholder">
+                  <div className="placeholder-icon">🎤</div>
+                  <div className="placeholder-text">Idol be</div>
+                </div>
                 <div className="media-border-glow"></div>
               </div>
               <div className="floating-badge badge-1">
@@ -41,14 +84,12 @@ const About = () => {
             <div className="about-content">
               <div className="section-tag">DISCOVER THE GAME</div>
               <h2 className="section-title">
-                What is <span className="text-glow-blue">Idol be?</span>
+                <span className="text-glow-blue">{content.title}</span>
               </h2>
               <div className="title-underline"></div>
               
               <p className="about-text lead-text">
-                Idol be is a <strong>casual singing game</strong> designed for people who love to sing. 
-                The gameplay is beautifully simple: listen to a song, sing along, and receive a score 
-                that unlocks new songs and unique looks for your idol.
+                {content.description}
               </p>
               
               <div className="feature-list">
