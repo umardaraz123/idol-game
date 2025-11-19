@@ -51,7 +51,7 @@ const mediaFileSchema = new mongoose.Schema({
   
   resourceType: {
     type: String,
-    enum: ['image', 'video', 'raw'],
+    enum: ['image', 'video', 'audio', 'raw'],
     required: [true, 'Resource type is required']
   },
   
@@ -79,6 +79,8 @@ const mediaFileSchema = new mongoose.Schema({
       'team_photo',
       'logo',
       'thumbnail',
+      'song_audio',
+      'song_cover',
       'general'
     ],
     default: 'general'

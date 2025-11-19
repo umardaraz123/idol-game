@@ -68,16 +68,30 @@ const contentValidation = [
     .withMessage('English description must not exceed 2000 characters'),
   
   body('imageUrl')
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
-    .isURL()
-    .withMessage('Image URL must be a valid URL'),
+    .custom((value) => {
+      if (value === '' || value === null || value === undefined) return true;
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        throw new Error('Image URL must be a valid URL');
+      }
+    }),
   
   body('videoUrl')
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
-    .isURL()
-    .withMessage('Video URL must be a valid URL'),
+    .custom((value) => {
+      if (value === '' || value === null || value === undefined) return true;
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        throw new Error('Video URL must be a valid URL');
+      }
+    }),
   
   body('metadata.order')
     .optional()

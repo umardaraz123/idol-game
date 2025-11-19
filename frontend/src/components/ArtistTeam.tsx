@@ -35,29 +35,40 @@ const ArtistTeam = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch team members
+        // Fetch all artist_team content
         const teamResponse = await publicAPI.getContent(language, { type: 'artist_team' });
         const contentData = teamResponse.data.data.content?.artist_team || [];
-        setMembers(
-          Array.isArray(contentData) 
-            ? contentData.sort((a: any, b: any) => a.metadata.order - b.metadata.order)
-            : []
-        );
-
-        // Try to fetch header content (optional)
-        try {
-          const headerResponse = await publicAPI.getContentByKey('team', language);
-          if (headerResponse?.data?.data?.content) {
-            const header = headerResponse.data.data.content;
-            setSectionHeader({
-              title: header.title || 'Artistic Team',
-              subtitle: header.subtitle || 'THE CREATORS',
-              description: header.description || 'Idol be has a wonderful team of artists and creators who have contributed their talent and dedication to the development of this project.'
-            });
-          }
-        } catch (headerError) {
-          // Header content not found, use defaults - this is okay
-          console.log('Using default artist team header');
+        
+        // Separate header content from team members
+        // Header has no category or empty category
+        const headerContent = Array.isArray(contentData) 
+          ? contentData.find((item: any) => 
+              !item.metadata?.category || 
+              item.metadata?.category === '' ||
+              item.key === 'artist_team_header' ||
+              item.key === 'teamnew'
+            )
+          : null;
+        
+        // Team members have valid categories
+        const teamMembers = Array.isArray(contentData)
+          ? contentData.filter((item: any) => 
+              item.metadata?.category && 
+              item.metadata?.category !== '' &&
+              item.key !== 'artist_team_header' &&
+              item.key !== 'teamnew'
+            ).sort((a: any, b: any) => a.metadata.order - b.metadata.order)
+          : [];
+        
+        setMembers(teamMembers);
+        
+        // Update header if found
+        if (headerContent) {
+          setSectionHeader({
+            title: headerContent.title || 'Artistic Team',
+            subtitle: headerContent.subtitle || 'THE CREATORS',
+            description: headerContent.description || 'Idol be has a wonderful team of artists and creators who have contributed their talent and dedication to the development of this project.'
+          });
         }
       } catch (error) {
         console.error('Failed to fetch team data:', error);
@@ -71,14 +82,14 @@ const ArtistTeam = () => {
   }, [language]);
 
   const getCategoryTitle = (category: string) => {
-    const titles: Record<string, string> = {
-      'game_design': '🎮 Game Design',
-      'programming': '💻 Programming',
-      'music': '🎵 Music',
-      'singers': '🎤 Singers',
-      'other': '✨ Other Contributors'
+    const titles: Record<string, { icon: string; text: string }> = {
+      'game_design': { icon: '🎮', text: 'Game Design' },
+      'programming': { icon: '💻', text: 'Programming' },
+      'music': { icon: '🎵', text: 'Music' },
+      'singers': { icon: '🎤', text: 'Singers' },
+      'other': { icon: '✨', text: 'Other Contributors' }
     };
-    return titles[category] || '✨ Team';
+    return titles[category] || { icon: '✨', text: 'Team' };
   };
 
   const groupedMembers = members.reduce((acc, member) => {
@@ -120,69 +131,60 @@ const ArtistTeam = () => {
           <p className="section-subtitle">
             {sectionHeader.description}
           </p>
-          <p className="section-note">
-            Idol be is a game created by <strong>real people, no AI involved!</strong> Meet them all:
-          </p>
+          
         </div>
 
-        <div className="team-intro" data-aos="fade-up" data-aos-delay="100">
-          <div className="presenter-card">
-            <div className="presenter-label">Presented by</div>
-            <h3 className="presenter-name">Victoria Jiménez Díaz</h3>
-            <p className="presenter-role">presents: Idol be</p>
-          </div>
-        </div>
+       
 
         <div className="team-grid">
-          {Object.entries(groupedMembers).map(([category, categoryMembers], catIndex) => (
-            <div 
-              key={category} 
-              className="team-category" 
-              data-aos="fade-up" 
-              data-aos-delay={200 + (catIndex * 50)}
-            >
-              <h3 className="category-title">{getCategoryTitle(category)}</h3>
-              <div className={category === 'singers' ? 'team-members-list' : ''}>
-                {categoryMembers.map((member) => (
-                  <div 
-                    key={member._id} 
-                    className={category === 'singers' ? 'singer-item' : 'team-member'}
-                  >
-                    {member.imageUrl && (
-                      <img 
-                        src={member.imageUrl} 
-                        alt={member.title} 
-                        className="member-photo"
-                        style={{ 
-                          width: '60px', 
-                          height: '60px', 
-                          borderRadius: '50%', 
-                          objectFit: 'cover',
-                          marginRight: '1rem'
-                        }}
-                      />
-                    )}
-                    <span className="member-name">
-                      {member.title}
-                    </span>
-                    {member.subtitle && (
-                      <span className="member-position">
-                        {member.subtitle}
+          {Object.entries(groupedMembers).map(([category, categoryMembers], catIndex) => {
+            const categoryInfo = getCategoryTitle(category);
+            return (
+              <div 
+                key={category} 
+                className="team-category" 
+                data-aos="fade-up" 
+                data-aos-delay={200 + (catIndex * 50)}
+              >
+                <h3 className="category-title">
+                  <div className="category-icon">{categoryInfo.icon}</div>
+                  <span className="category-text">{categoryInfo.text}</span>
+                </h3>
+                <div className={category === 'singers' ? 'team-members-list' : ''}>
+                  {categoryMembers.map((member) => (
+                    <div 
+                      key={member._id} 
+                      className={category === 'singers' ? 'singer-item' : 'team-member'}
+                    >
+                      {member.imageUrl && (
+                        <div className="member-photo-wrapper">
+                          <img 
+                            src={member.imageUrl} 
+                            alt={member.title} 
+                            className="member-photo"
+                          />
+                        </div>
+                      )}
+                      <span className="member-name">
+                        {member.title}
                       </span>
-                    )}
-                    <span className="member-role">
-                      {member.description}
-                    </span>
-                  </div>
-                ))}
+                      {member.subtitle && (
+                        <span className="member-position">
+                          {member.subtitle}
+                        </span>
+                      )}
+                      <span className="member-role">
+                        {member.description}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <div className="gratitude-section" data-aos="zoom-in" data-aos-delay="400">
-          <h3 className="gratitude-title">Thank you all very much! Without you, this would not have been possible.</h3>
-        </div>
+       
       </div>
     </section>
   );

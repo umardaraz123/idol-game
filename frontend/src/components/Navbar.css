@@ -24,12 +24,12 @@
 .navbar-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 50px;
+  padding: 0 clamp(20px, 4vw, 50px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  gap: 60px;
+  gap: clamp(20px, 6vw, 60px);
 }
 
 /* Logo */
@@ -48,7 +48,7 @@
 }
 
 .logo-image {
-  height: 50px;
+  height: clamp(35px, 7vw, 50px);
   width: auto;
   filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7))
           drop-shadow(0 0 24px rgba(138, 43, 226, 0.4));
@@ -82,7 +82,7 @@
 
 .logo-title {
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   font-weight: 800;
   background: linear-gradient(135deg, 
     #fff 0%, 
@@ -92,7 +92,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 2.5px;
+  letter-spacing: clamp(1.5px, 0.3vw, 2.5px);
   line-height: 1;
   text-transform: uppercase;
   transition: all 0.4s ease;

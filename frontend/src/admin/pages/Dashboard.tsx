@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { contentAPI, mediaAPI } from '../../services/api';
+import { FileText, Images, Image, Video, Plus, Upload, Loader2 } from 'lucide-react';
 import './Dashboard.css';
 
 interface Stats {
@@ -46,32 +47,34 @@ const Dashboard = () => {
     }
   };
 
+  const iconComponents = [FileText, Images, Image, Video];
+  
   const statCards = [
     {
       title: 'Total Content',
       value: stats.totalContent,
-      icon: 'fas fa-file-alt',
+      IconComponent: iconComponents[0],
       color: '#00d4ff',
       bg: 'rgba(0, 212, 255, 0.1)',
     },
     {
       title: 'Total Media',
       value: stats.totalMedia,
-      icon: 'fas fa-images',
+      IconComponent: iconComponents[1],
       color: '#b537f2',
       bg: 'rgba(181, 55, 242, 0.1)',
     },
     {
       title: 'Images',
       value: stats.totalImages,
-      icon: 'fas fa-image',
+      IconComponent: iconComponents[2],
       color: '#00ff88',
       bg: 'rgba(0, 255, 136, 0.1)',
     },
     {
       title: 'Videos',
       value: stats.totalVideos,
-      icon: 'fas fa-video',
+      IconComponent: iconComponents[3],
       color: '#ff3b3b',
       bg: 'rgba(255, 59, 59, 0.1)',
     },
@@ -80,7 +83,7 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="loading-container">
-        <i className="fas fa-spinner fa-spin"></i>
+        <Loader2 size={32} className="spinning" />
         <p>Loading dashboard...</p>
       </div>
     );
@@ -101,7 +104,7 @@ const Dashboard = () => {
             style={{ background: card.bg, borderColor: card.color }}
           >
             <div className="stat-icon" style={{ color: card.color }}>
-              <i className={card.icon}></i>
+              <card.IconComponent size={32} />
             </div>
             <div className="stat-info">
               <h3 style={{ color: card.color }}>{card.value}</h3>
@@ -116,15 +119,15 @@ const Dashboard = () => {
           <h2>Quick Actions</h2>
           <div className="action-buttons">
             <button className="action-btn" onClick={() => window.location.href = '/admin/content'}>
-              <i className="fas fa-plus"></i>
+              <Plus size={20} />
               Create Content
             </button>
             <button className="action-btn" onClick={() => window.location.href = '/admin/upload'}>
-              <i className="fas fa-cloud-upload-alt"></i>
+              <Upload size={20} />
               Upload Media
             </button>
             <button className="action-btn" onClick={() => window.location.href = '/admin/media'}>
-              <i className="fas fa-images"></i>
+              <Images size={20} />
               Browse Media
             </button>
           </div>

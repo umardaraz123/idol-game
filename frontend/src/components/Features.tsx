@@ -18,18 +18,64 @@ const Features = () => {
   const { language } = useLanguage();
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sectionHeader, setSectionHeader] = useState({
+    title: 'Why Choose Idol be?',
+    subtitle: 'Experience gaming the way it should be - fair, fun, and full of creativity'
+  });
 
   useEffect(() => {
     const fetchFeatures = async () => {
       try {
-        const response = await publicAPI.getContent(language, { type: 'features' });
-        const contentData = response.data.data.content?.features || [];
-        console.log('Features data received:', contentData);
-        setFeatures(
-          Array.isArray(contentData) 
-            ? contentData.sort((a: any, b: any) => a.metadata.order - b.metadata.order)
-            : []
+        setLoading(true);
+        const response = await publicAPI.getContent(language);
+        const contentData = response.data.data.content;
+        
+        console.log('Full API response:', response.data);
+        console.log('Content data:', contentData);
+        
+        // The API returns data with the type as the key (e.g., content.features, content.artist_team)
+        const featuresData = contentData?.features || [];
+        
+        console.log('Features data:', featuresData);
+        
+        if (!Array.isArray(featuresData)) {
+          console.warn('Features data is not an array:', featuresData);
+          setFeatures([]);
+          setLoading(false);
+          return;
+        }
+        
+        // Separate header from features
+        const headerItem = featuresData.find((item: any) => item.key === 'features_section_header');
+        const featureItems = featuresData.filter((item: any) => 
+          item.key !== 'features_section_header' && item.metadata?.isActive !== false
         );
+        
+        // Update header if found
+        if (headerItem) {
+          const newHeader = {
+            title: headerItem.title || 'Why Choose Idol be?',
+            subtitle: headerItem.subtitle || headerItem.description || 'Experience gaming the way it should be - fair, fun, and full of creativity'
+          };
+          console.log('Setting header:', newHeader);
+          setSectionHeader(newHeader);
+        } else {
+          console.warn('⚠️ No header item found with key "features_section_header"');
+        }
+        
+        // Update features list - map to ensure correct structure
+        const mappedFeatures = featureItems
+          .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
+          .map((item: any) => ({
+            _id: item._id,
+            title: item.title || '',
+            description: item.description || '',
+            imageUrl: item.imageUrl,
+            metadata: item.metadata || { order: 0, isActive: true }
+          }));
+        
+        console.log('Final mapped features:', mappedFeatures);
+        setFeatures(mappedFeatures);
       } catch (error) {
         console.error('Failed to fetch features:', error);
         setFeatures([]);
@@ -58,11 +104,11 @@ const Features = () => {
       <div className="container">
         <div className="section-header" data-aos="fade-up">
           <h2 className="section-title">
-            Why Choose <span className="text-glow-blue">Idol be?</span>
+            <span className="text-glow-blue">{sectionHeader.title}</span>
           </h2>
           <div className="title-underline"></div>
           <p className="section-subtitle">
-            Experience gaming the way it should be - fair, fun, and full of creativity
+            {sectionHeader.subtitle}
           </p>
         </div>
 
@@ -91,16 +137,7 @@ const Features = () => {
           ))}
         </div>
 
-        {/* Extra Info */}
-        <div className="features-extra" data-aos="zoom-in" data-aos-delay="400">
-          <div className="extra-card">
-            <h3 className="extra-title">No Hidden Costs</h3>
-            <p className="extra-description">
-              Enjoy the complete gaming experience without ads, loot boxes, or pay-to-win mechanics. 
-              When you purchase Idol be, you own the full game with all its content.
-            </p>
-          </div>
-        </div>
+        
       </div>
     </section>
   );

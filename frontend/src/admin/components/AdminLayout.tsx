@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { LayoutDashboard, FileText, Rocket, Info, Gamepad2, Star, Users, Music, Mail, Columns, Image, Shield, LogOut, ArrowLeft } from 'lucide-react';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -21,45 +22,65 @@ const AdminLayout = () => {
 
         <nav className="sidebar-nav">
           <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-chart-line"></i>
+            <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </NavLink>
 
           <NavLink to="/admin/content" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-file-alt"></i>
+            <FileText size={20} />
             <span>Content</span>
           </NavLink>
 
+          <NavLink to="/admin/hero" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Rocket size={20} />
+            <span>Hero Section</span>
+          </NavLink>
+
+          <NavLink to="/admin/about-features" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Info size={20} />
+            <span>About Features</span>
+          </NavLink>
+
           <NavLink to="/admin/game-highlights" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-gamepad"></i>
+            <Gamepad2 size={20} />
             <span>Game Highlights</span>
           </NavLink>
 
           <NavLink to="/admin/features" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-star"></i>
+            <Star size={20} />
             <span>Features</span>
           </NavLink>
 
           <NavLink to="/admin/team" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-users"></i>
+            <Users size={20} />
             <span>Artist Team</span>
           </NavLink>
 
-          <NavLink to="/admin/media" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-images"></i>
-            <span>Media Library</span>
+          <NavLink to="/admin/songs" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Music size={20} />
+            <span>Songs</span>
           </NavLink>
 
-          <NavLink to="/admin/upload" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-            <i className="fas fa-cloud-upload-alt"></i>
-            <span>Upload</span>
+          <NavLink to="/admin/queries" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Mail size={20} />
+            <span>Queries</span>
+          </NavLink>
+
+          <NavLink to="/admin/footer" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Columns size={20} />
+            <span>Footer</span>
+          </NavLink>
+
+          <NavLink to="/admin/logo" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+            <Image size={20} />
+            <span>Logo</span>
           </NavLink>
         </nav>
 
         <div className="sidebar-footer">
           <div className="admin-profile">
             <div className="profile-icon">
-              <i className="fas fa-user-shield"></i>
+              <Shield size={24} />
             </div>
             <div className="profile-info">
               <p className="profile-name">{admin?.name || admin?.email}</p>
@@ -67,7 +88,7 @@ const AdminLayout = () => {
             </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
-            <i className="fas fa-sign-out-alt"></i>
+            <LogOut size={18} />
             Logout
           </button>
         </div>
@@ -76,7 +97,7 @@ const AdminLayout = () => {
       <main className="admin-content">
         <header className="admin-header">
           <button className="btn-back" onClick={() => navigate('/')}>
-            <i className="fas fa-arrow-left"></i>
+            <ArrowLeft size={18} />
             Back to Main Site
           </button>
         </header>

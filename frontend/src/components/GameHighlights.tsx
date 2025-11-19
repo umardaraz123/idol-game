@@ -29,6 +29,11 @@ const GameHighlights = () => {
     },
   ]);
 
+  const [sectionHeader, setSectionHeader] = useState({
+    title: 'Experience Idol be',
+    subtitle: 'Immerse yourself in a world where your voice becomes your power'
+  });
+
   // Fetch game highlights from backend
   useEffect(() => {
     const fetchSlides = async () => {
@@ -40,9 +45,21 @@ const GameHighlights = () => {
         
         console.log('Game Highlights Data:', highlightsData, 'Language:', language);
         
-        if (highlightsData && highlightsData.length > 0) {
+        // Get section header
+        const headerItem = highlightsData.find((item: any) => item.key === 'game_highlights_section_header');
+        if (headerItem) {
+          setSectionHeader({
+            title: headerItem.title || 'Experience Idol be',
+            subtitle: headerItem.subtitle || headerItem.description || 'Immerse yourself in a world where your voice becomes your power'
+          });
+        }
+        
+        // Filter out header and get actual highlights
+        const actualHighlights = highlightsData.filter((item: any) => item.key !== 'game_highlights_section_header');
+        
+        if (actualHighlights && actualHighlights.length > 0) {
           // Map and sort by order
-          const mappedSlides = highlightsData
+          const mappedSlides = actualHighlights
             .filter((item: any) => item.metadata?.isActive !== false)
             .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
             .map((item: any) => ({
@@ -91,11 +108,17 @@ const GameHighlights = () => {
       <div className="container-fluid px-0">
         <div className="section-header" data-aos="fade-up">
           <h2 className="section-title">
-            Experience <span className="text-glow-purple">Idol be</span>
+            {sectionHeader.title.split(' ').map((word, index) => {
+              // Check if word contains "Idol" or "be" to apply gradient
+              if (word.toLowerCase().includes('idol') || word.toLowerCase() === 'be') {
+                return <span key={index} className="text-glow-purple">{word} </span>;
+              }
+              return <span key={index}>{word} </span>;
+            })}
           </h2>
           <div className="title-underline"></div>
           <p className="section-subtitle">
-            Immerse yourself in a world where your voice becomes your power
+            {sectionHeader.subtitle}
           </p>
         </div>
 

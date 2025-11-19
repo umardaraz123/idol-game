@@ -1,7 +1,7 @@
 .who-is-ana-section {
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   position: relative;
-  padding: clamp(80px, 12vw, 140px) 0;
+  padding: clamp(30px, 8vw, 140px) 0;
   overflow: hidden;
 }
 

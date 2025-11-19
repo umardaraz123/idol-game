@@ -4,9 +4,14 @@ const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/idolbe';
     
+    console.log('🔄 Attempting to connect to MongoDB...');
+    console.log('📍 Connection string:', mongoURI.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')); // Hide credentials
+    
     const conn = await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000, // 30 seconds timeout for initial connection
+      socketTimeoutMS: 45000, // 45 seconds timeout for socket operations
+      maxPoolSize: 10,
+      minPoolSize: 2,
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);

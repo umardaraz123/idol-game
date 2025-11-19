@@ -8,6 +8,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Songs from './components/Songs';
 import GameHighlights from './components/GameHighlights';
 import WhoIsAna from './components/WhoIsAna';
 import Features from './components/Features';
@@ -19,6 +20,12 @@ import ContentManagement from './admin/pages/ContentManagement';
 import GameHighlightsManagement from './admin/pages/GameHighlightsManagement';
 import FeaturesManagement from './admin/pages/FeaturesManagement';
 import TeamManagement from './admin/pages/TeamManagement';
+import HeroManagement from './admin/pages/HeroManagement';
+import AboutFeaturesManagement from './admin/pages/AboutFeaturesManagement';
+import QueriesManagement from './admin/pages/QueriesManagement';
+import SongsManagement from './admin/pages/SongsManagement';
+import FooterManagement from './admin/pages/FooterManagement';
+import LogoManagement from './admin/pages/LogoManagement';
 import AdminLayout from './admin/components/AdminLayout';
 import ProtectedRoute from './admin/components/ProtectedRoute';
 import './App.css';
@@ -38,6 +45,9 @@ const MainSite = () => {
       <Navbar />
       <section id="home">
         <Hero />
+      </section>
+      <section id="songs">
+        <Songs />
       </section>
       <section id="about">
         <About />
@@ -82,11 +92,15 @@ function App() {
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="content" element={<ContentManagement />} />
+            <Route path="hero" element={<HeroManagement />} />
+            <Route path="about-features" element={<AboutFeaturesManagement />} />
             <Route path="game-highlights" element={<GameHighlightsManagement />} />
             <Route path="features" element={<FeaturesManagement />} />
             <Route path="team" element={<TeamManagement />} />
-            <Route path="media" element={<div style={{color:'white',padding:'2rem'}}>Media Library - Coming Soon</div>} />
-            <Route path="upload" element={<div style={{color:'white',padding:'2rem'}}>Upload - Coming Soon</div>} />
+            <Route path="songs" element={<SongsManagement />} />
+            <Route path="queries" element={<QueriesManagement />} />
+            <Route path="footer" element={<FooterManagement />} />
+            <Route path="logo" element={<LogoManagement />} />
           </Route>
 
           {/* Catch all */}

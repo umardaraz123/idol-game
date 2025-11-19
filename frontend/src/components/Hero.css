@@ -124,11 +124,11 @@
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 8vw, 7rem);
+  font-size: clamp(2rem, 6vw, 7rem);
   font-family: var(--font-primary);
   font-weight: 900;
-  letter-spacing: clamp(4px, 1.5vw, 12px);
-  margin-bottom: 1.5rem;
+  letter-spacing: clamp(2px, 1vw, 12px);
+  margin-bottom: clamp(0.75rem, 2vw, 1.5rem);
   text-transform: uppercase;
   color: var(--text-primary);
   text-shadow: 0 0 30px rgba(0, 212, 255, 0.7),
@@ -152,20 +152,22 @@
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-size: clamp(0.875rem, 1.8vw, 1.4rem);
   font-family: var(--font-secondary);
   font-weight: 400;
   color: var(--text-secondary);
-  margin-bottom: clamp(2rem, 4vw, 3rem);
-  letter-spacing: clamp(2px, 0.5vw, 4px);
+  margin-bottom: clamp(1.25rem, 3vw, 3rem);
+  letter-spacing: clamp(1px, 0.3vw, 4px);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .hero-content .btn-neon {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(1rem, 2vw, 2.5rem);
+  padding: clamp(0.65rem, 1.5vw, 0.875rem) clamp(1.25rem, 3vw, 2rem);
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
 }
 
 /* Scroll Indicator */

@@ -5,6 +5,7 @@ import './WhoIsAna.css';
 
 interface AnaContent {
   title: string;
+  subtitle: string;
   description: string;
 }
 
@@ -12,6 +13,7 @@ const WhoIsAna = () => {
   const { language } = useLanguage();
   const [content, setContent] = useState<AnaContent>({
     title: 'Who is Ana?',
+    subtitle: 'MEET YOUR IDOL',
     description: `Ever since I was little, I've always loved to sing. That's why I sing every day. My dream is to become a star and enjoy my fans. Although I know it's a very difficult dream, I guess that's how dreams are, right?
 
 There will be an audition in my city soon, but I feel like I'm not ready. I need to improve my singing skills to have any chance. There are so many people out there who sing so well... I wish everything were easier.`
@@ -24,26 +26,40 @@ There will be an audition in my city soon, but I feel like I'm not ready. I need
         const response = await publicAPI.getContent(language);
         const contentData = response.data.data.content;
         
-        // Get who_is_ana section content
+        console.log('WhoIsAna - Full API Response:', response.data);
+        console.log('WhoIsAna - Content Data:', contentData);
+        
+        // Get who_is_ana section content - check both possible locations
         const anaData = contentData?.who_is_ana || [];
+        const aboutData = contentData?.about_section || [];
         
-        console.log('Ana Data:', anaData, 'Language:', language); // Debug log
+        // Find Ana content by key in about_section if not found in who_is_ana
+        let anaContent = null;
         
-        if (anaData && anaData.length > 0) {
-          // Get the main content (usually the first one or one with 'main' category)
-          const mainContent = anaData.find((item: any) => 
+        if (anaData.length > 0) {
+          anaContent = anaData.find((item: any) => 
             item.metadata?.category === 'main' || item.metadata?.isFeatured
           ) || anaData[0];
-          
-          console.log('Selected Ana Content:', mainContent); // Debug log
-          
-          setContent({
-            title: mainContent?.title || 'Who is Ana?',
-            description: mainContent?.description || `Ever since I was little, I've always loved to sing. That's why I sing every day. My dream is to become a star and enjoy my fans. Although I know it's a very difficult dream, I guess that's how dreams are, right?\n\nThere will be an audition in my city soon, but I feel like I'm not ready. I need to improve my singing skills to have any chance. There are so many people out there who sing so well... I wish everything were easier.`
-          });
+        } else {
+          // Look for ana content in about_section by key
+          anaContent = aboutData.find((item: any) => item.key === 'who_is_ana');
+        }
+        
+        console.log('WhoIsAna - Selected Content:', anaContent);
+        
+        if (anaContent) {
+          const newContent = {
+            title: anaContent.title || 'Who is Ana?',
+            subtitle: anaContent.subtitle || 'MEET YOUR IDOL',
+            description: anaContent.description || `Ever since I was little, I've always loved to sing. That's why I sing every day. My dream is to become a star and enjoy my fans. Although I know it's a very difficult dream, I guess that's how dreams are, right?\n\nThere will be an audition in my city soon, but I feel like I'm not ready. I need to improve my singing skills to have any chance. There are so many people out there who sing so well... I wish everything were easier.`
+          };
+          console.log('WhoIsAna - Setting Content:', newContent);
+          setContent(newContent);
+        } else {
+          console.warn('WhoIsAna - No content found. Please create content with type "who_is_ana" or key "who_is_ana" in the admin panel.');
         }
       } catch (error) {
-        console.error('Failed to fetch Ana content:', error);
+        console.error('WhoIsAna - Failed to fetch content:', error);
         // Keep default content on error
       }
     };
@@ -62,7 +78,7 @@ There will be an audition in my city soon, but I feel like I'm not ready. I need
           {/* Left Column - Content */}
           <div className="col-lg-6 col-md-12" data-aos="fade-right" data-aos-duration="1000">
             <div className="ana-content">
-              <div className="section-tag">MEET YOUR IDOL</div>
+              <div className="section-tag">{content.subtitle}</div>
               <h2 className="section-title">
                 <span className="text-glow-purple">{content.title}</span>
               </h2>
@@ -85,16 +101,7 @@ There will be an audition in my city soon, but I feel like I'm not ready. I need
                 <div className="quote-author">— Ana</div>
               </div> */}
 
-              <div className="ana-dream-box">
-                <div className="dream-icon">✨</div>
-                <div className="dream-content">
-                  <h4>Join Ana's Journey</h4>
-                  <p>
-                    Help Ana achieve her dreams through singing, practice, and dedication. 
-                    Your voice is her strength!
-                  </p>
-                </div>
-              </div>
+              
             </div>
           </div>
 

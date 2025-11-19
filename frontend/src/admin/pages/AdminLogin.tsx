@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { AlertCircle, Mail, Lock, LogIn, ArrowLeft, Loader2 } from 'lucide-react';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
@@ -40,14 +41,14 @@ const AdminLogin = () => {
         <form className="login-form" onSubmit={handleSubmit}>
           {error && (
             <div className="error-message">
-              <i className="fas fa-exclamation-circle"></i>
+              <AlertCircle size={18} />
               {error}
             </div>
           )}
 
           <div className="form-group">
             <label htmlFor="email">
-              <i className="fas fa-envelope"></i> Email
+              <Mail size={16} /> Email
             </label>
             <input
               type="email"
@@ -62,7 +63,7 @@ const AdminLogin = () => {
 
           <div className="form-group">
             <label htmlFor="password">
-              <i className="fas fa-lock"></i> Password
+              <Lock size={16} /> Password
             </label>
             <input
               type="password"
@@ -82,11 +83,11 @@ const AdminLogin = () => {
           >
             {isLoading ? (
               <>
-                <i className="fas fa-spinner fa-spin"></i> Logging in...
+                <Loader2 size={18} className="spinning" /> Logging in...
               </>
             ) : (
               <>
-                <i className="fas fa-sign-in-alt"></i> Login
+                <LogIn size={18} /> Login
               </>
             )}
           </button>
@@ -94,7 +95,7 @@ const AdminLogin = () => {
 
         <div className="login-footer">
           <p className="back-link" onClick={() => navigate('/')}>
-            <i className="fas fa-arrow-left"></i> Back to Main Site
+            <ArrowLeft size={16} /> Back to Main Site
           </p>
         </div>
       </div>

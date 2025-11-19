@@ -57,6 +57,16 @@ const FeaturesManagement = () => {
   const [iconFile, setIconFile] = useState<File | null>(null);
   const [iconPreview, setIconPreview] = useState<string>('');
 
+  // Section Header state
+  const [sectionHeader, setSectionHeader] = useState<{
+    _id?: string;
+    title: MultilingualField;
+    subtitle: MultilingualField;
+  }>({
+    title: { ...emptyMultilingualField },
+    subtitle: { ...emptyMultilingualField }
+  });
+
   const [formData, setFormData] = useState<Feature>({
     type: 'features',
     title: { ...emptyMultilingualField },
@@ -81,6 +91,7 @@ const FeaturesManagement = () => {
 
   useEffect(() => {
     fetchFeatures();
+    fetchSectionHeader();
   }, []);
 
   const fetchFeatures = async () => {
@@ -95,6 +106,51 @@ const FeaturesManagement = () => {
       setFeatures([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSectionHeader = async () => {
+    try {
+      const response = await adminAPI.getContent({ type: 'features', key: 'features_section_header' });
+      const contents = response.data.data.contents || [];
+      if (contents.length > 0) {
+        const header = contents[0];
+        setSectionHeader({
+          _id: header._id,
+          title: header.title,
+          subtitle: header.subtitle || { ...emptyMultilingualField }
+        });
+      }
+    } catch (err: any) {
+      console.log('No section header found, will create on save');
+    }
+  };
+
+  const saveSectionHeader = async () => {
+    try {
+      const headerData = {
+        key: 'features_section_header',
+        type: 'features',
+        title: sectionHeader.title,
+        subtitle: sectionHeader.subtitle,
+        description: { ...emptyMultilingualField },
+        metadata: {
+          order: 0,
+          isActive: true,
+          isFeatured: false
+        }
+      };
+
+      if (sectionHeader._id) {
+        await adminAPI.updateContent(sectionHeader._id, headerData);
+      } else {
+        const response = await adminAPI.createContent(headerData);
+        setSectionHeader(prev => ({ ...prev, _id: response.data.data._id }));
+      }
+      setSuccess('Section header updated successfully!');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to save section header');
     }
   };
 
@@ -250,6 +306,65 @@ const FeaturesManagement = () => {
 
       {error && <div className="alert alert-error">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
+
+      {/* Section Header Editor */}
+      <div className="content-form-card" style={{ marginBottom: '2rem' }}>
+        <h2>Section Header (Title & Subtitle)</h2>
+        <p style={{ color: '#999', marginBottom: '1.5rem' }}>
+          Edit the main title and subtitle that appear at the top of the Features section
+        </p>
+
+        <div className="language-tabs">
+          {languages.map(lang => (
+            <button
+              key={lang.code}
+              type="button"
+              className={`lang-tab ${activeLanguage === lang.code ? 'active' : ''}`}
+              onClick={() => setActiveLanguage(lang.code)}
+            >
+              <span className="flag">{lang.flag}</span>
+              <span className="lang-name">{lang.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="form-group">
+          <label>Section Title ({languages.find(l => l.code === activeLanguage)?.name})</label>
+          <input
+            type="text"
+            className="form-control"
+            value={sectionHeader.title[activeLanguage as keyof MultilingualField]}
+            onChange={(e) => setSectionHeader(prev => ({
+              ...prev,
+              title: { ...prev.title, [activeLanguage]: e.target.value }
+            }))}
+            placeholder={`e.g., Why Choose Idol be? (in ${languages.find(l => l.code === activeLanguage)?.name})`}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Section Subtitle ({languages.find(l => l.code === activeLanguage)?.name})</label>
+          <textarea
+            className="form-control"
+            rows={2}
+            value={sectionHeader.subtitle[activeLanguage as keyof MultilingualField]}
+            onChange={(e) => setSectionHeader(prev => ({
+              ...prev,
+              subtitle: { ...prev.subtitle, [activeLanguage]: e.target.value }
+            }))}
+            placeholder={`e.g., Experience gaming the way it should be (in ${languages.find(l => l.code === activeLanguage)?.name})`}
+          />
+        </div>
+
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={saveSectionHeader}
+          disabled={loading}
+        >
+          {loading ? 'Saving...' : 'Save Section Header'}
+        </button>
+      </div>
 
       {showForm && (
         <div className="content-form-card">

@@ -1,6 +1,6 @@
 .game-highlights-section {
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-  padding: clamp(70px, 10vw, 120px) 0 clamp(80px, 12vw, 140px);
+  padding: clamp(30px, 8vw, 120px) 0 clamp(30px, 8vw, 140px);
   position: relative;
   overflow: hidden;
 }

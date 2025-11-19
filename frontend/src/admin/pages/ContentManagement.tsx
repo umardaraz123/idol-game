@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { contentAPI } from '../../services/api';
+import { Loader2, Plus, FileText, Edit, Trash2, X, Info } from 'lucide-react';
 import './ContentManagement.css';
 
 interface MultilingualText {
@@ -47,10 +49,7 @@ const CONTENT_TYPES = [
   { value: 'about_section', label: 'About Section' },
   { value: 'game_highlights', label: 'Game Highlights' },
   { value: 'who_is_ana', label: 'Who is Ana' },
-  { value: 'features', label: 'Features' },
   { value: 'artist_team', label: 'Artist Team' },
-  { value: 'footer', label: 'Footer' },
-  { value: 'navbar', label: 'Navbar' },
   { value: 'general', label: 'General' },
 ];
 
@@ -141,14 +140,14 @@ const ContentManagement = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this content?')) return;
+    if (!window.confirm('Are you sure you want to delete this content?')) return;
 
     try {
       await contentAPI.delete(id);
       fetchContents();
-      alert('Content deleted successfully!');
+      toast.success('Content deleted successfully!');
     } catch (error) {
-      alert('Failed to delete content');
+      toast.error('Failed to delete content');
     }
   };
 
@@ -157,7 +156,7 @@ const ContentManagement = () => {
 
     // Validate English title
     if (!formData.title.en.trim()) {
-      alert('English title is required! Please switch to the English tab and enter a title.');
+      toast.error('English title is required! Please switch to the English tab and enter a title.');
       // Switch to English tab to help user
       setSelectedLanguage('en');
       return;
@@ -166,15 +165,15 @@ const ContentManagement = () => {
     try {
       if (editingContent) {
         await contentAPI.update(editingContent._id, formData);
-        alert('Content updated successfully!');
+        toast.success('Content updated successfully!');
       } else {
         await contentAPI.create(formData);
-        alert('Content created successfully!');
+        toast.success('Content created successfully!');
       }
       setShowModal(false);
       fetchContents();
     } catch (error: any) {
-      alert('Failed to save content: ' + (error.response?.data?.message || error.message));
+      toast.error('Failed to save content: ' + (error.response?.data?.message || error.message));
     }
   };
 
@@ -215,7 +214,7 @@ const ContentManagement = () => {
   if (isLoading) {
     return (
       <div className="loading-container">
-        <i className="fas fa-spinner fa-spin"></i>
+        <Loader2 size={32} className="spinning" />
         <p>Loading content...</p>
       </div>
     );
@@ -229,7 +228,7 @@ const ContentManagement = () => {
           <p>Manage all website content in multiple languages</p>
         </div>
         <button className="btn-neon" onClick={handleCreate}>
-          <i className="fas fa-plus"></i> Create Content
+          <Plus size={18} /> Create Content
         </button>
       </div>
 
@@ -254,11 +253,11 @@ const ContentManagement = () => {
       <div className="content-grid">
         {filteredContents.length === 0 ? (
           <div className="empty-state">
-            <i className="fas fa-file-alt"></i>
+            <FileText size={48} />
             <h3>No Content Found</h3>
             <p>Create your first content item to get started</p>
             <button className="btn-neon" onClick={handleCreate}>
-              <i className="fas fa-plus"></i> Create Content
+              <Plus size={18} /> Create Content
             </button>
           </div>
         ) : (
@@ -285,10 +284,10 @@ const ContentManagement = () => {
 
               <div className="content-actions">
                 <button className="btn-edit" onClick={() => handleEdit(content)}>
-                  <i className="fas fa-edit"></i> Edit
+                  <Edit size={16} /> Edit
                 </button>
-                <button className="btn-delete" onClick={() => handleDelete(content._id)}>
-                  <i className="fas fa-trash"></i> Delete
+                <button className="btn-danger-small" onClick={() => handleDelete(content._id)}>
+                  <Trash2 size={16} /> Delete
                 </button>
               </div>
             </div>
@@ -303,7 +302,7 @@ const ContentManagement = () => {
             <div className="modal-header">
               <h2>{editingContent ? 'Edit Content' : 'Create Content'}</h2>
               <button className="btn-close" onClick={() => setShowModal(false)}>
-                <i className="fas fa-times"></i>
+                <X size={24} />
               </button>
             </div>
 
@@ -417,7 +416,7 @@ const ContentManagement = () => {
                   marginBottom: '1.5rem',
                   textAlign: 'center'
                 }}>
-                  <i className="fas fa-info-circle" style={{ fontSize: '2rem', color: '#00d4ff', marginBottom: '1rem', display: 'block' }}></i>
+                  <Info size={32} style={{ color: '#00d4ff', marginBottom: '1rem', display: 'block' }} />
                   <h3 style={{ color: '#00d4ff', marginBottom: '0.5rem' }}>Game Highlights with Media</h3>
                   <p style={{ color: '#ccc', marginBottom: '1rem' }}>
                     To add game highlights with images or videos, please use the dedicated <strong>Game Highlights</strong> page.

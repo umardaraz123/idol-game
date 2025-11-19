@@ -52,21 +52,9 @@ export const uploadOptions = {
     folder: 'idolbe/videos',
     allowed_formats: ['mp4', 'mov', 'avi', 'mkv', 'webm'],
     chunk_size: 6000000, // 6MB chunks for large files
-    eager_async: true, // Process transformations asynchronously
-    eager_notification_url: process.env.CLOUDINARY_WEBHOOK_URL, // Optional: webhook for transformation completion
-    transformation: [
-      { quality: 'auto' },
-      { width: 1920, height: 1080, crop: 'limit' }
-    ],
+    eager_async: true, // Process large videos asynchronously
     eager: [
-      { 
-        width: 640, 
-        height: 480, 
-        crop: 'fill',
-        video_codec: 'h264',
-        audio_codec: 'aac',
-        streaming_profile: 'hd'
-      }
+      { quality: 'auto', width: 1920, height: 1080, crop: 'limit', format: 'mp4' }
     ]
   },
 
@@ -78,6 +66,13 @@ export const uploadOptions = {
       { width: 200, height: 200, crop: 'thumb', gravity: 'face' },
       { quality: 'auto', fetch_format: 'auto' }
     ]
+  },
+
+  audio: {
+    resource_type: 'video', // Cloudinary treats audio as video resource type
+    folder: 'idolbe/audio',
+    allowed_formats: ['mp3', 'wav', 'ogg', 'aac', 'm4a', 'flac'],
+    chunk_size: 6000000, // 6MB chunks for large files
   }
 };
 

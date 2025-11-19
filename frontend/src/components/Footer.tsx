@@ -1,8 +1,61 @@
-import { FaTwitter, FaFacebook, FaInstagram, FaYoutube, FaDiscord } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { footerAPI } from '../services/api';
 import './Footer.css';
 
+interface FooterData {
+  leftColumn: {
+    title: string;
+    subtitle: string;
+    description: string;
+  };
+  centerColumn: {
+    title: string;
+    subtitle: string;
+    description: string;
+  };
+  rightColumn: {
+    title: string;
+    subtitle: string;
+    description: string;
+  };
+  socialIcons: Array<{
+    platform: string;
+    url: string;
+    iconUrl: string;
+    order: number;
+    isActive: boolean;
+  }>;
+  copyrightText: string;
+}
+
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const { language } = useLanguage();
+  const [footerData, setFooterData] = useState<FooterData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFooterData();
+  }, [language]);
+
+  const fetchFooterData = async () => {
+    try {
+      const response = await footerAPI.get(language);
+      setFooterData(response.data.data.footer);
+    } catch (error) {
+      console.error('Failed to fetch footer data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <footer className="footer"><div className="container">Loading...</div></footer>;
+  }
+
+  if (!footerData) {
+    return <footer className="footer"><div className="container">Footer data not available</div></footer>;
+  }
 
   return (
     <footer className="footer">
@@ -10,46 +63,47 @@ const Footer = () => {
       
       <div className="container">
         <div className="footer-content">
-          {/* Brand Section */}
+          {/* Left Column */}
           <div className="footer-brand">
-            <h3 className="footer-logo">IDOL BE</h3>
-            <p className="footer-tagline">Sing Your Dream</p>
-            <p className="footer-description">
-              Created by Jacinto Jiménez. A game made by real people, no AI involved.
-            </p>
+            {footerData.leftColumn.title && <h3 className="footer-logo">{footerData.leftColumn.title}</h3>}
+            {footerData.leftColumn.subtitle && <p className="footer-tagline">{footerData.leftColumn.subtitle}</p>}
+            {footerData.leftColumn.description && <p className="footer-description">{footerData.leftColumn.description}</p>}
           </div>
 
-          {/* Social Media */}
+          {/* Center Column */}
           <div className="footer-social">
-            <h4 className="footer-heading">Connect With Us</h4>
-            <div className="social-icons">
-              <a href="#" className="social-icon" aria-label="Twitter">
-                <FaTwitter />
-              </a>
-              <a href="#" className="social-icon" aria-label="Facebook">
-                <FaFacebook />
-              </a>
-              <a href="#" className="social-icon" aria-label="Instagram">
-                <FaInstagram />
-              </a>
-              <a href="#" className="social-icon" aria-label="YouTube">
-                <FaYoutube />
-              </a>
-              <a href="#" className="social-icon" aria-label="Discord">
-                <FaDiscord />
-              </a>
-            </div>
+            {footerData.centerColumn.title && <h4 className="footer-heading">{footerData.centerColumn.title}</h4>}
+            {footerData.centerColumn.subtitle && <p className="footer-tagline">{footerData.centerColumn.subtitle}</p>}
+            {footerData.centerColumn.description && <p className="contact-text">{footerData.centerColumn.description}</p>}
+            
+            {/* Social Icons */}
+            {footerData.socialIcons.length > 0 && (
+              <div className="social-icons">
+                {footerData.socialIcons
+                  .filter(icon => icon.isActive)
+                  .sort((a, b) => a.order - b.order)
+                  .map((icon, index) => (
+                    <a 
+                      key={index}
+                      href={icon.url} 
+                      className="social-icon" 
+                      aria-label={icon.platform}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img src={icon.iconUrl} alt={icon.platform} style={{ width: '24px', height: '24px' }} />
+                    </a>
+                  ))
+                }
+              </div>
+            )}
           </div>
 
-          {/* Contact */}
+          {/* Right Column */}
           <div className="footer-contact">
-            <h4 className="footer-heading">Get In Touch</h4>
-            <p className="contact-text">
-              We'd love to hear your questions, suggestions, or anything else that comes to mind!
-            </p>
-            <a href="mailto:contact@idolbe.com" className="contact-link">
-              contact@idolbe.com
-            </a>
+            {footerData.rightColumn.title && <h4 className="footer-heading">{footerData.rightColumn.title}</h4>}
+            {footerData.rightColumn.subtitle && <p className="footer-tagline">{footerData.rightColumn.subtitle}</p>}
+            {footerData.rightColumn.description && <p className="contact-text">{footerData.rightColumn.description}</p>}
           </div>
         </div>
 
@@ -59,13 +113,8 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="footer-bottom">
           <p className="copyright">
-            © {currentYear} Idol be. Created by Jacinto Jiménez. All rights reserved.
+            {footerData.copyrightText || `© ${new Date().getFullYear()} IDOL BE. All rights reserved.`}
           </p>
-          <div className="footer-links">
-            <a href="#" className="footer-link">Privacy Policy</a>
-            <span className="separator">•</span>
-            <a href="#" className="footer-link">Terms of Service</a>
-          </div>
         </div>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 .artist-team-section {
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-  padding: clamp(80px, 12vw, 140px) 0;
+  padding: clamp(50px, 8vw, 140px) 0 0 0;
   position: relative;
   overflow: hidden;
 }
@@ -26,7 +26,7 @@
 /* Section Header */
 .section-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: clamp(2.5rem, 5vw, 60px);
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
@@ -35,24 +35,24 @@
 .section-tag {
   display: inline-block;
   font-family: var(--font-primary);
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: clamp(1.5px, 0.5vw, 3px);
   color: var(--neon-blue);
   background: rgba(0, 212, 255, 0.1);
-  padding: 8px 20px;
+  padding: clamp(6px, 1.5vw, 8px) clamp(14px, 3vw, 20px);
   border-radius: 20px;
   border: 1px solid var(--neon-blue);
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
   text-transform: uppercase;
 }
 
 .section-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.75rem, 4.5vw, 4rem);
   font-family: var(--font-primary);
   font-weight: 900;
-  margin-bottom: 1rem;
-  letter-spacing: 2px;
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  letter-spacing: clamp(1px, 0.3vw, 2px);
 }
 
 .title-underline {
@@ -64,18 +64,18 @@
 }
 
 .section-subtitle {
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
   font-family: var(--font-secondary);
   color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
 .section-note {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
   font-family: var(--font-tertiary);
   color: var(--text-primary);
-  margin-top: 1rem;
+  margin-top: clamp(0.75rem, 1.5vw, 1rem);
 }
 
 .section-note strong {
@@ -87,7 +87,7 @@
 .team-intro {
   display: flex;
   justify-content: center;
-  margin-bottom: 60px;
+  margin-bottom: clamp(2.5rem, 5vw, 60px);
 }
 
 .presenter-card {
@@ -98,7 +98,7 @@
   );
   border: 2px solid var(--neon-purple);
   border-radius: 20px;
-  padding: 2.5rem 4rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 5vw, 4rem);
   text-align: center;
   box-shadow: 0 15px 50px rgba(181, 55, 242, 0.3);
   position: relative;
@@ -124,20 +124,20 @@
 
 .presenter-label {
   font-family: var(--font-primary);
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
   font-weight: 600;
   color: var(--neon-purple);
-  letter-spacing: 2px;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.35rem, 0.8vw, 0.5rem);
 }
 
 .presenter-name {
   font-family: var(--font-primary);
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 900;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: clamp(0.35rem, 0.8vw, 0.5rem);
   background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -146,7 +146,7 @@
 
 .presenter-role {
   font-family: var(--font-secondary);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
   color: var(--text-secondary);
   font-style: italic;
 }
@@ -183,6 +183,32 @@
   padding-bottom: 1rem;
   border-bottom: 2px solid rgba(0, 212, 255, 0.2);
   text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.category-icon {
+  width: clamp(50px, 10vw, 70px);
+  height: clamp(50px, 10vw, 70px);
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  transition: all 0.4s ease;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.team-category:hover .category-icon {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+}
+
+.category-text {
+  flex: 1;
 }
 
 /* Team Members */
@@ -211,11 +237,43 @@
   flex-direction: column;
 }
 
+.member-photo-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 8px;
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.team-member:hover .member-photo-wrapper,
+.singer-item:hover .member-photo-wrapper {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
 .member-name {
   font-family: var(--font-primary);
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.member-position {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  color: var(--neon-blue);
+  font-weight: 600;
 }
 
 .member-role {
@@ -326,6 +384,12 @@
     font-size: clamp(1.2rem, 2.5vw, 1.4rem);
   }
   
+  .category-icon {
+    width: clamp(45px, 9vw, 60px);
+    height: clamp(45px, 9vw, 60px);
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  }
+  
   .member-name {
     font-size: 1.05rem;
   }
@@ -378,6 +442,12 @@
   .singer-item {
     padding: 1rem 0.8rem;
     margin-bottom: 0.8rem;
+  }
+  
+  .category-icon {
+    width: clamp(40px, 8vw, 55px);
+    height: clamp(40px, 8vw, 55px);
+    font-size: clamp(1.2rem, 2.3vw, 1.5rem);
   }
   
   .singer-item {

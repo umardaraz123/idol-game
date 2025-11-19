@@ -21,7 +21,8 @@ const fileFilter = (req, file, cb) => {
 
   const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
   const allowedVideoTypes = ['video/mp4', 'video/mov', 'video/avi', 'video/mkv', 'video/webm'];
-  const allowedTypes = [...allowedImageTypes, ...allowedVideoTypes];
+  const allowedAudioTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/wave', 'audio/x-wav', 'audio/ogg', 'audio/webm', 'audio/aac', 'audio/m4a', 'audio/flac'];
+  const allowedTypes = [...allowedImageTypes, ...allowedVideoTypes, ...allowedAudioTypes];
 
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
@@ -134,8 +135,17 @@ router.post('/single',
     try {
       // Determine file type and upload options
       const isVideo = file.mimetype.startsWith('video/');
-      const resourceType = isVideo ? 'video' : 'image';
-      const options = isVideo ? uploadOptions.videos : uploadOptions.images;
+      const isAudio = file.mimetype.startsWith('audio/');
+      let resourceType = 'image';
+      let options = uploadOptions.images;
+
+      if (isAudio) {
+        resourceType = 'video'; // Cloudinary treats audio as video
+        options = uploadOptions.audio;
+      } else if (isVideo) {
+        resourceType = 'video';
+        options = uploadOptions.videos;
+      }
 
       // Upload to Cloudinary
       console.log('Uploading to Cloudinary...', {
@@ -169,7 +179,7 @@ router.post('/single',
         mimeType: file.mimetype,
         size: file.size,
         format: result.format,
-        resourceType: resourceType,
+        resourceType: isAudio ? 'audio' : resourceType, // Set proper type for audio
         dimensions: {
           width: result.width,
           height: result.height
@@ -182,7 +192,7 @@ router.post('/single',
         uploadedBy: req.admin._id,
         isOptimized: true,
         optimizedVersions: result.eager ? result.eager.map(eager => ({
-          size: eager.transformation.includes('thumb') ? 'thumbnail' : 'medium',
+          size: eager.transformation && typeof eager.transformation === 'string' && eager.transformation.includes('thumb') ? 'thumbnail' : 'medium',
           url: eager.secure_url,
           width: eager.width,
           height: eager.height
@@ -304,7 +314,7 @@ router.post('/multiple',
           uploadedBy: req.admin._id,
           isOptimized: true,
           optimizedVersions: result.eager ? result.eager.map(eager => ({
-            size: eager.transformation.includes('thumb') ? 'thumbnail' : 'medium',
+            size: eager.transformation && typeof eager.transformation === 'string' && eager.transformation.includes('thumb') ? 'thumbnail' : 'medium',
             url: eager.secure_url,
             width: eager.width,
             height: eager.height

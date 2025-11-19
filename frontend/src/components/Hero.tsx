@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { publicAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
+import ContactModal from './ContactModal';
 import introVideo from '../assets/videos/intro.mp4';
 import './Hero.css';
 
 interface HeroContent {
   title: string;
   description: string;
+  videoUrl?: string;
+  imageUrl?: string;
 }
 
 const Hero = () => {
@@ -18,8 +21,11 @@ const Hero = () => {
   const { language } = useLanguage();
   const [content, setContent] = useState<HeroContent>({
     title: 'IDOL BE',
-    description: 'Sing Your Dream • Express Your Feelings • Become a Star'
+    description: 'Sing Your Dream • Express Your Feelings • Become a Star',
+    videoUrl: '',
+    imageUrl: ''
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch hero content from backend
   useEffect(() => {
@@ -35,16 +41,26 @@ const Hero = () => {
         console.log('Hero Data:', heroData, 'Language:', language); // Debug
         
         if (heroData && heroData.length > 0) {
-          // Get the first/main hero content
+          // Get the main content for title/description (category: "main")
           const mainContent = heroData.find((item: any) => 
-            item.metadata?.category === 'main' || item.metadata?.isFeatured
+            item.metadata?.category === 'main'
+          ) || heroData.find((item: any) => 
+            item.metadata?.isFeatured && item.metadata?.isActive !== false
           ) || heroData[0];
           
-          console.log('Selected Hero Content:', mainContent); // Debug
+          // Get media content for video/image (any item with videoUrl or imageUrl)
+          const mediaContent = heroData.find((item: any) => 
+            item.videoUrl || item.imageUrl
+          );
+          
+          console.log('Selected Hero Content (Text):', mainContent); // Debug
+          console.log('Selected Hero Content (Media):', mediaContent); // Debug
           
           setContent({
             title: mainContent?.title || 'IDOL BE',
-            description: mainContent?.description || 'Sing Your Dream • Express Your Feelings • Become a Star'
+            description: mainContent?.description || 'Sing Your Dream • Express Your Feelings • Become a Star',
+            videoUrl: mediaContent?.videoUrl || '',
+            imageUrl: mediaContent?.imageUrl || ''
           });
         }
       } catch (error) {
@@ -81,22 +97,43 @@ const Hero = () => {
   }, [content]);
 
   const handleJoinClick = () => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+    setIsModalOpen(true);
   };
 
   return (
     <section className="hero-section">
-      {/* Video Background */}
+      {/* Video or Image Background */}
       <div className="hero-video-container">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="hero-video"
-        >
-          <source src={introVideo} type="video/mp4" />
-        </video>
+        {content.videoUrl ? (
+          <video
+            key={content.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="hero-video"
+          >
+            <source src={`${content.videoUrl}?t=${Date.now()}`} type="video/mp4" />
+          </video>
+        ) : content.imageUrl ? (
+          <img 
+            key={content.imageUrl}
+            src={`${content.imageUrl}?t=${Date.now()}`}
+            alt="Hero Background" 
+            className="hero-video"
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          />
+        ) : (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="hero-video"
+          >
+            <source src={introVideo} type="video/mp4" />
+          </video>
+        )}
         <div className="hero-overlay"></div>
         
         {/* Particle Effect Background */}
@@ -141,6 +178,12 @@ const Hero = () => {
           <div className="wheel"></div>
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </section>
   );
 };

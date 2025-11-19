@@ -60,6 +60,16 @@ const GameHighlightsManagement = () => {
   const [imagePreview, setImagePreview] = useState<string>('');
   const [videoPreview, setVideoPreview] = useState<string>('');
 
+  // Section Header state
+  const [sectionHeader, setSectionHeader] = useState<{
+    _id?: string;
+    title: MultilingualField;
+    subtitle: MultilingualField;
+  }>({
+    title: { ...emptyMultilingualField },
+    subtitle: { ...emptyMultilingualField }
+  });
+
   const [formData, setFormData] = useState<GameHighlight>({
     type: 'game_highlights',
     title: { ...emptyMultilingualField },
@@ -85,6 +95,7 @@ const GameHighlightsManagement = () => {
 
   useEffect(() => {
     fetchHighlights();
+    fetchSectionHeader();
   }, []);
 
   const fetchHighlights = async () => {
@@ -99,6 +110,51 @@ const GameHighlightsManagement = () => {
       setHighlights([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSectionHeader = async () => {
+    try {
+      const response = await adminAPI.getContent({ type: 'game_highlights', key: 'game_highlights_section_header' });
+      const contents = response.data.data.contents || [];
+      if (contents.length > 0) {
+        const header = contents[0];
+        setSectionHeader({
+          _id: header._id,
+          title: header.title,
+          subtitle: header.subtitle || { ...emptyMultilingualField }
+        });
+      }
+    } catch (err: any) {
+      console.log('No section header found, will create on save');
+    }
+  };
+
+  const saveSectionHeader = async () => {
+    try {
+      const headerData = {
+        key: 'game_highlights_section_header',
+        type: 'game_highlights',
+        title: sectionHeader.title,
+        subtitle: sectionHeader.subtitle,
+        description: { ...emptyMultilingualField },
+        metadata: {
+          order: 0,
+          isActive: true,
+          isFeatured: false
+        }
+      };
+
+      if (sectionHeader._id) {
+        await adminAPI.updateContent(sectionHeader._id, headerData);
+      } else {
+        const response = await adminAPI.createContent(headerData);
+        setSectionHeader(prev => ({ ...prev, _id: response.data.data._id }));
+      }
+      setSuccess('Section header updated successfully!');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to save section header');
     }
   };
 
@@ -174,9 +230,22 @@ const GameHighlightsManagement = () => {
       const response = await adminAPI.uploadMedia(mediaFormData);
       console.log('Upload response:', response.data);
       
+      // If uploading image, clear video URL and vice versa
+      if (imageFile) {
+        return {
+          imageUrl: response.data.data.imageUrl || response.data.data.file?.secureUrl || formData.imageUrl,
+          videoUrl: '' // Clear video when uploading image
+        };
+      } else if (videoFile) {
+        return {
+          imageUrl: '', // Clear image when uploading video
+          videoUrl: response.data.data.videoUrl || response.data.data.file?.secureUrl || formData.videoUrl
+        };
+      }
+      
       return {
-        imageUrl: response.data.data.imageUrl || response.data.data.file?.secureUrl || formData.imageUrl,
-        videoUrl: response.data.data.videoUrl || response.data.data.file?.secureUrl || formData.videoUrl
+        imageUrl: response.data.data.imageUrl || formData.imageUrl,
+        videoUrl: response.data.data.videoUrl || formData.videoUrl
       };
     } catch (err: any) {
       console.error('Upload error:', err);
@@ -298,6 +367,65 @@ const GameHighlightsManagement = () => {
 
       {error && <div className="alert alert-error">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
+
+      {/* Section Header Editor */}
+      <div className="content-form-card" style={{ marginBottom: '2rem' }}>
+        <h2>Section Header (Title & Subtitle)</h2>
+        <p style={{ color: '#999', marginBottom: '1.5rem' }}>
+          Edit the main title and subtitle that appear at the top of the Game Highlights section
+        </p>
+
+        <div className="language-tabs">
+          {languages.map(lang => (
+            <button
+              key={lang.code}
+              type="button"
+              className={`lang-tab ${activeLanguage === lang.code ? 'active' : ''}`}
+              onClick={() => setActiveLanguage(lang.code)}
+            >
+              <span className="flag">{lang.flag}</span>
+              <span className="lang-name">{lang.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="form-group">
+          <label>Section Title ({languages.find(l => l.code === activeLanguage)?.name})</label>
+          <input
+            type="text"
+            className="form-control"
+            value={sectionHeader.title[activeLanguage as keyof MultilingualField]}
+            onChange={(e) => setSectionHeader(prev => ({
+              ...prev,
+              title: { ...prev.title, [activeLanguage]: e.target.value }
+            }))}
+            placeholder={`e.g., Experience Idol be (in ${languages.find(l => l.code === activeLanguage)?.name})`}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Section Subtitle ({languages.find(l => l.code === activeLanguage)?.name})</label>
+          <textarea
+            className="form-control"
+            rows={2}
+            value={sectionHeader.subtitle[activeLanguage as keyof MultilingualField]}
+            onChange={(e) => setSectionHeader(prev => ({
+              ...prev,
+              subtitle: { ...prev.subtitle, [activeLanguage]: e.target.value }
+            }))}
+            placeholder={`e.g., Immerse yourself in a world where your voice becomes your power (in ${languages.find(l => l.code === activeLanguage)?.name})`}
+          />
+        </div>
+
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={saveSectionHeader}
+          disabled={loading}
+        >
+          {loading ? 'Saving...' : 'Save Section Header'}
+        </button>
+      </div>
 
       {showForm && (
         <div className="content-form-card">

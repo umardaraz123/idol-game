@@ -1,13 +1,40 @@
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes, FaInfoCircle, FaGamepad, FaUser, FaTrophy } from 'react-icons/fa';
 import logo from '../assets/images/logo.png';
+import { logoAPI } from '../services/api';
 import LanguageSwitcher from './LanguageSwitcher';
 import './Navbar.css';
+
+interface Logo {
+  logoUrl: string;
+  altText: string;
+  width: number;
+  height: number;
+  isActive: boolean;
+}
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [dynamicLogo, setDynamicLogo] = useState<Logo | null>(null);
+
+  // Fetch logo from API
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await logoAPI.get();
+        if (response.data.data?.logo) {
+          setDynamicLogo(response.data.data.logo);
+        }
+      } catch (error) {
+        console.error('Error fetching logo:', error);
+        // Silently fail and use default logo
+      }
+    };
+
+    fetchLogo();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,7 +86,17 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <div className="navbar-logo" onClick={() => scrollToSection('home')}>
-          <img src={logo} alt="Idol Be Logo" className="logo-image" />
+          <img 
+            src={dynamicLogo?.logoUrl || logo} 
+            alt={dynamicLogo?.altText || "Idol Be Logo"} 
+            className="logo-image"
+            style={dynamicLogo ? { 
+              width: `${dynamicLogo.width}px`, 
+              height: `${dynamicLogo.height}px`,
+              maxWidth: '100%',
+              objectFit: 'contain'
+            } : undefined}
+          />
           <div className="logo-text">
             <span className="logo-title">IDOL BE</span>
             <span className="logo-subtitle">Sing Your Dream</span>

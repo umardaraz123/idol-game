@@ -76,6 +76,12 @@ export const adminAPI = {
   }),
   getMedia: (params?: any) => api.get('/upload/files', { params }),
   deleteMedia: (id: string) => api.delete(`/upload/${id}`),
+  
+  // Query operations
+  getQueries: (params?: any) => api.get('/queries', { params }),
+  getQueryById: (id: string) => api.get(`/queries/${id}`),
+  updateQueryStatus: (id: string, status: string) => api.patch(`/queries/${id}`, { status }),
+  deleteQuery: (id: string) => api.delete(`/queries/${id}`),
 };
 
 // Media API
@@ -112,6 +118,62 @@ export const publicAPI = {
   
   getMeta: () =>
     api.get(`/public/meta`),
+  
+  // Query submission
+  submitQuery: (data: { name: string; email: string; message: string }) =>
+    api.post('/queries', { ...data, phone: '' }),
+  
+  // Songs
+  getSongs: (language: string = 'en', params?: any) =>
+    api.get(`/songs/public/all`, { params: { language, ...params } }),
+  
+  incrementSongPlay: (songId: string) =>
+    api.post(`/songs/public/${songId}/play`),
+};
+
+// Songs API (Admin)
+export const songsAPI = {
+  getAll: (params?: any) => api.get('/songs', { params }),
+  
+  getById: (id: string) => api.get(`/songs/${id}`),
+  
+  create: (data: any) => api.post('/songs', data),
+  
+  update: (id: string, data: any) => api.put(`/songs/${id}`, data),
+  
+  delete: (id: string) => api.delete(`/songs/${id}`),
+};
+
+// Footer API
+export const footerAPI = {
+  // Public
+  get: (language: string = 'en') => api.get(`/footer`, { params: { lang: language } }),
+  
+  // Admin
+  getAdmin: () => api.get('/footer/admin'),
+  
+  save: (data: any) => api.post('/footer', data),
+  
+  addSocialIcon: (data: any) => api.post('/footer/social-icon', data),
+  
+  updateSocialIcon: (index: number, data: any) => api.put(`/footer/social-icon/${index}`, data),
+  
+  deleteSocialIcon: (index: number) => api.delete(`/footer/social-icon/${index}`),
+};
+
+// Logo API
+export const logoAPI = {
+  // Public
+  get: () => api.get('/logo'),
+  
+  // Admin
+  getAdmin: () => api.get('/logo/admin'),
+  
+  save: (data: any) => api.post('/logo', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
 };
 
 export default api;

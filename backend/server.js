@@ -16,6 +16,10 @@ import authRoutes from './routes/auth.js';
 import contentRoutes from './routes/content.js';
 import uploadRoutes from './routes/upload.js';
 import publicRoutes from './routes/public.js';
+import queryRoutes from './routes/queries.js';
+import songRoutes from './routes/songs.js';
+import footerRoutes from './routes/footer.js';
+import logoRoutes from './routes/logo.js';
 
 // ES6 module path resolution
 const __filename = fileURLToPath(import.meta.url);
@@ -46,16 +50,23 @@ app.use(helmet({
   }
 }));
 
-// Rate limiting
+// Rate limiting - more lenient for development
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000, // Increased for development
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting for development environment
+    return process.env.NODE_ENV === 'development';
+  }
 });
 
-app.use('/api', limiter);
+// Only apply rate limiting in production
+if (process.env.NODE_ENV === 'production') {
+  app.use('/api', limiter);
+}
 
 // CORS configuration
 const corsOptions = {
@@ -98,6 +109,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/public', publicRoutes);
+app.use('/api/queries', queryRoutes);
+app.use('/api/songs', songRoutes);
+app.use('/api/footer', footerRoutes);
+app.use('/api/logo', logoRoutes);
 
 // Serve admin panel static files
 app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
