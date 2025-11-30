@@ -162,9 +162,8 @@ const Songs = () => {
     );
   }
 
-  if (songs.length === 0) {
-    return null; // Don't show section if no songs
-  }
+  // Show section even if no songs - with a message
+  const hasSongs = songs.length > 0;
 
   // Custom arrow components
   const NextArrow = (props: any) => {
@@ -228,7 +227,8 @@ const Songs = () => {
           </p>
         </div>
 
-        <div className="songs-slider-wrapper" data-aos="fade-up" data-aos-delay="200">
+        {hasSongs ? (
+          <div className="songs-slider-wrapper" data-aos="fade-up" data-aos-delay="200">
           {/* Hidden audio elements outside slider */}
           <div style={{ display: 'none' }}>
             {songs.map((song) => (
@@ -337,7 +337,13 @@ const Songs = () => {
               </div>
             ))}
           </Slider>
-        </div>
+          </div>
+        ) : (
+          <div className="no-songs-message" data-aos="fade-up">
+            <FaMusic size={48} />
+            <p>Songs coming soon! Stay tuned for our amazing music collection.</p>
+          </div>
+        )}
 
         {/* Music Notes Animation */}
         <div className="music-notes-container">

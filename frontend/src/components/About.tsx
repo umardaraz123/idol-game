@@ -44,24 +44,38 @@ const About = () => {
         console.log('About Data:', aboutData, 'Language:', language); // Debug
         
         if (aboutData && aboutData.length > 0) {
-          // Get main content for title/description
+          // Get main content for title/description - specifically look for "aboutcontent" key or "What is Idol be" title
+          // Exclude any content related to "who_is_ana" or "Who is Ana"
           const mainContent = aboutData.find((item: any) => 
-            item.metadata?.category === 'main' || item.metadata?.isFeatured
-          ) || aboutData[0];
+            (item.key === 'aboutcontent' || item.title?.toLowerCase().includes('idol be')) &&
+            item.metadata?.category === 'main' &&
+            !item.key?.includes('who_is_ana') &&
+            !item.title?.toLowerCase().includes('ana')
+          ) || aboutData.find((item: any) => 
+            item.metadata?.category === 'main' &&
+            !item.key?.includes('who_is_ana') &&
+            !item.title?.toLowerCase().includes('ana')
+          );
           
-          // Get feature items
+          // Get feature items - exclude who_is_ana related content
           const featureItems = aboutData
-            .filter((item: any) => item.metadata?.category === 'feature' && item.metadata?.isActive)
-            .sort((a: any, b: any) => a.metadata.order - b.metadata.order);
+            .filter((item: any) => 
+              item.metadata?.category === 'feature' && 
+              item.metadata?.isActive &&
+              !item.key?.includes('who_is_ana')
+            )
+            .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0));
           
           console.log('Selected About Content:', mainContent); // Debug
           console.log('About Features:', featureItems); // Debug
           
-          setContent({
-            title: mainContent?.title || 'What is Idol be?',
-            subtitle: mainContent?.subtitle || 'About the Game',
-            description: mainContent?.description || 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
-          });
+          if (mainContent) {
+            setContent({
+              title: mainContent.title || 'What is Idol be?',
+              subtitle: mainContent.subtitle || 'About the Game',
+              description: mainContent.description || 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
+            });
+          }
           
           setFeatures(featureItems);
         }

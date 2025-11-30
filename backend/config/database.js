@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import dns from 'dns';
+
+// Use Google DNS servers to bypass local DNS issues with MongoDB Atlas SRV lookup
+dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 
 const connectDB = async () => {
   try {
@@ -12,6 +16,8 @@ const connectDB = async () => {
       socketTimeoutMS: 45000, // 45 seconds timeout for socket operations
       maxPoolSize: 10,
       minPoolSize: 2,
+      family: 4, // Force IPv4 - helps with DNS issues
+      retryWrites: true,
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
@@ -40,7 +46,15 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error);
-    process.exit(1);
+    console.log('');
+    console.log('🔧 TROUBLESHOOTING TIPS:');
+    console.log('   1. Check if your IP is whitelisted in MongoDB Atlas (Network Access)');
+    console.log('   2. Try using a mobile hotspot - your ISP may be blocking MongoDB DNS');
+    console.log('   3. Get the standard connection string (not mongodb+srv://) from Atlas');
+    console.log('   4. Change your DNS to Google (8.8.8.8) in Windows Network Settings');
+    console.log('');
+    // Don't exit - allow server to run without DB for testing
+    // process.exit(1);
   }
 };
 

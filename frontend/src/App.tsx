@@ -46,9 +46,9 @@ const MainSite = () => {
       <section id="home">
         <Hero />
       </section>
-      <section id="songs">
+      <div id="songs">
         <Songs />
-      </section>
+      </div>
       <section id="about">
         <About />
       </section>
