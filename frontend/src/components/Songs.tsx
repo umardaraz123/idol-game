@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import Slider from 'react-slick';
 import { publicAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
-import { FaPlay, FaPause, FaMusic, FaClock, FaMicrophone, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { FaPlay, FaPause, FaMusic, FaClock, FaMicrophone } from 'react-icons/fa';
 import './Songs.css';
 
 interface Song {
@@ -28,114 +25,70 @@ interface Song {
 
 const Songs = () => {
   const { language } = useLanguage();
-  const [songs, setSongs] = useState<Song[]>([]);
+  const [song, setSong] = useState<Song | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    fetchSongs();
+    fetchSong();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 
-  const fetchSongs = async () => {
+  const fetchSong = async () => {
     try {
       const response = await publicAPI.getSongs(language);
       console.log('Songs API response:', response.data);
       const songsData = response.data.data.songs || [];
       console.log('Songs data:', songsData);
-      setSongs(songsData);
+      // Get only the first song
+      setSong(songsData.length > 0 ? songsData[0] : null);
     } catch (error) {
-      console.error('Failed to fetch songs:', error);
-      setSongs([]);
+      console.error('Failed to fetch song:', error);
+      setSong(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const handlePlayPause = async (songId: string) => {
-    const audio = audioRefs.current[songId];
+  const handlePlayPause = async () => {
+    const audio = audioRef.current;
     
-    console.log('Play/Pause clicked for song:', songId);
-    console.log('Audio element:', audio);
-    console.log('Audio URL:', audio?.src);
-    
-    if (!audio) {
-      console.error('Audio element not found for song:', songId);
-      return;
-    }
+    if (!audio || !song) return;
 
-    // Pause all other songs
-    Object.entries(audioRefs.current).forEach(([id, audioEl]) => {
-      if (id !== songId && !audioEl.paused) {
-        audioEl.pause();
-        audioEl.currentTime = 0;
-      }
-    });
-
-    if (currentPlaying === songId) {
-      // Pause current song
+    if (isPlaying) {
       audio.pause();
-      setCurrentPlaying(null);
-      setCurrentTime(0);
-      setDuration(0);
+      setIsPlaying(false);
     } else {
-      // Reset time states for new song
-      setCurrentTime(0);
-      setDuration(audio.duration || 0);
-      
-      // Play new song
       try {
-        console.log('Attempting to play audio...');
-        audio.currentTime = 0; // Reset to beginning
         await audio.play();
-        console.log('Audio playing successfully');
-        setCurrentPlaying(songId);
-        
+        setIsPlaying(true);
         // Increment play count
-        await publicAPI.incrementSongPlay(songId);
+        await publicAPI.incrementSongPlay(song._id);
       } catch (error) {
         console.error('Error playing audio:', error);
-        setCurrentPlaying(null);
+        setIsPlaying(false);
       }
     }
   };
 
-  const handleTimeUpdate = (songId: string) => {
-    const audio = audioRefs.current[songId];
-    if (audio && currentPlaying === songId) {
+  const handleTimeUpdate = () => {
+    const audio = audioRef.current;
+    if (audio) {
       setCurrentTime(audio.currentTime);
       setDuration(audio.duration);
     }
   };
 
-  const handleEnded = (songId: string) => {
-    if (currentPlaying === songId) {
-      setCurrentPlaying(null);
-      setCurrentTime(0);
-    }
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
   };
 
-  // Add effect to monitor playing state
-  useEffect(() => {
-    if (currentPlaying) {
-      const audio = audioRefs.current[currentPlaying];
-      if (audio) {
-        const updateTime = () => {
-          setCurrentTime(audio.currentTime);
-          setDuration(audio.duration || 0);
-        };
-        
-        const interval = setInterval(updateTime, 100);
-        return () => clearInterval(interval);
-      }
-    }
-  }, [currentPlaying]);
-
-  const handleSeek = (songId: string, value: number) => {
-    const audio = audioRefs.current[songId];
+  const handleSeek = (value: number) => {
+    const audio = audioRef.current;
     if (audio) {
       audio.currentTime = value;
       setCurrentTime(value);
@@ -155,61 +108,12 @@ const Songs = () => {
         <div className="container">
           <div className="loading-state">
             <i className="fas fa-spinner fa-spin"></i>
-            <p>Loading songs...</p>
+            <p>Loading song...</p>
           </div>
         </div>
       </section>
     );
   }
-
-  // Show section even if no songs - with a message
-  const hasSongs = songs.length > 0;
-
-  // Custom arrow components
-  const NextArrow = (props: any) => {
-    const { onClick } = props;
-    return (
-      <button 
-        className="slick-arrow slick-next" 
-        onClick={onClick}
-        disabled={currentPlaying !== null}
-        style={{ opacity: currentPlaying !== null ? 0.3 : 1, cursor: currentPlaying !== null ? 'not-allowed' : 'pointer' }}
-      >
-        <FaChevronRight />
-      </button>
-    );
-  };
-
-  const PrevArrow = (props: any) => {
-    const { onClick } = props;
-    return (
-      <button 
-        className="slick-arrow slick-prev" 
-        onClick={onClick}
-        disabled={currentPlaying !== null}
-        style={{ opacity: currentPlaying !== null ? 0.3 : 1, cursor: currentPlaying !== null ? 'not-allowed' : 'pointer' }}
-      >
-        <FaChevronLeft />
-      </button>
-    );
-  };
-
-  // Slider settings
-  const sliderSettings = {
-    dots: true,
-    infinite: songs.length > 1 && currentPlaying === null,
-    speed: 600,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: currentPlaying === null,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    centerMode: false,
-    swipe: currentPlaying === null,
-    draggable: currentPlaying === null,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-  };
 
   return (
     <section className="songs-section">
@@ -223,45 +127,28 @@ const Songs = () => {
           </h2>
           <div className="title-underline"></div>
           <p className="section-subtitle">
-            Listen to our collection of completely original pop songs
+            Listen to our completely original pop song
           </p>
         </div>
 
-        {hasSongs ? (
-          <div className="songs-slider-wrapper" data-aos="fade-up" data-aos-delay="200">
-          {/* Hidden audio elements outside slider */}
-          <div style={{ display: 'none' }}>
-            {songs.map((song) => (
-              <audio
-                key={song._id}
-                ref={(el) => {
-                  if (el) {
-                    audioRefs.current[song._id] = el;
-                    console.log('Audio ref registered:', song._id, el);
-                  }
-                }}
-                src={song.audioUrl}
-                onTimeUpdate={() => handleTimeUpdate(song._id)}
-                onEnded={() => handleEnded(song._id)}
-                onLoadedMetadata={() => {
-                  const audio = audioRefs.current[song._id];
-                  if (audio) {
-                    setDuration(audio.duration);
-                  }
-                }}
-                onError={(e) => {
-                  console.error('Audio load error for song:', song.title, song.audioUrl, e);
-                }}
-                preload="metadata"
-                crossOrigin="anonymous"
-              />
-            ))}
-          </div>
+        {song ? (
+          <div className="song-single-wrapper" data-aos="fade-up" data-aos-delay="200">
+            {/* Hidden audio element */}
+            <audio
+              ref={audioRef}
+              src={song.audioUrl}
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={handleEnded}
+              onLoadedMetadata={() => {
+                if (audioRef.current) {
+                  setDuration(audioRef.current.duration);
+                }
+              }}
+              preload="metadata"
+              crossOrigin="anonymous"
+            />
           
-          <Slider {...sliderSettings}>
-            {songs.map((song) => (
-              <div key={song._id} className="song-card-wrapper">
-                <div className="song-card">
+            <div className="song-card">
               {/* Cover Image */}
               <div className="song-cover">
                 {song.coverImage?.url ? (
@@ -273,11 +160,11 @@ const Songs = () => {
                 )}
                 <div className="cover-overlay">
                   <button
-                    className={`play-button ${currentPlaying === song._id ? 'playing' : ''}`}
-                    onClick={() => handlePlayPause(song._id)}
+                    className={`play-button ${isPlaying ? 'playing' : ''}`}
+                    onClick={handlePlayPause}
                   >
                     <span className="play-icon-inner">
-                      {currentPlaying === song._id ? <FaPause /> : <FaPlay />}
+                      {isPlaying ? <FaPause /> : <FaPlay />}
                     </span>
                   </button>
                 </div>
@@ -314,8 +201,8 @@ const Songs = () => {
                   )}
                 </div>
 
-                {/* Progress Bar (only for currently playing song) */}
-                {currentPlaying === song._id && (
+                {/* Progress Bar */}
+                {isPlaying && (
                   <div className="song-progress">
                     <div className="progress-time">{formatTime(currentTime)}</div>
                     <input
@@ -323,44 +210,21 @@ const Songs = () => {
                       min="0"
                       max={duration || 0}
                       value={currentTime}
-                      onChange={(e) => handleSeek(song._id, parseFloat(e.target.value))}
+                      onChange={(e) => handleSeek(parseFloat(e.target.value))}
                       className="progress-bar"
                     />
                     <div className="progress-time">{formatTime(duration)}</div>
                   </div>
                 )}
               </div>
-
-                  {/* Animated Border */}
-                  <div className="song-border"></div>
-                </div>
-              </div>
-            ))}
-          </Slider>
+            </div>
           </div>
         ) : (
           <div className="no-songs-message" data-aos="fade-up">
             <FaMusic size={48} />
-            <p>Songs coming soon! Stay tuned for our amazing music collection.</p>
+            <p>Song coming soon! Stay tuned for our amazing music.</p>
           </div>
         )}
-
-        {/* Music Notes Animation */}
-        <div className="music-notes-container">
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={i}
-              className="music-note-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${5 + Math.random() * 5}s`,
-              }}
-            >
-              ♪
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

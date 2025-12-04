@@ -37,52 +37,19 @@
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-}
-
-.navbar-logo:hover {
-  transform: scale(1.02);
+  text-decoration: none;
 }
 
 .logo-image {
-  height: 44px;
+  height: 75px;
   width: auto;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 2px 8px rgba(232, 164, 184, 0.25));
 }
 
-.navbar-logo:hover .logo-image {
-  transform: scale(1.05);
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.logo-title {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #ff6b9d 0%, #c44dc9 50%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.01em;
-  line-height: 1;
-}
-
-.logo-subtitle {
-  font-family: var(--font-secondary);
-  font-size: 0.65rem;
-  color: #d946a8;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
+/* Logo text styles removed */
 
 /* Desktop Menu - Premium Glass Pills */
 .navbar-menu {
@@ -125,21 +92,8 @@
   box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
 }
 
-.nav-icon {
-  font-size: 1rem;
-  transition: transform 0.3s ease;
-}
-
-.nav-item:hover .nav-icon {
-  transform: scale(1.15);
-}
-
 .nav-label {
   font-size: 0.88rem;
-}
-
-.nav-indicator {
-  display: none;
 }
 
 /* CTA Button */
@@ -239,16 +193,6 @@
   box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
 }
 
-.mobile-nav-item .nav-icon {
-  font-size: 1.2rem;
-  color: #d946a8;
-}
-
-.mobile-nav-item:hover .nav-icon,
-.mobile-nav-item.active .nav-icon {
-  color: white;
-}
-
 /* Responsive */
 @media (max-width: 991px) {
   .navbar-menu,
@@ -271,11 +215,7 @@
   }
   
   .logo-image {
-    height: 38px;
-  }
-  
-  .logo-title {
-    font-size: 1.15rem;
+    height: 60px;
   }
   
   .mobile-menu {
@@ -289,15 +229,7 @@
   }
   
   .logo-image {
-    height: 34px;
-  }
-  
-  .logo-title {
-    font-size: 1.05rem;
-  }
-  
-  .logo-subtitle {
-    display: none;
+    height: 50px;
   }
 }
 

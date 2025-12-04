@@ -94,7 +94,7 @@ const About = () => {
       <div className="about-bg-particles"></div>
       <div className="container">
         <div className="row align-items-center g-5">
-          {/* Left Column - Image/Video */}
+          {/* commented by umar - Left Column - Image/Video
           <div className="col-lg-6 col-md-12" data-aos="fade-right" data-aos-duration="1000">
             <div className="about-media-wrapper">
               <div className="media-frame">
@@ -118,6 +118,7 @@ const About = () => {
               </div>
             </div>
           </div>
+          */}
 
           {/* Right Column - Content */}
           <div className="col-lg-6 col-md-12" data-aos="fade-left" data-aos-duration="1000">

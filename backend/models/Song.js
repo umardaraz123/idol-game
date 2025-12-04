@@ -182,7 +182,7 @@ songSchema.statics.getByLanguage = async function(language = 'en', options = {})
   }
   
   const songs = await this.find(query)
-    .sort({ 'metadata.order': 1, createdAt: -1 })
+    .sort({ updatedAt: -1, createdAt: -1 })
     .populate('createdBy', 'name email')
     .populate('lastModifiedBy', 'name email');
   

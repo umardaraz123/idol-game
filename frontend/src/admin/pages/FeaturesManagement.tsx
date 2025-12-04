@@ -237,7 +237,24 @@ const FeaturesManagement = () => {
       }
 
       await fetchFeatures();
-      resetForm();
+      
+      // Clear all form fields after successful add/update
+      setFormData({
+        type: 'features',
+        title: { ...emptyMultilingualField },
+        description: { ...emptyMultilingualField },
+        imageUrl: '',
+        metadata: {
+          order: 0,
+          isActive: true,
+          isFeatured: false
+        }
+      });
+      setEditingId(null);
+      setShowForm(false);
+      setActiveLanguage('en');
+      setIconFile(null);
+      setIconPreview('');
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Failed to save feature');
     } finally {

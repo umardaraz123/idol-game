@@ -65,7 +65,11 @@ const Footer = () => {
         <div className="footer-content">
           {/* Left Column */}
           <div className="footer-brand">
-            {footerData.leftColumn.title && <h3 className="footer-logo">{footerData.leftColumn.title}</h3>}
+            {footerData.leftColumn.title && (
+              <a href="#about" className="footer-logo-link">
+                <h3 className="footer-logo">{footerData.leftColumn.title}</h3>
+              </a>
+            )}
             {footerData.leftColumn.subtitle && <p className="footer-tagline">{footerData.leftColumn.subtitle}</p>}
             {footerData.leftColumn.description && <p className="footer-description">{footerData.leftColumn.description}</p>}
           </div>
@@ -76,7 +80,7 @@ const Footer = () => {
             {footerData.centerColumn.subtitle && <p className="footer-tagline">{footerData.centerColumn.subtitle}</p>}
             {footerData.centerColumn.description && <p className="contact-text">{footerData.centerColumn.description}</p>}
             
-            {/* Social Icons */}
+            {/* Social Icons - Commented out
             {footerData.socialIcons.length > 0 && (
               <div className="social-icons">
                 {footerData.socialIcons
@@ -97,6 +101,7 @@ const Footer = () => {
                 }
               </div>
             )}
+            */}
           </div>
 
           {/* Right Column */}

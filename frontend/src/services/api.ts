@@ -125,7 +125,7 @@ export const publicAPI = {
   
   // Songs
   getSongs: (language: string = 'en', params?: any) =>
-    api.get(`/songs/public/all`, { params: { language, ...params } }),
+    api.get(`/songs/public/all`, { params: { language, ...params, _t: Date.now() } }),
   
   incrementSongPlay: (songId: string) =>
     api.post(`/songs/public/${songId}/play`),

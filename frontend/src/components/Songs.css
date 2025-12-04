@@ -80,8 +80,8 @@
 
 .songs-section .section-subtitle {
   font-family: var(--font-secondary);
-  font-size: 1.15rem;
-  color: #4a4a68;
+  font-size: 1.3rem;
+  color: #2d2d42;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.75;
@@ -95,6 +95,19 @@
   position: relative;
   max-width: 100%;
   overflow: hidden;
+}
+
+/* Single Song Wrapper */
+.song-single-wrapper {
+  margin-top: 40px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.song-single-wrapper .song-card {
+  max-width: 960px;
+  width: 100%;
 }
 
 /* Slider Card Wrapper */
@@ -318,9 +331,9 @@
 }
 
 .song-description {
-  color: #4A3A4A;
+  color: #2d1d2d;
   font-family: var(--font-secondary);
-  font-size: 1rem;
+  font-size: 1.15rem;
   line-height: 1.75;
   margin-bottom: 18px;
   max-height: 85px;

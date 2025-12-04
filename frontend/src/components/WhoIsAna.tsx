@@ -104,26 +104,6 @@ There will be an audition in my city soon, but I feel like I'm not ready. I need
               
             </div>
           </div>
-
-          {/* Right Column - Image/Video */}
-          <div className="col-lg-6 col-md-12" data-aos="fade-left" data-aos-duration="1000">
-            <div className="ana-media-wrapper">
-              <div className="ana-image-frame">
-                <div className="ana-placeholder">
-                  <div className="ana-placeholder-icon">🎤</div>
-                  <div className="ana-placeholder-text">Ana</div>
-                </div>
-                <div className="image-glow-effect"></div>
-              </div>
-              
-              {/* Decorative Elements */}
-              <div className="decorative-circle circle-1"></div>
-              <div className="decorative-circle circle-2"></div>
-              <div className="music-note note-1">♪</div>
-              <div className="music-note note-2">♫</div>
-              <div className="music-note note-3">♪</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

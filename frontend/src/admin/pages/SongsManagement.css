@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .page-header h1 {
@@ -21,66 +21,72 @@
   font-size: 1.1rem;
 }
 
-/* Songs Grid */
-.songs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.songs-grid .song-card {
-  display: block !important;
-  flex-direction: column !important;
-  height: auto !important;
-  max-width: none !important;
-}
-
-.songs-management .song-card {
-  background: linear-gradient(135deg, rgba(26, 10, 46, 0.8), rgba(10, 10, 10, 0.9));
+/* Current Song Preview */
+.current-song-preview {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(26, 10, 46, 0.5);
   border-radius: 15px;
-  overflow: hidden;
   border: 1px solid rgba(181, 55, 242, 0.3);
-  transition: all 0.3s ease;
-  display: block;
-  height: auto;
-  max-width: none;
-  margin: 0;
-  flex-direction: column;
 }
 
-.songs-management .song-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(181, 55, 242, 0.6);
-  box-shadow: 0 10px 30px rgba(181, 55, 242, 0.3);
+.current-song-preview > h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  color: #b537f2;
+  margin-bottom: 1rem;
 }
 
-.songs-management .song-cover {
-  position: relative;
-  width: 100%;
-  height: 200px;
+.current-song-preview .song-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, rgba(26, 10, 46, 0.8), rgba(10, 10, 10, 0.9));
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(181, 55, 242, 0.2);
+}
+
+.current-song-preview .song-cover {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 10px;
   overflow: hidden;
-  background: linear-gradient(135deg, #1a0a2e, #0a0a0a);
-  display: block;
-  flex-shrink: 1;
-  align-items: stretch;
-  justify-content: stretch;
 }
 
-.songs-management .song-cover img {
-  position: static;
+.current-song-preview .song-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.songs-management .default-cover {
-  position: static;
+.current-song-preview .default-cover {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(181, 55, 242, 0.2), rgba(0, 212, 255, 0.2));
+}
+
+.current-song-preview .song-info {
+  flex: 1;
+}
+
+.current-song-preview .song-info h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+/* Inline Form */
+.song-form-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .default-cover i {
@@ -252,6 +258,13 @@
   font-size: 1.2rem;
   color: #b537f2;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-section h3 svg {
+  color: #b537f2;
 }
 
 /* Upload Area */
@@ -281,7 +294,8 @@
   display: none;
 }
 
-.upload-label i {
+.upload-label i,
+.upload-label svg {
   font-size: 3rem;
   color: #b537f2;
   margin-bottom: 1rem;
@@ -298,6 +312,7 @@
   font-size: 0.9rem;
 }
 
+/* Uploaded file styles */
 .uploaded-file,
 .uploaded-image {
   display: flex;
@@ -308,16 +323,22 @@
   background: rgba(0, 212, 255, 0.1);
   border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 10px;
+  width: 100%;
 }
 
-.uploaded-file i {
-  font-size: 3rem;
+.uploaded-file svg,
+.uploaded-image svg {
   color: #00d4ff;
 }
 
 .uploaded-file span {
   color: #00d4ff;
   font-weight: 600;
+}
+
+.uploaded-file audio {
+  width: 100%;
+  margin-top: 10px;
 }
 
 .uploaded-image img {
@@ -328,18 +349,20 @@
 }
 
 .btn-remove {
-  padding: 0.5rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   background: rgba(255, 59, 59, 0.2);
-  border: 1px solid rgba(255, 59, 59, 0.4);
+  border: 1px solid rgba(255, 59, 59, 0.5);
   border-radius: 8px;
   color: #ff3b3b;
   font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
 .btn-remove:hover {
-  background: rgba(255, 59, 59, 0.3);
+  background: rgba(255, 59, 59, 0.4);
   border-color: #ff3b3b;
 }
 

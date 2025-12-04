@@ -81,25 +81,27 @@ const ArtistTeam = () => {
     fetchData();
   }, [language]);
 
-  const getCategoryTitle = (category: string) => {
-    const titles: Record<string, { icon: string; text: string }> = {
-      'game_design': { icon: '🎮', text: 'Game Design' },
-      'programming': { icon: '💻', text: 'Programming' },
-      'music': { icon: '🎵', text: 'Music' },
-      'singers': { icon: '🎤', text: 'Singers' },
-      'other': { icon: '✨', text: 'Other Contributors' }
-    };
-    return titles[category] || { icon: '✨', text: 'Team' };
-  };
+  // getCategoryTitle - commented by umar (not used, members displayed directly)
+  // const getCategoryTitle = (category: string) => {
+  //   const titles: Record<string, { icon: string; text: string }> = {
+  //     'game_design': { icon: '🎮', text: 'Game Design' },
+  //     'programming': { icon: '💻', text: 'Programming' },
+  //     'music': { icon: '🎵', text: 'Music' },
+  //     'singers': { icon: '🎤', text: 'Singers' },
+  //     'other': { icon: '', text: '' }
+  //   };
+  //   return titles[category] || { icon: '', text: '' };
+  // };
 
-  const groupedMembers = members.reduce((acc, member) => {
-    const category = member.metadata.category || 'other';
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(member);
-    return acc;
-  }, {} as Record<string, TeamMember[]>);
+  // groupedMembers - commented by umar (members displayed directly without grouping)
+  // const groupedMembers = members.reduce((acc, member) => {
+  //   const category = member.category || 'other';
+  //   if (!acc[category]) {
+  //     acc[category] = [];
+  //   }
+  //   acc[category].push(member);
+  //   return acc;
+  // }, {} as Record<string, TeamMember[]>);
 
   if (loading) {
     return (
@@ -137,51 +139,35 @@ const ArtistTeam = () => {
        
 
         <div className="team-grid">
-          {Object.entries(groupedMembers).map(([category, categoryMembers], catIndex) => {
-            const categoryInfo = getCategoryTitle(category);
-            return (
-              <div 
-                key={category} 
-                className="team-category" 
-                data-aos="fade-up" 
-                data-aos-delay={200 + (catIndex * 50)}
-              >
-                <h3 className="category-title">
-                  <div className="category-icon">{categoryInfo.icon}</div>
-                  <span className="category-text">{categoryInfo.text}</span>
-                </h3>
-                <div className={category === 'singers' ? 'team-members-list' : ''}>
-                  {categoryMembers.map((member) => (
-                    <div 
-                      key={member._id} 
-                      className={category === 'singers' ? 'singer-item' : 'team-member'}
-                    >
-                      {member.imageUrl && (
-                        <div className="member-photo-wrapper">
-                          <img 
-                            src={member.imageUrl} 
-                            alt={member.title} 
-                            className="member-photo"
-                          />
-                        </div>
-                      )}
-                      <span className="member-name">
-                        {member.title}
-                      </span>
-                      {member.subtitle && (
-                        <span className="member-position">
-                          {member.subtitle}
-                        </span>
-                      )}
-                      <span className="member-role">
-                        {member.description}
-                      </span>
-                    </div>
-                  ))}
+          {members.map((member, index) => (
+            <div 
+              key={member._id} 
+              className="team-member"
+              data-aos="fade-up" 
+              data-aos-delay={200 + (index * 50)}
+            >
+              {member.imageUrl && (
+                <div className="member-photo-wrapper">
+                  <img 
+                    src={member.imageUrl} 
+                    alt={member.title} 
+                    className="member-photo"
+                  />
                 </div>
-              </div>
-            );
-          })}
+              )}
+              <span className="member-name">
+                {member.title}
+              </span>
+              {member.subtitle && (
+                <span className="member-position">
+                  {member.subtitle}
+                </span>
+              )}
+              <span className="member-role">
+                {member.description}
+              </span>
+            </div>
+          ))}
         </div>
 
        

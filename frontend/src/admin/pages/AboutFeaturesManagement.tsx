@@ -160,7 +160,7 @@ const AboutFeaturesManagement = () => {
         setSuccess('About feature created successfully!');
       }
 
-      // Reset form
+      // Reset form - clear all fields
       setFormData({
         key: '',
         type: 'about_section',
@@ -175,6 +175,12 @@ const AboutFeaturesManagement = () => {
       });
       setImageFile(null);
       setEditingId(null);
+      
+      // Clear file input element
+      const fileInput = document.getElementById('image') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
 
       fetchFeatures();
     } catch (err: any) {

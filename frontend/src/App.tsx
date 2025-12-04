@@ -11,7 +11,7 @@ import About from './components/About';
 import Songs from './components/Songs';
 import GameHighlights from './components/GameHighlights';
 import WhoIsAna from './components/WhoIsAna';
-import Features from './components/Features';
+// import Features from './components/Features'; // Commented out - Why Choose Idol Be section
 import ArtistTeam from './components/ArtistTeam';
 import Footer from './components/Footer';
 import AdminLogin from './admin/pages/AdminLogin';
@@ -43,24 +43,30 @@ const MainSite = () => {
   return (
     <div className="App">
       <Navbar />
+      {/* 1. Image */}
       <section id="home">
         <Hero />
       </section>
-      <div id="songs">
-        <Songs />
-      </div>
+      {/* 2. What is Idol be */}
       <section id="about">
         <About />
       </section>
-      <section id="highlights">
-        <GameHighlights />
-      </section>
+      {/* 3. Who is Ana */}
       <section id="ana">
         <WhoIsAna />
       </section>
-      <section id="features">
+      {/* 4. Example song */}
+      <div id="songs">
+        <Songs />
+      </div>
+      {/* 5. Join to the journey - Why Choose Idol Be commented out for now */}
+      {/* <section id="features">
         <Features />
+      </section> */}
+      <section id="highlights">
+        <GameHighlights />
       </section>
+      {/* 6. Artistic team */}
       <section id="team">
         <ArtistTeam />
       </section>
