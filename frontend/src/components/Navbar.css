@@ -153,13 +153,14 @@
   background: linear-gradient(180deg, rgba(255, 245, 248, 0.98) 0%, rgba(255, 235, 242, 0.98) 50%, rgba(255, 225, 238, 0.98) 100%);
   backdrop-filter: blur(20px);
   max-height: 0;
-  /* overflow: hidden; */
+  overflow: hidden;
   transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
 }
 
 .mobile-menu-open {
   max-height: 500px;
+  overflow-y: auto;
 }
 
 .mobile-menu-items {
