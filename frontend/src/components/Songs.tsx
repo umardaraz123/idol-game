@@ -23,6 +23,45 @@ interface Song {
   };
 }
 
+// Translations for the Songs section
+const songsTranslations: Record<string, { title: string; titleHighlight: string; subtitle: string }> = {
+  en: {
+    title: 'Original',
+    titleHighlight: 'Songs',
+    subtitle: 'Listen to our completely original pop song'
+  },
+  hi: {
+    title: 'मौलिक',
+    titleHighlight: 'गाने',
+    subtitle: 'हमारा पूरी तरह से मौलिक पॉप गाना सुनें'
+  },
+  ru: {
+    title: 'Оригинальные',
+    titleHighlight: 'Песни',
+    subtitle: 'Послушайте нашу полностью оригинальную поп-песню'
+  },
+  ko: {
+    title: '오리지널',
+    titleHighlight: '노래',
+    subtitle: '완전히 오리지널 팝송을 들어보세요'
+  },
+  zh: {
+    title: '原创',
+    titleHighlight: '歌曲',
+    subtitle: '聆听我们完全原创的流行歌曲'
+  },
+  ja: {
+    title: 'オリジナル',
+    titleHighlight: 'ソング',
+    subtitle: '完全オリジナルのポップソングをお聴きください'
+  },
+  es: {
+    title: 'Canciones',
+    titleHighlight: 'Originales',
+    subtitle: 'Escucha nuestra canción pop completamente original'
+  }
+};
+
 const Songs = () => {
   const { language } = useLanguage();
   const [song, setSong] = useState<Song | null>(null);
@@ -31,6 +70,9 @@ const Songs = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Get translations for current language
+  const t = songsTranslations[language] || songsTranslations.en;
 
   useEffect(() => {
     fetchSong();
@@ -123,11 +165,11 @@ const Songs = () => {
         <div className="section-header" data-aos="fade-up">
           {/* <div className="section-tag">MUSIC LIBRARY</div> */}
           <h2 className="section-title">
-            Original <span className="text-glow-purple">Songs</span>
+            {t.title} <span className="text-glow-purple">{t.titleHighlight}</span>
           </h2>
           <div className="title-underline"></div>
           <p className="section-subtitle">
-            Listen to our completely original pop song
+            {t.subtitle}
           </p>
         </div>
 
