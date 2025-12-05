@@ -155,16 +155,11 @@
   border: 1px solid rgba(201, 189, 232, 0.2);
   border-radius: var(--radius-xl);
   padding: 32px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .team-category:hover {
-  transform: translateY(-8px);
   background: rgba(255, 255, 255, 1);
   border-color: rgba(248, 180, 196, 0.35);
-  box-shadow: 
-    0 20px 60px rgba(201, 189, 232, 0.15),
-    0 8px 32px rgba(248, 180, 196, 0.1);
 }
 
 .category-title {
@@ -189,14 +184,11 @@
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  transition: all 0.4s ease;
   box-shadow: 0 4px 16px rgba(201, 189, 232, 0.25);
 }
 
 .team-category:hover .category-icon {
-  transform: scale(1.1) rotate(5deg);
   background: linear-gradient(135deg, #f8b4c4 0%, #d4a5c9 100%);
-  box-shadow: 0 4px 16px rgba(248, 180, 196, 0.35);
 }
 
 .category-text {
@@ -215,19 +207,14 @@
   border: 1px solid rgba(201, 189, 232, 0.2);
   border-radius: var(--radius-xl);
   border-left: 3px solid #c9bde8;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(201, 189, 232, 0.1);
 }
 
 .team-member:hover,
 .singer-item:hover {
-  transform: translateY(-8px);
   background: rgba(255, 255, 255, 1);
   border-left-color: #f8b4c4;
   border-color: rgba(248, 180, 196, 0.35);
-  box-shadow: 
-    0 20px 60px rgba(201, 189, 232, 0.15),
-    0 8px 32px rgba(248, 180, 196, 0.1);
 }
 
 .team-members-list {
@@ -242,12 +229,10 @@
   padding: 2px;
   background: linear-gradient(135deg, #c9bde8 0%, #f8b4c4 100%);
   margin-bottom: 10px;
-  transition: all 0.4s ease;
   box-shadow: 0 4px 16px rgba(201, 189, 232, 0.25);
 }
 
 .team-member:hover .member-photo-wrapper {
-  transform: scale(1.08);
   box-shadow: 0 6px 24px rgba(248, 180, 196, 0.35);
 }
 

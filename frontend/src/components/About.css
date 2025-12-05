@@ -229,15 +229,12 @@
   backdrop-filter: blur(12px);
   border-radius: var(--radius-lg);
   border: 2px solid rgba(248, 180, 196, 0.15);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(248, 180, 196, 0.08);
 }
 
 .feature-item:hover {
-  transform: translateY(-8px);
   background: rgba(255, 255, 255, 0.98);
   border-color: rgba(212, 165, 201, 0.3);
-  box-shadow: 0 12px 35px rgba(248, 180, 196, 0.2);
 }
 
 .feature-icon {

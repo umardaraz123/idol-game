@@ -13,6 +13,17 @@ interface HeroContent {
   imageUrl?: string;
 }
 
+// Translations for "Join to the journey" button
+const joinButtonTranslations: Record<string, string> = {
+  en: 'Join to the journey',
+  hi: 'यात्रा में शामिल हों',
+  ru: 'Присоединяйтесь к путешествию',
+  ko: '여정에 참여하세요',
+  zh: '加入旅程',
+  ja: '旅に参加しよう',
+  es: 'Únete al viaje'
+};
+
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -167,7 +178,7 @@ const Hero = () => {
             className="btn-neon"
             onClick={handleJoinClick}
           >
-            Join the Journey
+            {joinButtonTranslations[language] || joinButtonTranslations.en}
           </button>
         </div>
       </div>

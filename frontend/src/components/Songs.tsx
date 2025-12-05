@@ -121,7 +121,7 @@ const Songs = () => {
       
       <div className="container">
         <div className="section-header" data-aos="fade-up">
-          <div className="section-tag">MUSIC LIBRARY</div>
+          {/* <div className="section-tag">MUSIC LIBRARY</div> */}
           <h2 className="section-title">
             Original <span className="text-glow-purple">Songs</span>
           </h2>
@@ -169,9 +169,9 @@ const Songs = () => {
                   </button>
                 </div>
                 
-                {song.genre && (
+                {/* {song.genre && (
                   <div className="song-badge">{song.genre}</div>
-                )}
+                )} */}
               </div>
 
               {/* Song Info */}

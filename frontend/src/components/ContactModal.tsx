@@ -1,17 +1,134 @@
 import { useState } from 'react';
 import { publicAPI } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import { X, Send, AlertCircle, User, Mail, MessageSquare, Loader2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import './ContactModal.css';
 
+// Translations for ContactModal
+const translations: Record<string, {
+  title: string;
+  subtitle: string;
+  successTitle: string;
+  successText: string;
+  yourName: string;
+  namePlaceholder: string;
+  emailAddress: string;
+  emailPlaceholder: string;
+  yourMessage: string;
+  messagePlaceholder: string;
+  sending: string;
+  sendMessage: string;
+}> = {
+  en: {
+    title: 'Join to our community',
+    subtitle: 'We know you are a Star!',
+    successTitle: 'Message Sent!',
+    successText: "Thank you for reaching out. We'll get back to you soon!",
+    yourName: 'Your Name',
+    namePlaceholder: 'Enter your name',
+    emailAddress: 'Email Address',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: 'Your Message',
+    messagePlaceholder: "Tell us what's on your mind...",
+    sending: 'Sending...',
+    sendMessage: 'Send Message'
+  },
+  hi: {
+    title: 'हमारे समुदाय से जुड़ें',
+    subtitle: 'हम जानते हैं आप एक स्टार हैं!',
+    successTitle: 'संदेश भेज दिया गया!',
+    successText: 'संपर्क करने के लिए धन्यवाद। हम जल्द ही आपसे संपर्क करेंगे!',
+    yourName: 'आपका नाम',
+    namePlaceholder: 'अपना नाम दर्ज करें',
+    emailAddress: 'ईमेल पता',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: 'आपका संदेश',
+    messagePlaceholder: 'हमें बताएं आप क्या सोच रहे हैं...',
+    sending: 'भेजा जा रहा है...',
+    sendMessage: 'संदेश भेजें'
+  },
+  ru: {
+    title: 'Присоединяйтесь к нашему сообществу',
+    subtitle: 'Мы знаем, что ты звезда!',
+    successTitle: 'Сообщение отправлено!',
+    successText: 'Спасибо за обращение. Мы свяжемся с вами в ближайшее время!',
+    yourName: 'Ваше имя',
+    namePlaceholder: 'Введите ваше имя',
+    emailAddress: 'Электронная почта',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: 'Ваше сообщение',
+    messagePlaceholder: 'Расскажите нам, что у вас на уме...',
+    sending: 'Отправка...',
+    sendMessage: 'Отправить сообщение'
+  },
+  ko: {
+    title: '커뮤니티에 참여하세요',
+    subtitle: '당신이 스타라는 걸 알아요!',
+    successTitle: '메시지 전송 완료!',
+    successText: '연락해 주셔서 감사합니다. 곧 답변 드리겠습니다!',
+    yourName: '이름',
+    namePlaceholder: '이름을 입력하세요',
+    emailAddress: '이메일 주소',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: '메시지',
+    messagePlaceholder: '무엇이든 말씀해 주세요...',
+    sending: '전송 중...',
+    sendMessage: '메시지 보내기'
+  },
+  zh: {
+    title: '加入我们的社区',
+    subtitle: '我们知道你是明星！',
+    successTitle: '消息已发送！',
+    successText: '感谢您的联系，我们会尽快回复您！',
+    yourName: '您的姓名',
+    namePlaceholder: '请输入您的姓名',
+    emailAddress: '电子邮箱',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: '您的留言',
+    messagePlaceholder: '告诉我们您的想法...',
+    sending: '发送中...',
+    sendMessage: '发送消息'
+  },
+  ja: {
+    title: 'コミュニティに参加しよう',
+    subtitle: 'あなたがスターだと知っています！',
+    successTitle: 'メッセージを送信しました！',
+    successText: 'お問い合わせありがとうございます。すぐにご連絡いたします！',
+    yourName: 'お名前',
+    namePlaceholder: 'お名前を入力してください',
+    emailAddress: 'メールアドレス',
+    emailPlaceholder: 'your.email@example.com',
+    yourMessage: 'メッセージ',
+    messagePlaceholder: 'ご意見をお聞かせください...',
+    sending: '送信中...',
+    sendMessage: 'メッセージを送信'
+  },
+  es: {
+    title: 'Únete a nuestra comunidad',
+    subtitle: '¡Sabemos que eres una estrella!',
+    successTitle: '¡Mensaje enviado!',
+    successText: 'Gracias por contactarnos. ¡Te responderemos pronto!',
+    yourName: 'Tu nombre',
+    namePlaceholder: 'Ingresa tu nombre',
+    emailAddress: 'Correo electrónico',
+    emailPlaceholder: 'tu.email@ejemplo.com',
+    yourMessage: 'Tu mensaje',
+    messagePlaceholder: 'Cuéntanos lo que piensas...',
+    sending: 'Enviando...',
+    sendMessage: 'Enviar mensaje'
+  }
+};
+
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
-  subtitle?: string;
 }
 
-const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle = "We'd love to hear from you!" }: ContactModalProps) => {
+const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
+  const { language } = useLanguage();
+  const t = translations[language] || translations.en;
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -107,8 +224,8 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
               </div>
               <div className="modal-icon-glow"></div>
             </div>
-            <h2 className="modal-title">{title}</h2>
-            <p className="modal-subtitle">{subtitle}</p>
+            <h2 className="modal-title">{t.title}</h2>
+            <p className="modal-subtitle">{t.subtitle}</p>
           </div>
 
           {/* Success State */}
@@ -122,8 +239,8 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
                   <div className="icon-fix"></div>
                 </div>
               </div>
-              <h3 className="success-title">Message Sent!</h3>
-              <p className="success-text">Thank you for reaching out. We'll get back to you soon!</p>
+              <h3 className="success-title">{t.successTitle}</h3>
+              <p className="success-text">{t.successText}</p>
             </div>
           )}
 
@@ -140,7 +257,7 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
               <div className="form-group-modal">
                 <label htmlFor="name">
                   <User size={16} />
-                  Your Name
+                  {t.yourName}
                 </label>
                 <input
                   type="text"
@@ -148,7 +265,7 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter your name"
+                  placeholder={t.namePlaceholder}
                   disabled={loading}
                   required
                 />
@@ -157,7 +274,7 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
               <div className="form-group-modal">
                 <label htmlFor="email">
                   <Mail size={16} />
-                  Email Address
+                  {t.emailAddress}
                 </label>
                 <input
                   type="email"
@@ -165,7 +282,7 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="your.email@example.com"
+                  placeholder={t.emailPlaceholder}
                   disabled={loading}
                   required
                 />
@@ -174,14 +291,14 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
               <div className="form-group-modal">
                 <label htmlFor="message">
                   <MessageSquare size={16} />
-                  Your Message
+                  {t.yourMessage}
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Tell us what's on your mind..."
+                  placeholder={t.messagePlaceholder}
                   rows={5}
                   disabled={loading}
                   required
@@ -192,12 +309,12 @@ const ContactModal = ({ isOpen, onClose, title = "Join Our Community", subtitle 
                 {loading ? (
                   <>
                     <Loader2 size={18} className="spinning" />
-                    Sending...
+                    {t.sending}
                   </>
                 ) : (
                   <>
                     <Send size={18} />
-                    Send Message
+                    {t.sendMessage}
                   </>
                 )}
               </button>

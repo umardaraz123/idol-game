@@ -78,7 +78,7 @@ There will be an audition in my city soon, but I feel like I'm not ready. I need
           {/* Left Column - Content */}
           <div className="col-lg-6 col-md-12" data-aos="fade-right" data-aos-duration="1000">
             <div className="ana-content">
-              <div className="section-tag">{content.subtitle}</div>
+              {/* <div className="section-tag">{content.subtitle}</div> */}
               <h2 className="section-title">
                 <span className="text-glow-purple">{content.title}</span>
               </h2>

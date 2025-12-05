@@ -123,7 +123,7 @@ const About = () => {
           {/* Right Column - Content */}
           <div className="col-lg-6 col-md-12" data-aos="fade-left" data-aos-duration="1000">
             <div className="about-content">
-              <div className="section-tag">{content.subtitle}</div>
+              {/* <div className="section-tag">{content.subtitle}</div> */}
               <h2 className="section-title">
                 <span className="text-glow-blue">{content.title}</span>
               </h2>
@@ -133,7 +133,7 @@ const About = () => {
                 {content.description}
               </p>
               
-              <div className="feature-list">
+              <div id="features" className="feature-list">
                 {features.length > 0 ? (
                   features.map((feature) => (
                     <div key={feature._id} className="feature-item">

@@ -119,7 +119,7 @@ const ArtistTeam = () => {
     <section className="artist-team-section">
       <div className="container">
         <div className="section-header" data-aos="fade-up">
-          <div className="section-tag">{sectionHeader.subtitle}</div>
+          {/* <div className="section-tag">{sectionHeader.subtitle}</div> */}
           <h2 className="section-title">
             {sectionHeader.title.split(' ').map((word, index, arr) => 
               index === arr.length - 1 ? (

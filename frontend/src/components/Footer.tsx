@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { footerAPI } from '../services/api';
+import ContactModal from './ContactModal';
 import './Footer.css';
 
 interface FooterData {
@@ -33,6 +34,7 @@ const Footer = () => {
   const { language } = useLanguage();
   const [footerData, setFooterData] = useState<FooterData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchFooterData();
@@ -76,7 +78,15 @@ const Footer = () => {
 
           {/* Center Column */}
           <div className="footer-social">
-            {footerData.centerColumn.title && <h4 className="footer-heading">{footerData.centerColumn.title}</h4>}
+            {footerData.centerColumn.title && (
+              <h4 
+                className="footer-heading footer-heading-clickable" 
+                onClick={() => setIsModalOpen(true)}
+                style={{ cursor: 'pointer' }}
+              >
+                {footerData.centerColumn.title}
+              </h4>
+            )}
             {footerData.centerColumn.subtitle && <p className="footer-tagline">{footerData.centerColumn.subtitle}</p>}
             {footerData.centerColumn.description && <p className="contact-text">{footerData.centerColumn.description}</p>}
             
@@ -122,6 +132,12 @@ const Footer = () => {
           </p>
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </footer>
   );
 };
