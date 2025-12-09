@@ -81,15 +81,39 @@ const Songs = () => {
 
   const fetchSong = async () => {
     try {
-      const response = await publicAPI.getSongs(language);
-      console.log('Songs API response:', response.data);
-      const songsData = response.data.data.songs || [];
+      // First, try to get song for the selected language
+      let response = await publicAPI.getSongs(language);
+      console.log(`Songs API response for ${language}:`, response.data);
+      let songsData = response.data.data.songs || [];
       console.log('Songs data:', songsData);
+      
+      // If no songs found for selected language and it's not English, try English as fallback
+      if (songsData.length === 0 && language !== 'en') {
+        console.log(`No songs found for ${language}, falling back to English`);
+        response = await publicAPI.getSongs('en');
+        songsData = response.data.data.songs || [];
+        console.log('English fallback songs data:', songsData);
+      }
+      
       // Get only the first song
       setSong(songsData.length > 0 ? songsData[0] : null);
     } catch (error) {
       console.error('Failed to fetch song:', error);
-      setSong(null);
+      
+      // If error and not already trying English, try English as fallback
+      if (language !== 'en') {
+        try {
+          console.log('Error occurred, trying English fallback');
+          const fallbackResponse = await publicAPI.getSongs('en');
+          const fallbackSongs = fallbackResponse.data.data.songs || [];
+          setSong(fallbackSongs.length > 0 ? fallbackSongs[0] : null);
+        } catch (fallbackError) {
+          console.error('Failed to fetch English fallback song:', fallbackError);
+          setSong(null);
+        }
+      } else {
+        setSong(null);
+      }
     } finally {
       setLoading(false);
     }

@@ -78,6 +78,14 @@ const songSchema = new mongoose.Schema({
     default: 'Pop'
   },
   
+  // Target language for this song (which language version this song is for)
+  language: {
+    type: String,
+    enum: SUPPORTED_LANGUAGES,
+    default: 'en',
+    required: true
+  },
+  
   // Release year
   releaseYear: {
     type: Number,
@@ -171,7 +179,10 @@ songSchema.methods.getLocalizedSong = function(language = 'en') {
 
 // Static method to get all songs for a language
 songSchema.statics.getByLanguage = async function(language = 'en', options = {}) {
-  const query = { 'metadata.isActive': true };
+  const query = { 
+    'metadata.isActive': true,
+    language: language  // Filter by language field
+  };
   
   if (options.featured) {
     query['metadata.isFeatured'] = true;
@@ -182,7 +193,7 @@ songSchema.statics.getByLanguage = async function(language = 'en', options = {})
   }
   
   const songs = await this.find(query)
-    .sort({ updatedAt: -1, createdAt: -1 })
+    .sort({ 'metadata.order': 1, updatedAt: -1, createdAt: -1 })
     .populate('createdBy', 'name email')
     .populate('lastModifiedBy', 'name email');
   

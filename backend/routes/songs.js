@@ -36,6 +36,11 @@ const songValidation = [
     .isLength({ max: 50 })
     .withMessage('Genre must not exceed 50 characters'),
   
+  body('language')
+    .optional()
+    .isIn(SUPPORTED_LANGUAGES)
+    .withMessage(`Language must be one of: ${SUPPORTED_LANGUAGES.join(', ')}`),
+  
   body('releaseYear')
     .optional()
     .isInt({ min: 1900, max: new Date().getFullYear() + 1 })
@@ -233,6 +238,7 @@ router.post('/',
       duration,
       coverImage = {},
       genre,
+      language = 'en',
       releaseYear,
       metadata = {},
       lyrics = {}
@@ -260,6 +266,7 @@ router.post('/',
       duration,
       coverImage,
       genre,
+      language,
       releaseYear,
       metadata: {
         order: metadata.order || 0,
@@ -328,6 +335,7 @@ router.put('/:id',
       duration,
       coverImage,
       genre,
+      language,
       releaseYear,
       metadata,
       lyrics
@@ -359,6 +367,7 @@ router.put('/:id',
       ...(duration !== undefined && { duration }),
       ...(coverImage && { coverImage }),
       ...(genre !== undefined && { genre }),
+      ...(language !== undefined && { language }),
       ...(releaseYear !== undefined && { releaseYear }),
       ...(metadata && { metadata }),
       ...(lyrics && { lyrics }),
