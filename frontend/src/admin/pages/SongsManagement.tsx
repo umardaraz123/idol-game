@@ -386,22 +386,22 @@ const SongsManagement = () => {
                     {song.metadata.playCount > 0 && (
                       <p className="play-count"><Play size={14} /> {song.metadata.playCount} plays</p>
                     )}
-                    <div className="song-actions">
-                      <button 
-                        type="button" 
-                        className="btn btn-sm btn-primary"
-                        onClick={() => handleEditSong(song)}
-                      >
-                        <Edit size={16} /> Edit
-                      </button>
-                      <button 
-                        type="button" 
-                        className="btn btn-sm btn-danger"
-                        onClick={() => handleDeleteSong(song._id)}
-                      >
-                        <Trash2 size={16} /> Delete
-                      </button>
-                    </div>
+                  </div>
+                  <div className="song-actions">
+                    <button 
+                      type="button" 
+                      className="btn-edit"
+                      onClick={() => handleEditSong(song)}
+                    >
+                      <Edit size={16} /> Edit
+                    </button>
+                    <button 
+                      type="button" 
+                      className="btn-delete"
+                      onClick={() => handleDeleteSong(song._id)}
+                    >
+                      <Trash2 size={16} /> Delete
+                    </button>
                   </div>
                 </div>
               ))}
