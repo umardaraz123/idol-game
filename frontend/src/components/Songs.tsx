@@ -28,37 +28,37 @@ const songsTranslations: Record<string, { title: string; titleHighlight: string;
   en: {
     title: 'Original',
     titleHighlight: 'Songs',
-    subtitle: 'Listen to our completely original pop song'
+    subtitle: 'Listen to an example of our original pop songs!'
   },
   hi: {
     title: 'मौलिक',
     titleHighlight: 'गाने',
-    subtitle: 'हमारा पूरी तरह से मौलिक पॉप गाना सुनें'
+    subtitle: 'हमारे मौलिक पॉप गानों का एक उदाहरण सुनें!'
   },
   ru: {
     title: 'Оригинальные',
     titleHighlight: 'Песни',
-    subtitle: 'Послушайте нашу полностью оригинальную поп-песню'
+    subtitle: 'Послушайте пример наших оригинальных поп-песен!'
   },
   ko: {
     title: '오리지널',
     titleHighlight: '노래',
-    subtitle: '완전히 오리지널 팝송을 들어보세요'
+    subtitle: '우리의 오리지널 팝송 예시를 들어보세요!'
   },
   zh: {
     title: '原创',
     titleHighlight: '歌曲',
-    subtitle: '聆听我们完全原创的流行歌曲'
+    subtitle: '聆听我们原创流行歌曲的示例！'
   },
   ja: {
     title: 'オリジナル',
     titleHighlight: 'ソング',
-    subtitle: '完全オリジナルのポップソングをお聴きください'
+    subtitle: 'オリジナルポップソングの例をお聴きください！'
   },
   es: {
     title: 'Canciones',
     titleHighlight: 'Originales',
-    subtitle: 'Escucha nuestra canción pop completamente original'
+    subtitle: '¡Escucha un ejemplo de nuestras canciones pop originales!'
   }
 };
 
