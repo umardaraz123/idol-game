@@ -33,6 +33,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Update HTML lang attribute
     document.documentElement.lang = language;
+    // Update body data-lang attribute for font switching
+    document.body.setAttribute('data-lang', language);
   }, [language]);
 
   return (

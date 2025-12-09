@@ -95,11 +95,23 @@
   --glow-secondary: 0 0 30px rgba(217, 70, 168, 0.3);
   --glow-accent: 0 0 30px rgba(168, 85, 247, 0.3);
   
-  /* Fonts */
+  /* Fonts - Multilingual Support */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Poppins', 'Inter', sans-serif;
   --font-tertiary: 'Inter', sans-serif;
+  
+  /* Language-specific fonts */
+  --font-hindi-display: 'Baloo Chettan 2', 'Noto Sans Devanagari', sans-serif;
+  --font-hindi-body: 'Noto Sans Devanagari', sans-serif;
+  --font-korean-display: 'Gmarket Sans', 'Noto Sans KR', sans-serif;
+  --font-korean-body: 'Noto Sans KR', sans-serif;
+  --font-chinese-display: 'Noto Sans SC', sans-serif;
+  --font-chinese-body: 'Noto Sans SC', sans-serif;
+  --font-japanese-display: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+  --font-japanese-body: 'Noto Sans JP', sans-serif;
+  --font-russian-display: 'Poppins', 'Nunito', sans-serif;
+  --font-russian-body: 'Nunito', 'Inter', sans-serif;
   
   /* Spacing */
   --section-padding: clamp(30px, 5vw, 30px);
@@ -388,3 +400,99 @@ section {
 /* Toastify Fix */
 .Toastify { padding: 0 !important; }
 .Toastify__toast-container { padding: 0 !important; }
+
+/* Language-Specific Font Classes */
+/* Hindi - Devanagari Script */
+body[data-lang="hi"],
+body[data-lang="hi"] * {
+  --font-primary: var(--font-hindi-body);
+  --font-secondary: var(--font-hindi-body);
+  --font-display: var(--font-hindi-display);
+}
+
+body[data-lang="hi"] h1,
+body[data-lang="hi"] h2,
+body[data-lang="hi"] h3,
+body[data-lang="hi"] h4,
+body[data-lang="hi"] h5,
+body[data-lang="hi"] h6,
+body[data-lang="hi"] .section-title,
+body[data-lang="hi"] .hero-title {
+  font-family: var(--font-hindi-display);
+}
+
+/* Korean - Hangul Script */
+body[data-lang="ko"],
+body[data-lang="ko"] * {
+  --font-primary: var(--font-korean-body);
+  --font-secondary: var(--font-korean-body);
+  --font-display: var(--font-korean-display);
+}
+
+body[data-lang="ko"] h1,
+body[data-lang="ko"] h2,
+body[data-lang="ko"] h3,
+body[data-lang="ko"] h4,
+body[data-lang="ko"] h5,
+body[data-lang="ko"] h6,
+body[data-lang="ko"] .section-title,
+body[data-lang="ko"] .hero-title {
+  font-family: var(--font-korean-display);
+}
+
+/* Chinese - Han Characters */
+body[data-lang="zh"],
+body[data-lang="zh"] * {
+  --font-primary: var(--font-chinese-body);
+  --font-secondary: var(--font-chinese-body);
+  --font-display: var(--font-chinese-display);
+}
+
+body[data-lang="zh"] h1,
+body[data-lang="zh"] h2,
+body[data-lang="zh"] h3,
+body[data-lang="zh"] h4,
+body[data-lang="zh"] h5,
+body[data-lang="zh"] h6,
+body[data-lang="zh"] .section-title,
+body[data-lang="zh"] .hero-title {
+  font-family: var(--font-chinese-display);
+}
+
+/* Japanese - Kanji/Hiragana/Katakana */
+body[data-lang="ja"],
+body[data-lang="ja"] * {
+  --font-primary: var(--font-japanese-body);
+  --font-secondary: var(--font-japanese-body);
+  --font-display: var(--font-japanese-display);
+}
+
+body[data-lang="ja"] h1,
+body[data-lang="ja"] h2,
+body[data-lang="ja"] h3,
+body[data-lang="ja"] h4,
+body[data-lang="ja"] h5,
+body[data-lang="ja"] h6,
+body[data-lang="ja"] .section-title,
+body[data-lang="ja"] .hero-title {
+  font-family: var(--font-japanese-display);
+}
+
+/* Russian - Cyrillic Script */
+body[data-lang="ru"],
+body[data-lang="ru"] * {
+  --font-primary: var(--font-russian-body);
+  --font-secondary: var(--font-russian-body);
+  --font-display: var(--font-russian-display);
+}
+
+body[data-lang="ru"] h1,
+body[data-lang="ru"] h2,
+body[data-lang="ru"] h3,
+body[data-lang="ru"] h4,
+body[data-lang="ru"] h5,
+body[data-lang="ru"] h6,
+body[data-lang="ru"] .section-title,
+body[data-lang="ru"] .hero-title {
+  font-family: var(--font-russian-display);
+}
