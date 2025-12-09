@@ -74,10 +74,12 @@
   background-clip: text;
   line-height: 1.2;
   filter: none;
+  text-align: left;
 }
 
 .title-underline {
   width: 80px;
+  margin-left: 0;
   height: 4px;
   background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
   margin: 1rem 0 1.5rem 0;
