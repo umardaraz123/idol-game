@@ -26,7 +26,7 @@
   display: none;
 }
 
-.game-highlights-section .container-fluid {
+.game-highlights-section .container {
   position: relative;
   z-index: 1;
 }

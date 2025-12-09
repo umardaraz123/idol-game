@@ -105,7 +105,7 @@ const GameHighlights = () => {
   return (
     <section className="game-highlights-section">
       <div className="highlights-bg-effect"></div>
-      <div className="container-fluid px-0">
+      <div className="container">
         <div className="section-header" data-aos="fade-up">
           <h2 className="section-title">
             {sectionHeader.title.split(' ').map((word, index) => {
