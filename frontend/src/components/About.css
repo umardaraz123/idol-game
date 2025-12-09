@@ -216,7 +216,22 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  justify-items: center;
+  justify-content: center;
+}
+
+/* When less than 3 items, center them */
+.feature-list:has(.feature-item:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-list:has(.feature-item:first-child:last-child) {
+  grid-template-columns: 1fr;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .feature-item {
