@@ -28,6 +28,7 @@ interface Song {
     publicId: string;
   };
   genre: string;
+  language: string;
   releaseYear?: number;
   metadata: {
     order: number;
@@ -59,6 +60,7 @@ const emptyFormData = {
   duration: 0,
   coverImage: { url: '', publicId: '' },
   genre: 'Pop',
+  language: 'en',
   releaseYear: new Date().getFullYear(),
   metadata: {
     order: 0,
@@ -104,6 +106,7 @@ const SongsManagement = () => {
           duration: existingSong.duration,
           coverImage: existingSong.coverImage || { url: '', publicId: '' },
           genre: existingSong.genre || 'Pop',
+          language: existingSong.language || 'en',
           releaseYear: existingSong.releaseYear || new Date().getFullYear(),
           metadata: existingSong.metadata,
           lyrics: existingSong.lyrics || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' }
@@ -331,6 +334,22 @@ const SongsManagement = () => {
                 onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
                 placeholder="Pop, Rock, etc."
               />
+            </div>
+
+            <div className="form-group">
+              <label>Song Language *</label>
+              <select
+                value={formData.language}
+                onChange={(e) => setFormData({ ...formData, language: e.target.value })}
+                required
+              >
+                {LANGUAGES.map(lang => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+              <small>Which language version is this song for?</small>
             </div>
 
             <div className="form-group">
