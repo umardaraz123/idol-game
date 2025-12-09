@@ -100,13 +100,13 @@
 /* Single Song Wrapper */
 .song-single-wrapper {
   margin-top: 40px;
-  padding: 0 24px;
+  padding: 0;
   display: flex;
   justify-content: center;
 }
 
 .song-single-wrapper .song-card {
-  max-width: 960px;
+  max-width: 100%;
   width: 100%;
 }
 
@@ -128,8 +128,8 @@
   border: 3px solid rgba(248, 180, 196, 0.2);
   cursor: pointer;
   width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   height: 420px;
   display: flex;
   flex-direction: row;
