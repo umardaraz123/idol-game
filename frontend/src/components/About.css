@@ -216,13 +216,14 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  justify-items: center;
 }
 
 .feature-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: center;
+  text-align: center;
   gap: 16px;
   margin-bottom: 0;
   padding: 28px 22px;
@@ -231,6 +232,7 @@
   border-radius: var(--radius-lg);
   border: 2px solid rgba(248, 180, 196, 0.15);
   box-shadow: 0 4px 20px rgba(248, 180, 196, 0.08);
+  width: 100%;
 }
 
 .feature-item:hover {
