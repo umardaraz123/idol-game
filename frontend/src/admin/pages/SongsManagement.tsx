@@ -51,7 +51,7 @@ const LANGUAGES = [
 ];
 
 const emptyFormData = {
-  key: 'main_song',
+  key: '',
   title: { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
   description: { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
   artist: { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
@@ -205,13 +205,19 @@ const SongsManagement = () => {
     setIsSaving(true);
 
     try {
+      // Auto-generate key from title if empty
+      const dataToSave = {
+        ...formData,
+        key: formData.key.trim() || formData.title.en.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') + '_' + Date.now()
+      };
+
       if (editingSong) {
         // Update existing song
-        await songsAPI.update(editingSong._id, formData);
+        await songsAPI.update(editingSong._id, dataToSave);
         toast.success('Song updated successfully!');
       } else {
         // Create new song
-        await songsAPI.create(formData);
+        await songsAPI.create(dataToSave);
         toast.success('Song created successfully!');
       }
       fetchSongs();
