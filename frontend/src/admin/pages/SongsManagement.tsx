@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { songsAPI, mediaAPI } from '../../services/api';
-import { Loader2, Music, Mic, Clock, Play, Edit, Upload } from 'lucide-react';
+import { Loader2, Music, Mic, Clock, Play, Edit, Upload, Plus, Trash2, X } from 'lucide-react';
 import './SongsManagement.css';
 
 interface MultilingualText {
@@ -41,13 +41,13 @@ interface Song {
 }
 
 const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'es', name: 'Spanish' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'hi', name: 'Hindi', flag: '🇮🇳' },
+  { code: 'ru', name: 'Russian', flag: '🇷🇺' },
+  { code: 'ko', name: 'Korean', flag: '🇰🇷' },
+  { code: 'zh', name: 'Chinese', flag: '🇨🇳' },
+  { code: 'ja', name: 'Japanese', flag: '🇯🇵' },
+  { code: 'es', name: 'Spanish', flag: '🇪🇸' }
 ];
 
 const emptyFormData = {
@@ -73,47 +73,31 @@ const emptyFormData = {
 };
 
 const SongsManagement = () => {
-  const [song, setSong] = useState<Song | null>(null);
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [editingSong, setEditingSong] = useState<Song | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [filterLanguage, setFilterLanguage] = useState<string>('all');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploadingAudio, setIsUploadingAudio] = useState(false);
   // const [isUploadingCover, setIsUploadingCover] = useState(false); // commented - cover upload hidden
   const [isSaving, setIsSaving] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState(emptyFormData);
 
   useEffect(() => {
-    fetchSong();
+    fetchSongs();
   }, []);
 
-  const fetchSong = async () => {
+  const fetchSongs = async () => {
     try {
       const response = await songsAPI.getAll();
-      const songs = response.data.data.songs || [];
-      // Get the first (and only) song
-      if (songs.length > 0) {
-        const existingSong = songs[0];
-        setSong(existingSong);
-        setFormData({
-          key: existingSong.key,
-          title: existingSong.title,
-          description: existingSong.description || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
-          artist: existingSong.artist || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
-          audioUrl: existingSong.audioUrl,
-          cloudinaryId: existingSong.cloudinaryId || '',
-          duration: existingSong.duration,
-          coverImage: existingSong.coverImage || { url: '', publicId: '' },
-          genre: existingSong.genre || 'Pop',
-          language: existingSong.language || 'en',
-          releaseYear: existingSong.releaseYear || new Date().getFullYear(),
-          metadata: existingSong.metadata,
-          lyrics: existingSong.lyrics || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' }
-        });
-      }
+      const fetchedSongs = response.data.data.songs || [];
+      setSongs(fetchedSongs);
     } catch (error) {
-      console.error('Failed to fetch song:', error);
+      console.error('Failed to fetch songs:', error);
     } finally {
       setIsLoading(false);
     }
@@ -221,21 +205,69 @@ const SongsManagement = () => {
     setIsSaving(true);
 
     try {
-      if (song) {
+      if (editingSong) {
         // Update existing song
-        await songsAPI.update(song._id, formData);
+        await songsAPI.update(editingSong._id, formData);
         toast.success('Song updated successfully!');
       } else {
         // Create new song
         await songsAPI.create(formData);
         toast.success('Song created successfully!');
       }
-      fetchSong();
+      fetchSongs();
+      handleCancelEdit();
     } catch (error: any) {
       toast.error('Failed to save song: ' + (error.response?.data?.message || error.message));
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleEditSong = (song: Song) => {
+    setEditingSong(song);
+    setFormData({
+      key: song.key,
+      title: song.title,
+      description: song.description || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
+      artist: song.artist || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' },
+      audioUrl: song.audioUrl,
+      cloudinaryId: song.cloudinaryId || '',
+      duration: song.duration,
+      coverImage: song.coverImage || { url: '', publicId: '' },
+      genre: song.genre || 'Pop',
+      language: song.language || 'en',
+      releaseYear: song.releaseYear || new Date().getFullYear(),
+      metadata: song.metadata,
+      lyrics: song.lyrics || { en: '', hi: '', ru: '', ko: '', zh: '', ja: '', es: '' }
+    });
+    setShowForm(true);
+  };
+
+  const handleDeleteSong = async (songId: string) => {
+    if (!window.confirm('Are you sure you want to delete this song?')) {
+      return;
+    }
+
+    try {
+      await songsAPI.delete(songId);
+      toast.success('Song deleted successfully!');
+      fetchSongs();
+    } catch (error: any) {
+      toast.error('Failed to delete song: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSong(null);
+    setFormData(emptyFormData);
+    setShowForm(false);
+    setSelectedLanguage('en');
+  };
+
+  const handleNewSong = () => {
+    setEditingSong(null);
+    setFormData(emptyFormData);
+    setShowForm(true);
   };
 
   const handleTitleChange = (lang: string, value: string) => {
@@ -281,48 +313,113 @@ const SongsManagement = () => {
     );
   }
 
+  const filteredSongs = filterLanguage === 'all' 
+    ? songs 
+    : songs.filter(song => song.language === filterLanguage);
+
   return (
     <div className="songs-management">
       <div className="page-header">
         <div>
-          <h1> Song Management</h1>
-          <p>Manage the single song displayed on the website</p>
+          <h1>🎵 Songs Management</h1>
+          <p>Manage language-specific songs displayed on the website</p>
+        </div>
+        <button className="btn btn-primary" onClick={handleNewSong}>
+          <Plus size={20} /> Add New Song
+        </button>
+      </div>
+
+      {/* Language Filter */}
+      <div className="filters-section">
+        <div className="form-group">
+          <label>Filter by Language:</label>
+          <select 
+            value={filterLanguage} 
+            onChange={(e) => setFilterLanguage(e.target.value)}
+            className="form-control"
+          >
+            <option value="all">All Languages</option>
+            {LANGUAGES.map(lang => (
+              <option key={lang.code} value={lang.code}>{lang.flag} {lang.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="songs-count">
+          Showing {filteredSongs.length} of {songs.length} songs
         </div>
       </div>
 
-      {/* Current Song Preview */}
-      {song && (
-        <div className="current-song-preview">
-          <h3>Current Song</h3>
-          <div className="song-card">
-            <div className="song-cover">
-              {song.coverImage?.url ? (
-                <img src={song.coverImage.url} alt={song.title.en} />
-              ) : (
-                <div className="default-cover">
-                  <Music size={32} />
+      {/* Songs List */}
+      {!showForm && (
+        <div className="songs-list">
+          {filteredSongs.length === 0 ? (
+            <div className="empty-state">
+              <Music size={48} />
+              <p>No songs found{filterLanguage !== 'all' ? ' for this language' : ''}.</p>
+              <button className="btn btn-primary" onClick={handleNewSong}>
+                <Plus size={20} /> Add Your First Song
+              </button>
+            </div>
+          ) : (
+            <div className="songs-grid">
+              {filteredSongs.map(song => (
+                <div key={song._id} className="song-card">
+                  <div className="song-cover">
+                    {song.coverImage?.url ? (
+                      <img src={song.coverImage.url} alt={song.title.en} />
+                    ) : (
+                      <div className="default-cover">
+                        <Music size={32} />
+                      </div>
+                    )}
+                    <div className="song-language-badge">
+                      {LANGUAGES.find(l => l.code === song.language)?.flag} {LANGUAGES.find(l => l.code === song.language)?.name}
+                    </div>
+                  </div>
+                  <div className="song-info">
+                    <h3>{song.title.en || song.key}</h3>
+                    {song.artist?.en && <p className="artist"><Mic size={14} /> {song.artist.en}</p>}
+                    <div className="song-meta">
+                      <span className="badge">{song.genre}</span>
+                      <span className="duration"><Clock size={14} /> {formatDuration(song.duration)}</span>
+                    </div>
+                    {song.metadata.playCount > 0 && (
+                      <p className="play-count"><Play size={14} /> {song.metadata.playCount} plays</p>
+                    )}
+                    <div className="song-actions">
+                      <button 
+                        type="button" 
+                        className="btn btn-sm btn-primary"
+                        onClick={() => handleEditSong(song)}
+                      >
+                        <Edit size={16} /> Edit
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDeleteSong(song._id)}
+                      >
+                        <Trash2 size={16} /> Delete
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              )}
+              ))}
             </div>
-            <div className="song-info">
-              <h3>{song.title.en || song.key}</h3>
-              {song.artist?.en && <p className="artist"><Mic size={14} /> {song.artist.en}</p>}
-              <div className="song-meta">
-                <span className="badge">{song.genre}</span>
-                <span className="duration"><Clock size={14} /> {formatDuration(song.duration)}</span>
-              </div>
-              {song.metadata.playCount > 0 && (
-                <p className="play-count"><Play size={14} /> {song.metadata.playCount} plays</p>
-              )}
-            </div>
-          </div>
+          )}
         </div>
       )}
 
       {/* Song Form */}
-      <form onSubmit={handleSubmit} className="song-form-inline">
+      {showForm && (
+        <form onSubmit={handleSubmit} className="song-form-inline">
+          <div className="form-header">
+            <h3><Edit size={18} /> {editingSong ? 'Update Song' : 'Add New Song'}</h3>
+            <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>
+              <X size={18} /> Cancel
+            </button>
+          </div>
         <div className="form-section">
-          <h3><Edit size={18} /> {song ? 'Update Song' : 'Add Song'}</h3>
           
           {/* Basic Info */}
           <div className="form-row">
@@ -527,10 +624,14 @@ const SongsManagement = () => {
 
         <div className="form-actions">
           <button type="submit" className="btn-submit" disabled={isUploadingAudio || isSaving}>
-            {isSaving ? 'Saving...' : (isUploadingAudio ? 'Uploading...' : (song ? 'Update Song' : 'Save Song'))}
+            {isSaving ? 'Saving...' : (isUploadingAudio ? 'Uploading...' : (editingSong ? 'Update Song' : 'Save Song'))}
+          </button>
+          <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>
+            Cancel
           </button>
         </div>
       </form>
+      )}
     </div>
   );
 };

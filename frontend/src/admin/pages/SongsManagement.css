@@ -21,48 +21,94 @@
   font-size: 1.1rem;
 }
 
-/* Current Song Preview */
-.current-song-preview {
+/* Filters Section */
+.filters-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  padding: 1.5rem;
+  padding: 1rem;
   background: rgba(26, 10, 46, 0.5);
-  border-radius: 15px;
+  border-radius: 10px;
   border: 1px solid rgba(181, 55, 242, 0.3);
 }
 
-.current-song-preview > h3 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.2rem;
+.filters-section .form-group {
+  margin: 0;
+  flex: 1;
+  max-width: 300px;
+}
+
+.songs-count {
   color: #b537f2;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Songs Grid */
+.songs-list {
+  margin-bottom: 2rem;
+}
+
+.songs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(26, 10, 46, 0.3);
+  border-radius: 15px;
+  border: 2px dashed rgba(181, 55, 242, 0.3);
+}
+
+.empty-state svg {
+  color: #b537f2;
+  opacity: 0.5;
   margin-bottom: 1rem;
 }
 
-.current-song-preview .song-card {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1.5rem;
+.empty-state p {
+  color: #aaa;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Song Card */
+.song-card {
   background: linear-gradient(135deg, rgba(26, 10, 46, 0.8), rgba(10, 10, 10, 0.9));
   border-radius: 12px;
   padding: 1rem;
   border: 1px solid rgba(181, 55, 242, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.current-song-preview .song-cover {
-  width: 120px;
-  height: 120px;
-  flex-shrink: 0;
+.song-card:hover {
+  border-color: rgba(181, 55, 242, 0.5);
+  box-shadow: 0 4px 20px rgba(181, 55, 242, 0.2);
+  transform: translateY(-2px);
+}
+
+.song-cover {
+  width: 100%;
+  height: 200px;
   border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
 }
 
-.current-song-preview .song-cover img {
+.song-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.current-song-preview .default-cover {
+.default-cover {
   width: 100%;
   height: 100%;
   display: flex;
@@ -71,28 +117,102 @@
   background: linear-gradient(135deg, rgba(181, 55, 242, 0.2), rgba(0, 212, 255, 0.2));
 }
 
-.current-song-preview .song-info {
-  flex: 1;
+.song-language-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(181, 55, 242, 0.9);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 
-.current-song-preview .song-info h3 {
+.song-info h3 {
   font-family: 'Orbitron', sans-serif;
   font-size: 1.3rem;
   color: #fff;
   margin-bottom: 0.5rem;
 }
 
-/* Inline Form */
+.song-info .artist {
+  color: #b537f2;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.song-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.song-meta .badge {
+  background: rgba(181, 55, 242, 0.2);
+  color: #b537f2;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+}
+
+.song-meta .duration {
+  color: #aaa;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.play-count {
+  color: #00d4ff;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+}
+
+.song-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.song-actions button {
+  flex: 1;
+}
+
+/* Form Section */
 .song-form-inline {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: rgba(26, 10, 46, 0.5);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid rgba(181, 55, 242, 0.3);
 }
 
-.default-cover i {
-  font-size: 4rem;
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
   color: #b537f2;
-  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .featured-badge {
