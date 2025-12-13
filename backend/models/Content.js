@@ -100,6 +100,12 @@ const contentSchema = new mongoose.Schema({
     trim: true
   },
   
+  // LinkedIn profile URL (for team members)
+  linkedinUrl: {
+    type: String,
+    trim: true
+  },
+  
   // Associated media files
   media: {
     images: [mediaSchema],
@@ -193,6 +199,7 @@ contentSchema.methods.getLocalizedContent = function(language = 'en') {
     subtitle: this.subtitle?.[lang] || this.subtitle?.en || '',
     imageUrl: this.imageUrl || '',
     videoUrl: this.videoUrl || '',
+    linkedinUrl: this.linkedinUrl || '',
     media: this.media || { images: [], videos: [] },
     metadata: this.metadata || {},
     seo: {

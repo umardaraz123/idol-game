@@ -181,7 +181,7 @@ songSchema.methods.getLocalizedSong = function(language = 'en') {
 songSchema.statics.getByLanguage = async function(language = 'en', options = {}) {
   const query = { 
     'metadata.isActive': true,
-    language: language  // Filter by language field
+    language: language  // Filter by language field - each song is for a specific language
   };
   
   if (options.featured) {
@@ -197,6 +197,7 @@ songSchema.statics.getByLanguage = async function(language = 'en', options = {})
     .populate('createdBy', 'name email')
     .populate('lastModifiedBy', 'name email');
   
+  // Return songs with localized content for the requested language
   return songs.map(song => song.getLocalizedSong(language));
 };
 

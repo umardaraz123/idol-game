@@ -20,6 +20,7 @@ interface TeamMember {
   description: MultilingualField; // Role/Description
   subtitle?: MultilingualField; // Category (Game Design, Programming, etc.)
   imageUrl?: string; // Optional photo
+  linkedinUrl?: string; // LinkedIn profile URL
   metadata: {
     order: number;
     isActive: boolean;
@@ -73,6 +74,7 @@ const TeamManagement = () => {
     description: { ...emptyMultilingualField },
     subtitle: { ...emptyMultilingualField },
     imageUrl: '',
+    linkedinUrl: '',
     metadata: {
       order: 0,
       isActive: true,
@@ -354,6 +356,25 @@ const TeamManagement = () => {
                 onChange={(e) => handleDescriptionChange(e.target.value)}
                 placeholder={`Enter description/credits in ${languages.find(l => l.code === activeLanguage)?.name}`}
               />
+            </div>
+
+            <div className="form-group">
+              <label>
+                LinkedIn Profile URL (Optional)
+                <span style={{ fontSize: '0.85rem', color: '#00d4ff', marginLeft: '0.5rem' }}>
+                  🔗 Card will link to this profile
+                </span>
+              </label>
+              <input
+                type="url"
+                className="form-control"
+                value={formData.linkedinUrl || ''}
+                onChange={(e) => setFormData(prev => ({ ...prev, linkedinUrl: e.target.value }))}
+                placeholder="https://www.linkedin.com/in/username"
+              />
+              <small className="form-helper" style={{ color: '#888' }}>
+                When users click on this team member's card, they'll be redirected to this LinkedIn profile
+              </small>
             </div>
 
             <div className="media-upload-section">

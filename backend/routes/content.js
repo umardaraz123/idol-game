@@ -117,7 +117,13 @@ const contentValidation = [
     .optional()
     .trim()
     .isLength({ min: 2, max: 30 })
-    .withMessage('Each tag must be between 2-30 characters')
+    .withMessage('Each tag must be between 2-30 characters'),
+  
+  body('linkedinUrl')
+    .optional({ checkFalsy: true })
+    .trim()
+    .isURL()
+    .withMessage('LinkedIn URL must be a valid URL')
 ];
 
 // @desc    Get all content items
@@ -293,6 +299,7 @@ router.post('/',
       subtitle = {},
       imageUrl,
       videoUrl,
+      linkedinUrl,
       media = { images: [], videos: [] },
       metadata = {},
       seo = {}
@@ -318,6 +325,7 @@ router.post('/',
       subtitle,
       imageUrl,
       videoUrl,
+      linkedinUrl,
       media,
       metadata: {
         order: metadata.order || 0,
@@ -384,6 +392,7 @@ router.put('/:id',
       subtitle,
       imageUrl,
       videoUrl,
+      linkedinUrl,
       media,
       metadata,
       seo
@@ -413,6 +422,7 @@ router.put('/:id',
       ...(subtitle && { subtitle }),
       ...(imageUrl !== undefined && { imageUrl }),
       ...(videoUrl !== undefined && { videoUrl }),
+      ...(linkedinUrl !== undefined && { linkedinUrl }),
       ...(media && { media }),
       ...(metadata && { metadata }),
       ...(seo && { seo }),

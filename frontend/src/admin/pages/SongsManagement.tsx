@@ -368,49 +368,56 @@ const SongsManagement = () => {
             </div>
           ) : (
             <div className="songs-grid">
-              {filteredSongs.map(song => (
-                <div key={song._id} className="song-card">
-                  <div className="song-cover">
-                    {song.coverImage?.url ? (
-                      <img src={song.coverImage.url} alt={song.title.en} />
-                    ) : (
-                      <div className="default-cover">
-                        <Music size={32} />
+              {filteredSongs.map(song => {
+                // Display song title in its OWN language with fallback to English
+                const songLang = song.language as keyof typeof song.title;
+                const displayTitle = song.title[songLang] || song.title.en || song.key;
+                const displayArtist = song.artist?.[songLang] || song.artist?.en;
+                
+                return (
+                  <div key={song._id} className="song-card">
+                    <div className="song-cover">
+                      {song.coverImage?.url ? (
+                        <img src={song.coverImage.url} alt={displayTitle} />
+                      ) : (
+                        <div className="default-cover">
+                          <Music size={32} />
+                        </div>
+                      )}
+                      <div className="song-language-badge">
+                        {LANGUAGES.find(l => l.code === song.language)?.flag} {LANGUAGES.find(l => l.code === song.language)?.name}
                       </div>
-                    )}
-                    <div className="song-language-badge">
-                      {LANGUAGES.find(l => l.code === song.language)?.flag} {LANGUAGES.find(l => l.code === song.language)?.name}
+                    </div>
+                    <div className="song-info">
+                      <h3>{displayTitle}</h3>
+                      {displayArtist && <p className="artist"><Mic size={14} /> {displayArtist}</p>}
+                      <div className="song-meta">
+                        <span className="badge">{song.genre}</span>
+                        <span className="duration"><Clock size={14} /> {formatDuration(song.duration)}</span>
+                      </div>
+                      {song.metadata.playCount > 0 && (
+                        <p className="play-count"><Play size={14} /> {song.metadata.playCount} plays</p>
+                      )}
+                    </div>
+                    <div className="song-actions">
+                      <button 
+                        type="button" 
+                        className="btn-edit"
+                        onClick={() => handleEditSong(song)}
+                      >
+                        <Edit size={16} /> Edit
+                      </button>
+                      <button 
+                        type="button" 
+                        className="btn-delete"
+                        onClick={() => handleDeleteSong(song._id)}
+                      >
+                        <Trash2 size={16} /> Delete
+                      </button>
                     </div>
                   </div>
-                  <div className="song-info">
-                    <h3>{song.title.en || song.key}</h3>
-                    {song.artist?.en && <p className="artist"><Mic size={14} /> {song.artist.en}</p>}
-                    <div className="song-meta">
-                      <span className="badge">{song.genre}</span>
-                      <span className="duration"><Clock size={14} /> {formatDuration(song.duration)}</span>
-                    </div>
-                    {song.metadata.playCount > 0 && (
-                      <p className="play-count"><Play size={14} /> {song.metadata.playCount} plays</p>
-                    )}
-                  </div>
-                  <div className="song-actions">
-                    <button 
-                      type="button" 
-                      className="btn-edit"
-                      onClick={() => handleEditSong(song)}
-                    >
-                      <Edit size={16} /> Edit
-                    </button>
-                    <button 
-                      type="button" 
-                      className="btn-delete"
-                      onClick={() => handleDeleteSong(song._id)}
-                    >
-                      <Trash2 size={16} /> Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -425,6 +432,29 @@ const SongsManagement = () => {
               <X size={18} /> Cancel
             </button>
           </div>
+          
+          {/* Important Note */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(181, 55, 242, 0.1))',
+            border: '2px solid rgba(0, 212, 255, 0.5)',
+            borderRadius: '10px',
+            padding: '1.5rem',
+            marginBottom: '1.5rem'
+          }}>
+            <h4 style={{color: '#00d4ff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+              <Music size={20} /> 📝 How to Add Songs for Different Languages
+            </h4>
+            <p style={{color: '#fff', marginBottom: '0.5rem'}}>
+              <strong>Step 1:</strong> Select the <span style={{color: '#b537f2'}}>Song Language</span> (which language version this is for)
+            </p>
+            <p style={{color: '#fff', marginBottom: '0.5rem'}}>
+              <strong>Step 2:</strong> Fill the <span style={{color: '#b537f2'}}>Title</span> in the language tabs (especially English is required)
+            </p>
+            <p style={{color: '#fff'}}>
+              <strong>Example:</strong> For Hindi song, select "Hindi" as Song Language, then add Hindi title like "गाना का नाम" in Hindi tab
+            </p>
+          </div>
+        
         <div className="form-section">
           
           {/* Basic Info */}
@@ -440,19 +470,27 @@ const SongsManagement = () => {
             </div>
 
             <div className="form-group">
-              <label>Song Language *</label>
+              <label>Song Language * <span style={{color: '#ff3366', fontSize: '0.9rem'}}>(Select which language this song is for)</span></label>
               <select
                 value={formData.language}
                 onChange={(e) => setFormData({ ...formData, language: e.target.value })}
                 required
+                style={{
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  background: 'linear-gradient(135deg, rgba(181, 55, 242, 0.1), rgba(0, 212, 255, 0.1))',
+                  border: '2px solid rgba(181, 55, 242, 0.5)'
+                }}
               >
                 {LANGUAGES.map(lang => (
                   <option key={lang.code} value={lang.code}>
-                    {lang.name}
+                    {lang.flag} {lang.name}
                   </option>
                 ))}
               </select>
-              <small>Which language version is this song for?</small>
+              <small style={{color: '#00d4ff', fontWeight: '600'}}>
+                ⚠️ This determines when this song appears (users will see it when they select this language)
+              </small>
             </div>
 
             <div className="form-group">

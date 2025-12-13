@@ -86,7 +86,7 @@
   opacity: 0.5;
 }
 
-.hero-overlay {
+/* .hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -100,7 +100,7 @@
     rgba(255, 220, 240, 0.7) 100%
   );
   z-index: 2;
-}
+} */
 
 /* Additional overlay for better text contrast */
 .hero-overlay::before {
