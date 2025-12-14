@@ -6,12 +6,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 25%, #ffd6e7 50%, #ffcce0 75%, #ffc2d9 100%);
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 25%, #ffd6e7 50%, #ffcce0 75%, #ffc2d9 100%) !important;
   overflow: hidden;
 }
 
 /* Animated Mesh Gradient Overlay */
-.hero-section::before {
+/* .hero-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -25,7 +25,7 @@
     radial-gradient(ellipse at 0% 100%, rgba(255, 174, 201, 0.35) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(255, 240, 245, 0.5) 0%, transparent 60%);
   z-index: 1;
-}
+} */
 
 /* Floating Soft Orbs - Static */
 .particle-container {
