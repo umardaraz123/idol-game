@@ -7,6 +7,12 @@ const querySchema = new mongoose.Schema({
     trim: true,
     maxlength: 100
   },
+  age: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 120
+  },
   email: {
     type: String,
     required: true,
@@ -41,7 +47,7 @@ const querySchema = new mongoose.Schema({
 });
 
 // Update the updatedAt timestamp before saving
-querySchema.pre('save', function(next) {
+querySchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });

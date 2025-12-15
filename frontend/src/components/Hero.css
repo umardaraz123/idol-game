@@ -167,7 +167,7 @@
   font-weight: 700;
   background: linear-gradient(135deg, #ff6b9d 0%, #d946a8 100%);
   color: white;
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(255, 105, 157, 0.3),
     0 4px 15px rgba(217, 70, 168, 0.2);
   border: none;
@@ -176,7 +176,7 @@
 
 .hero-content .btn-neon:hover {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 16px 50px rgba(255, 105, 157, 0.4),
     0 8px 25px rgba(217, 70, 168, 0.3);
   background: linear-gradient(135deg, #ff5a8f 0%, #c93d9a 100%);
@@ -219,11 +219,11 @@
     min-height: 100svh;
     padding: 120px 0 80px;
   }
-  
+
   .hero-content {
     padding: 0 20px;
   }
-  
+
   .scroll-indicator {
     bottom: 30px;
   }
@@ -233,13 +233,136 @@
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
+
   .hero-content .btn-neon {
     padding: 16px 36px;
     font-size: 1rem;
+  }
+}
+
+/* Hero Loading States */
+.hero-media-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 50%, #ffd6e7 100%);
+}
+
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 107, 157, 0.2);
+  border-top-color: #ff6b9d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Text Loader Skeleton - Match actual content sizes */
+.hero-text-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  min-height: 280px;
+  justify-content: center;
+}
+
+.text-loader-bar {
+  background: linear-gradient(90deg,
+      rgba(255, 107, 157, 0.15) 0%,
+      rgba(255, 107, 157, 0.3) 50%,
+      rgba(255, 107, 157, 0.15) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+
+/* Title bar - matches hero-title at clamp(3rem, 10vw, 5.5rem) */
+.text-loader-bar.title-bar {
+  width: 400px;
+  height: 88px;
+  max-width: 85vw;
+}
+
+/* Subtitle bar - matches hero-subtitle at clamp(1.1rem, 2vw, 1.4rem) with max-width 650px */
+.text-loader-bar.subtitle-bar {
+  width: 500px;
+  height: 28px;
+  max-width: 90vw;
+  margin-bottom: 8px;
+}
+
+/* Button bar - matches btn-neon padding: 18px 48px */
+.text-loader-bar.button-bar {
+  width: 300px;
+  height: 60px;
+  border-radius: 50px;
+  margin-top: 16px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive Loader Sizes */
+@media (max-width: 768px) {
+  .hero-text-loader {
+    min-height: 240px;
+    gap: 20px;
+  }
+
+  .text-loader-bar.title-bar {
+    width: 280px;
+    height: 60px;
+  }
+
+  .text-loader-bar.subtitle-bar {
+    width: 320px;
+    height: 24px;
+  }
+
+  .text-loader-bar.button-bar {
+    width: 260px;
+    height: 54px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text-loader {
+    min-height: 200px;
+    gap: 16px;
+  }
+
+  .text-loader-bar.title-bar {
+    width: 200px;
+    height: 48px;
+  }
+
+  .text-loader-bar.subtitle-bar {
+    width: 260px;
+    height: 20px;
+  }
+
+  .text-loader-bar.button-bar {
+    width: 220px;
+    height: 52px;
   }
 }

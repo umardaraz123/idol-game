@@ -14,6 +14,9 @@ router.post(
       .trim()
       .notEmpty().withMessage('Name is required')
       .isLength({ max: 100 }).withMessage('Name must not exceed 100 characters'),
+    body('age')
+      .notEmpty().withMessage('Age is required')
+      .isInt({ min: 1, max: 120 }).withMessage('Age must be between 1 and 120'),
     body('email')
       .trim()
       .notEmpty().withMessage('Email is required')
@@ -34,17 +37,18 @@ router.post(
       // Validate request
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ 
-          success: false, 
-          errors: errors.array() 
+        return res.status(400).json({
+          success: false,
+          errors: errors.array()
         });
       }
 
-      const { name, email, phone, message } = req.body;
+      const { name, age, email, phone, message } = req.body;
 
       // Create new query
       const query = new Query({
         name,
+        age: parseInt(age),
         email,
         phone: phone || '',
         message,
@@ -56,6 +60,7 @@ router.post(
       // Send email notification (async, don't wait for it)
       sendQueryNotification({
         name: query.name,
+        age: query.age,
         email: query.email,
         phone: query.phone,
         message: query.message,
@@ -97,7 +102,7 @@ router.get('/', authenticateAdmin, async (req, res) => {
 
     const queries = await Query.find(filter)
       .sort({ createdAt: -1 })
-      .select('name email phone message status createdAt updatedAt');
+      .select('name age email phone message status createdAt updatedAt');
 
     res.json({
       success: true,

@@ -13,6 +13,7 @@ import GameHighlights from './components/GameHighlights';
 import WhoIsAna from './components/WhoIsAna';
 // import Features from './components/Features'; // Commented out - Why Choose Idol Be section
 import ArtistTeam from './components/ArtistTeam';
+import AboutUs from './components/AboutUs';
 import Footer from './components/Footer';
 import AdminLogin from './admin/pages/AdminLogin';
 import Dashboard from './admin/pages/Dashboard';
@@ -70,6 +71,10 @@ const MainSite = () => {
       <section id="team">
         <ArtistTeam />
       </section>
+      {/* 7. About us */}
+      <section id="aboutus">
+        <AboutUs />
+      </section>
       <Footer />
     </div>
   );
@@ -84,34 +89,34 @@ function App() {
             {/* Main website routes */}
             <Route path="/" element={<MainSite />} />
 
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          
-          <Route 
-            path="/admin/*" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="content" element={<ContentManagement />} />
-            <Route path="hero" element={<HeroManagement />} />
-            <Route path="about-features" element={<AboutFeaturesManagement />} />
-            <Route path="game-highlights" element={<GameHighlightsManagement />} />
-            <Route path="features" element={<FeaturesManagement />} />
-            <Route path="team" element={<TeamManagement />} />
-            <Route path="songs" element={<SongsManagement />} />
-            <Route path="queries" element={<QueriesManagement />} />
-            <Route path="footer" element={<FooterManagement />} />
-            <Route path="logo" element={<LogoManagement />} />
-          </Route>
+            {/* Admin routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Catch all */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="content" element={<ContentManagement />} />
+              <Route path="hero" element={<HeroManagement />} />
+              <Route path="about-features" element={<AboutFeaturesManagement />} />
+              <Route path="game-highlights" element={<GameHighlightsManagement />} />
+              <Route path="features" element={<FeaturesManagement />} />
+              <Route path="team" element={<TeamManagement />} />
+              <Route path="songs" element={<SongsManagement />} />
+              <Route path="queries" element={<QueriesManagement />} />
+              <Route path="footer" element={<FooterManagement />} />
+              <Route path="logo" element={<LogoManagement />} />
+            </Route>
+
+            {/* Catch all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </AuthProvider>
       </LanguageProvider>
     </BrowserRouter>

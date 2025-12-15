@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import logo from '../assets/images/logo.png';
 import { logoAPI } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import './Navbar.css';
 
@@ -13,11 +14,26 @@ interface Logo {
   isActive: boolean;
 }
 
+// Translations for menu items in all 7 languages
+const menuTranslations: Record<string, Record<string, string>> = {
+  en: { game: 'Game', ana: 'Ana', features: 'Features', team: 'Team', aboutus: 'About us' },
+  hi: { game: 'गेम', ana: 'एना', features: 'विशेषताएं', team: 'टीम', aboutus: 'हमारे बारे में' },
+  ru: { game: 'Игра', ana: 'Ана', features: 'Особенности', team: 'Команда', aboutus: 'О нас' },
+  ko: { game: '게임', ana: '아나', features: '특징', team: '팀', aboutus: '소개' },
+  zh: { game: '游戏', ana: '安娜', features: '特点', team: '团队', aboutus: '关于我们' },
+  ja: { game: 'ゲーム', ana: 'アナ', features: '特徴', team: 'チーム', aboutus: '私たちについて' },
+  es: { game: 'Juego', ana: 'Ana', features: 'Características', team: 'Equipo', aboutus: 'Sobre nosotros' }
+};
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [dynamicLogo, setDynamicLogo] = useState<Logo | null>(null);
+  const { language } = useLanguage();
+
+  // Get translations for current language
+  const t = menuTranslations[language] || menuTranslations.en;
 
   // Fetch logo from API
   useEffect(() => {
@@ -29,7 +45,6 @@ const Navbar = () => {
         }
       } catch (error) {
         console.error('Error fetching logo:', error);
-        // Silently fail and use default logo
       }
     };
 
@@ -41,8 +56,7 @@ const Navbar = () => {
       const isScrolled = window.scrollY > 50;
       setScrolled(isScrolled);
 
-      // Update active section based on scroll position
-      const sections = ['home', 'about', 'highlights', 'ana', 'features', 'team', 'game'];
+      const sections = ['home', 'about', 'highlights', 'ana', 'features', 'team', 'aboutus', 'game'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -75,10 +89,11 @@ const Navbar = () => {
   };
 
   const menuItems = [
-    { id: 'about', label: 'About' },
-    { id: 'ana', label: 'Ana' },
-    { id: 'features', label: 'Features' },
-    { id: 'team', label: 'Team' },
+    { id: 'about', label: t.game },
+    { id: 'ana', label: t.ana },
+    { id: 'features', label: t.features },
+    { id: 'team', label: t.team },
+    { id: 'aboutus', label: t.aboutus },
   ];
 
   return (
@@ -86,9 +101,9 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <a href="#home" className="navbar-logo" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
-          <img 
-            src={dynamicLogo?.logoUrl || logo} 
-            alt={dynamicLogo?.altText || "Idol Be Logo"} 
+          <img
+            src={dynamicLogo?.logoUrl || logo}
+            alt={dynamicLogo?.altText || "Idol Be Logo"}
             className="logo-image"
           />
         </a>
@@ -104,7 +119,7 @@ const Navbar = () => {
               <span className="nav-label">{item.label}</span>
             </button>
           ))}
-          
+
           {/* Language Switcher */}
           <div className="navbar-language">
             <LanguageSwitcher />
@@ -112,7 +127,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
+        <button
           className="mobile-menu-toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
@@ -133,7 +148,7 @@ const Navbar = () => {
               <span className="nav-label">{item.label}</span>
             </button>
           ))}
-          
+
           {/* Language Switcher in Mobile Menu */}
           <div className="mobile-language-switcher">
             <LanguageSwitcher />

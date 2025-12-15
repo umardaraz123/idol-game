@@ -24,7 +24,7 @@ transporter.verify((error, success) => {
  * @returns {Promise} - Resolves when email is sent
  */
 export const sendQueryNotification = async (queryData) => {
-  const { name, email, phone, message, createdAt } = queryData;
+  const { name, age, email, phone, message, createdAt } = queryData;
 
   const mailOptions = {
     from: `"Idol Be - Contact Form" <${process.env.SMTP_EMAIL || 'jacintojimenezjimenez@gmail.com'}>`,
@@ -126,6 +126,11 @@ export const sendQueryNotification = async (queryData) => {
               </div>
               
               <div class="field">
+                <div class="label">🎂 Age</div>
+                <div class="value">${age} years old</div>
+              </div>
+              
+              <div class="field">
                 <div class="label">📧 Email</div>
                 <div class="value"><a href="mailto:${email}">${email}</a></div>
               </div>
@@ -140,13 +145,13 @@ export const sendQueryNotification = async (queryData) => {
               <div class="field">
                 <div class="label">📅 Submitted At</div>
                 <div class="value">${new Date(createdAt).toLocaleString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}</div>
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })}</div>
               </div>
               
               <div class="field">
@@ -173,6 +178,7 @@ export const sendQueryNotification = async (queryData) => {
 New Contact Form Submission
 
 Name: ${name}
+Age: ${age} years old
 Email: ${email}
 ${phone ? `Phone: ${phone}` : ''}
 Submitted At: ${new Date(createdAt).toLocaleString()}

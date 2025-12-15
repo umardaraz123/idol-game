@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { publicAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
-import { X, Send, AlertCircle, User, Mail, MessageSquare, Loader2 } from 'lucide-react';
+import { X, Send, AlertCircle, User, Mail, MessageSquare, Loader2, Calendar } from 'lucide-react';
 import { toast } from 'react-toastify';
+import logo from '../assets/images/logo.png';
 import './ContactModal.css';
 
 // Translations for ContactModal
@@ -13,6 +14,8 @@ const translations: Record<string, {
   successText: string;
   yourName: string;
   namePlaceholder: string;
+  yourAge: string;
+  agePlaceholder: string;
   emailAddress: string;
   emailPlaceholder: string;
   yourMessage: string;
@@ -27,6 +30,8 @@ const translations: Record<string, {
     successText: "Thank you for reaching out. We'll get back to you soon!",
     yourName: 'Your Name',
     namePlaceholder: 'Enter your name',
+    yourAge: 'Your Age',
+    agePlaceholder: 'Enter your age',
     emailAddress: 'Email Address',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: 'Your Message',
@@ -41,6 +46,8 @@ const translations: Record<string, {
     successText: 'संपर्क करने के लिए धन्यवाद। हम जल्द ही आपसे संपर्क करेंगे!',
     yourName: 'आपका नाम',
     namePlaceholder: 'अपना नाम दर्ज करें',
+    yourAge: 'आपकी उम्र',
+    agePlaceholder: 'अपनी उम्र दर्ज करें',
     emailAddress: 'ईमेल पता',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: 'आपका संदेश',
@@ -55,6 +62,8 @@ const translations: Record<string, {
     successText: 'Спасибо за обращение. Мы свяжемся с вами в ближайшее время!',
     yourName: 'Ваше имя',
     namePlaceholder: 'Введите ваше имя',
+    yourAge: 'Ваш возраст',
+    agePlaceholder: 'Введите ваш возраст',
     emailAddress: 'Электронная почта',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: 'Ваше сообщение',
@@ -69,6 +78,8 @@ const translations: Record<string, {
     successText: '연락해 주셔서 감사합니다. 곧 답변 드리겠습니다!',
     yourName: '이름',
     namePlaceholder: '이름을 입력하세요',
+    yourAge: '나이',
+    agePlaceholder: '나이를 입력하세요',
     emailAddress: '이메일 주소',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: '메시지',
@@ -83,6 +94,8 @@ const translations: Record<string, {
     successText: '感谢您的联系，我们会尽快回复您！',
     yourName: '您的姓名',
     namePlaceholder: '请输入您的姓名',
+    yourAge: '您的年龄',
+    agePlaceholder: '请输入您的年龄',
     emailAddress: '电子邮箱',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: '您的留言',
@@ -97,6 +110,8 @@ const translations: Record<string, {
     successText: 'お問い合わせありがとうございます。すぐにご連絡いたします！',
     yourName: 'お名前',
     namePlaceholder: 'お名前を入力してください',
+    yourAge: '年齢',
+    agePlaceholder: '年齢を入力してください',
     emailAddress: 'メールアドレス',
     emailPlaceholder: 'your.email@example.com',
     yourMessage: 'メッセージ',
@@ -111,6 +126,8 @@ const translations: Record<string, {
     successText: 'Gracias por contactarnos. ¡Te responderemos pronto!',
     yourName: 'Tu nombre',
     namePlaceholder: 'Ingresa tu nombre',
+    yourAge: 'Tu edad',
+    agePlaceholder: 'Ingresa tu edad',
     emailAddress: 'Correo electrónico',
     emailPlaceholder: 'tu.email@ejemplo.com',
     yourMessage: 'Tu mensaje',
@@ -128,9 +145,10 @@ interface ContactModalProps {
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
   const { language } = useLanguage();
   const t = translations[language] || translations.en;
-  
+
   const [formData, setFormData] = useState({
     name: '',
+    age: '',
     email: '',
     message: ''
   });
@@ -148,10 +166,16 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!formData.name.trim() || !formData.age.trim() || !formData.email.trim() || !formData.message.trim()) {
       toast.error('All fields are required');
+      return;
+    }
+
+    const ageNum = parseInt(formData.age);
+    if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
+      toast.error('Please enter a valid age (1-120)');
       return;
     }
 
@@ -168,19 +192,19 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     try {
       setLoading(true);
       setError('');
-      
+
       await publicAPI.submitQuery(formData);
-      
+
       setSuccess(true);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', age: '', email: '', message: '' });
       toast.success('Message sent successfully!');
-      
+
       // Close modal after 2 seconds
       setTimeout(() => {
         setSuccess(false);
         onClose();
       }, 2000);
-      
+
     } catch (err: any) {
       // Handle validation errors from backend
       if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
@@ -199,7 +223,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
 
   const handleClose = () => {
     if (!loading) {
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', age: '', email: '', message: '' });
       setError('');
       setSuccess(false);
       onClose();
@@ -220,7 +244,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           <div className="contact-modal-header">
             <div className="modal-icon-wrapper">
               <div className="modal-icon-circle">
-                <Send size={32} />
+                <img src={logo} alt="Idol Be Logo" className="modal-logo" />
               </div>
               <div className="modal-icon-glow"></div>
             </div>
@@ -267,6 +291,25 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                   onChange={handleChange}
                   placeholder={t.namePlaceholder}
                   disabled={loading}
+                  required
+                />
+              </div>
+
+              <div className="form-group-modal">
+                <label htmlFor="age">
+                  <Calendar size={16} />
+                  {t.yourAge}
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder={t.agePlaceholder}
+                  disabled={loading}
+                  min="1"
+                  max="120"
                   required
                 />
               </div>

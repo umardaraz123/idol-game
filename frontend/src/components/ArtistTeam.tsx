@@ -20,32 +20,32 @@ interface TeamMember {
 // Hardcoded translations for section header
 const sectionTranslations: Record<string, { title: string; description: string }> = {
   en: {
-    title: 'Our Team',
-    description: 'Meet the talented individuals behind Idol be who bring their creativity and expertise to make this game extraordinary.'
+    title: 'Artistic Team',
+    description: 'Idol be has a wonderful team of artists and creators who have contributed their talent and dedication to the development of this project. Idol be is a game made through the hard work of real people: no AI involved! Get to know them all!'
   },
   hi: {
-    title: 'हमारी टीम',
-    description: 'आइडल बी के पीछे की प्रतिभाशाली टीम से मिलें जो अपनी रचनात्मकता और विशेषज्ञता से इस गेम को असाधारण बनाती है।'
+    title: 'कलात्मक टीम',
+    description: 'Idol be में कलाकारों और रचनाकारों की एक शानदार टीम है जिन्होंने इस परियोजना के विकास में अपनी प्रतिभा और समर्पण का योगदान दिया है। Idol be एक ऐसा गेम है जो वास्तविक लोगों की कड़ी मेहनत से बना है: कोई AI शामिल नहीं! उन सभी को जानें!'
   },
   ru: {
-    title: 'Наша Команда',
-    description: 'Познакомьтесь с талантливыми людьми, стоящими за Idol be, которые привносят свой креатив и опыт, делая эту игру необыкновенной.'
+    title: 'Творческая Команда',
+    description: 'Idol be имеет замечательную команду художников и создателей, которые внесли свой талант и преданность в разработку этого проекта. Idol be — это игра, созданная упорным трудом реальных людей: без участия ИИ! Познакомьтесь со всеми!'
   },
   ko: {
-    title: '우리 팀',
-    description: 'Idol be를 만드는 재능있는 사람들을 만나보세요. 그들의 창의성과 전문성이 이 게임을 특별하게 만듭니다.'
+    title: '아티스트 팀',
+    description: 'Idol be에는 이 프로젝트 개발에 재능과 헌신을 기여한 훌륭한 아티스트와 크리에이터 팀이 있습니다. Idol be는 실제 사람들의 노력으로 만들어진 게임입니다: AI가 관여하지 않았습니다! 모든 팀원을 만나보세요!'
   },
   zh: {
-    title: '我们的团队',
-    description: '认识 Idol be 背后才华横溢的团队成员，他们用创造力和专业知识让这款游戏非凡卓越。'
+    title: '艺术团队',
+    description: 'Idol be 拥有一支出色的艺术家和创作者团队，他们为这个项目的开发贡献了自己的才华和奉献精神。Idol be 是一款由真人辛勤工作制作的游戏：没有 AI 参与！来认识他们所有人吧！'
   },
   ja: {
-    title: '私たちのチーム',
-    description: 'Idol beの背後にいる才能あるメンバーをご紹介します。彼らの創造性と専門知識がこのゲームを特別なものにしています。'
+    title: 'アーティストチーム',
+    description: 'Idol beには、このプロジェクトの開発に才能と献身を捧げた素晴らしいアーティストとクリエイターのチームがいます。Idol beは実際の人々の努力によって作られたゲームです：AIは一切関与していません！全員を知ってください！'
   },
   es: {
-    title: 'Nuestro Equipo',
-    description: 'Conoce a las personas talentosas detrás de Idol be que aportan su creatividad y experiencia para hacer este juego extraordinario.'
+    title: 'Equipo Artístico',
+    description: 'Idol be cuenta con un maravilloso equipo de artistas y creadores que han contribuido con su talento y dedicación al desarrollo de este proyecto. ¡Idol be es un juego hecho a través del trabajo duro de personas reales: sin IA involucrada! ¡Conócelos a todos!'
   }
 };
 
@@ -63,15 +63,12 @@ const ArtistTeam = () => {
         // Fetch all artist_team content (only team members)
         const teamResponse = await publicAPI.getContent(language, { type: 'artist_team' });
         const contentData = teamResponse.data.data.content?.artist_team || [];
-        
+
         // Filter only team members (exclude header content)
         const teamMembers = Array.isArray(contentData)
-          ? contentData.filter((item: any) => 
-              item.metadata?.category && 
-              item.metadata?.category !== ''
-            ).sort((a: any, b: any) => a.metadata.order - b.metadata.order)
+          ? contentData.sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
           : [];
-        
+
         setMembers(teamMembers);
       } catch (error) {
         console.error('Failed to fetch team data:', error);
@@ -123,7 +120,7 @@ const ArtistTeam = () => {
       <div className="container">
         <div className="section-header" data-aos="fade-up">
           <h2 className="section-title">
-            {sectionHeader.title.split(' ').map((word, index, arr) => 
+            {sectionHeader.title.split(' ').map((word, index, arr) =>
               index === arr.length - 1 ? (
                 <span key={index} className="text-glow-blue">{word}</span>
               ) : (
@@ -137,7 +134,7 @@ const ArtistTeam = () => {
           </p>
         </div>
 
-       
+
 
         <div className="team-grid">
           {members.map((member, index) => {
@@ -145,9 +142,9 @@ const ArtistTeam = () => {
               <>
                 {member.imageUrl && (
                   <div className="member-photo-wrapper">
-                    <img 
-                      src={member.imageUrl} 
-                      alt={member.title} 
+                    <img
+                      src={member.imageUrl}
+                      alt={member.title}
                       className="member-photo"
                     />
                   </div>
@@ -163,7 +160,7 @@ const ArtistTeam = () => {
                   )}
                   <div className="linkedin-link-button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                     </svg>
                     <span>{member.linkedinUrl ? 'Visit LinkedIn Profile' : 'LinkedIn Not Available'}</span>
                   </div>
@@ -196,7 +193,7 @@ const ArtistTeam = () => {
           })}
         </div>
 
-       
+
       </div>
     </section>
   );

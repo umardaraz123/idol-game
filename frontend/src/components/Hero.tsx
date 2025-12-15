@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { publicAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import ContactModal from './ContactModal';
-import introVideo from '../assets/videos/intro.mp4';
+import fallbackImage from '../assets/images/img.png';
 import './Hero.css';
 
 interface HeroContent {
@@ -13,22 +13,23 @@ interface HeroContent {
   imageUrl?: string;
 }
 
-// Translations for "Join to the journey" button
+// Translations for "Join the Idol be community!" button
 const joinButtonTranslations: Record<string, string> = {
-  en: 'Join to the journey',
-  hi: 'यात्रा में शामिल हों',
-  ru: 'Присоединяйтесь к путешествию',
-  ko: '여정에 참여하세요',
-  zh: '加入旅程',
-  ja: '旅に参加しよう',
-  es: 'Únete al viaje'
+  en: 'Join the Idol be community!',
+  hi: 'Idol be समुदाय से जुड़ें!',
+  ru: 'Присоединяйтесь к сообществу Idol be!',
+  ko: 'Idol be 커뮤니티에 가입하세요!',
+  zh: '加入 Idol be 社区！',
+  ja: 'Idol be コミュニティに参加しよう！',
+  es: '¡Únete a la comunidad Idol be!'
 };
 
 const Hero = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  
+  const animationPlayedRef = useRef(false);
+
   const { language } = useLanguage();
   const [content, setContent] = useState<HeroContent>({
     title: 'IDOL BE',
@@ -42,31 +43,21 @@ const Hero = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch content by type and language
         const response = await publicAPI.getContent(language);
         const contentData = response.data.data.content;
-        
-        // Get hero section content
         const heroData = contentData?.hero_section || [];
-        
-        console.log('Hero Data:', heroData, 'Language:', language); // Debug
-        
+
         if (heroData && heroData.length > 0) {
-          // Get the main content for title/description (category: "main")
-          const mainContent = heroData.find((item: any) => 
+          const mainContent = heroData.find((item: any) =>
             item.metadata?.category === 'main'
-          ) || heroData.find((item: any) => 
+          ) || heroData.find((item: any) =>
             item.metadata?.isFeatured && item.metadata?.isActive !== false
           ) || heroData[0];
-          
-          // Get media content for video/image (any item with videoUrl or imageUrl)
-          const mediaContent = heroData.find((item: any) => 
+
+          const mediaContent = heroData.find((item: any) =>
             item.videoUrl || item.imageUrl
           );
-          
-          console.log('Selected Hero Content (Text):', mainContent); // Debug
-          console.log('Selected Hero Content (Media):', mediaContent); // Debug
-          
+
           setContent({
             title: mainContent?.title || 'IDOL BE',
             description: mainContent?.description || 'Sing Your Dream • Express Your Feelings • Become a Star',
@@ -76,36 +67,54 @@ const Hero = () => {
         }
       } catch (error) {
         console.error('Failed to fetch hero content:', error);
-        // Keep default content on error
       }
     };
 
     fetchContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 
-  // GSAP animations
+  // GSAP animations - run only ONCE ever (not on language change)
   useEffect(() => {
-    const tl = gsap.timeline({ delay: 0.3 });
-    
-    tl.fromTo(
-      titleRef.current,
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }
-    )
-    .fromTo(
-      subtitleRef.current,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-      '-=0.8'
-    )
-    .fromTo(
-      buttonRef.current,
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.7)' },
-      '-=0.6'
-    );
-  }, [content]);
+    // Skip if animation already played
+    if (animationPlayedRef.current) return;
+    animationPlayedRef.current = true;
+
+    // Set initial state immediately to prevent flash
+    gsap.set([titleRef.current, subtitleRef.current, buttonRef.current], {
+      opacity: 1,
+      y: 0,
+      scale: 1
+    });
+
+    const tl = gsap.timeline({ delay: 0.1 });
+
+    tl.from(titleRef.current, {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    })
+      .from(
+        subtitleRef.current,
+        {
+          y: 25,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power3.out'
+        },
+        '-=0.5'
+      )
+      .from(
+        buttonRef.current,
+        {
+          scale: 0.9,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'back.out(1.7)'
+        },
+        '-=0.4'
+      );
+  }, []);
 
   const handleJoinClick = () => {
     setIsModalOpen(true);
@@ -127,26 +136,23 @@ const Hero = () => {
             <source src={`${content.videoUrl}?t=${Date.now()}`} type="video/mp4" />
           </video>
         ) : content.imageUrl ? (
-          <img 
+          <img
             key={content.imageUrl}
             src={`${content.imageUrl}?t=${Date.now()}`}
-            alt="Hero Background" 
+            alt="Hero Background"
             className="hero-video"
             style={{ objectFit: 'cover', width: '100%', height: '100%' }}
           />
         ) : (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            src={fallbackImage}
+            alt="Hero Background"
             className="hero-video"
-          >
-            <source src={introVideo} type="video/mp4" />
-          </video>
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          />
         )}
         <div className="hero-overlay"></div>
-        
+
         {/* Particle Effect Background */}
         <div className="particle-container">
           {[...Array(50)].map((_, i) => (
@@ -191,7 +197,7 @@ const Hero = () => {
       </div>
 
       {/* Contact Modal */}
-      <ContactModal 
+      <ContactModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

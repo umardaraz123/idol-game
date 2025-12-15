@@ -1,0 +1,121 @@
+/* About Us Section - Beautiful Light Pink Theme */
+.aboutus-section {
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 50%, #ffd6e7 100%);
+    padding: var(--section-padding) 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Effect */
+.aboutus-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 20% 80%, rgba(255, 192, 203, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 182, 193, 0.25) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.aboutus-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.aboutus-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.aboutus-section .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-family: var(--font-display);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #1a1a2e 0%, #667eea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.aboutus-section .title-underline {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    margin: 1.25rem auto 2.5rem;
+    border-radius: 2px;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.aboutus-text {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(201, 189, 232, 0.2);
+    border-radius: var(--radius-xl);
+    padding: 48px;
+    box-shadow:
+        0 8px 32px rgba(201, 189, 232, 0.12),
+        0 4px 16px rgba(248, 180, 196, 0.08);
+}
+
+.aboutus-paragraph {
+    font-family: var(--font-secondary);
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #4a4a5a;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.aboutus-paragraph.highlight {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    padding: 24px;
+    border-radius: var(--radius-lg);
+    border-left: 4px solid #ff6b9d;
+    color: #5a4a5a;
+    font-style: italic;
+}
+
+.aboutus-cta {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-top: 2rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .aboutus-text {
+        padding: 32px 24px;
+    }
+
+    .aboutus-paragraph {
+        font-size: 1.05rem;
+    }
+
+    .aboutus-cta {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .aboutus-text {
+        padding: 24px 20px;
+    }
+
+    .aboutus-paragraph {
+        font-size: 1rem;
+    }
+
+    .aboutus-paragraph.highlight {
+        padding: 16px;
+    }
+}

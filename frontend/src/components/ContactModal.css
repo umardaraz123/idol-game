@@ -23,7 +23,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   animation: modalSlideUp 0.35s ease-out;
-  box-shadow: 
+  box-shadow:
     0 25px 60px rgba(200, 91, 122, 0.25),
     0 10px 30px rgba(168, 85, 160, 0.15);
 }
@@ -89,7 +89,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #E8899A 0%, #C084A8 50%, #9878C8 100%);
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,8 +97,16 @@
   color: white;
   position: relative;
   z-index: 2;
-  box-shadow: 0 8px 30px rgba(232, 137, 154, 0.4);
+  box-shadow: 0 8px 10px rgba(232, 137, 154, 0.4);
   border: 3px solid rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+}
+
+.modal-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
 }
 
 .modal-icon-glow {
@@ -332,6 +340,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -342,6 +351,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -353,6 +363,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -363,6 +374,7 @@
   0% {
     width: 0;
   }
+
   100% {
     width: 30px;
   }
@@ -372,16 +384,20 @@
   0% {
     width: 0;
   }
+
   100% {
     width: 50px;
   }
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.3;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(1.1);
@@ -389,10 +405,13 @@
 }
 
 @keyframes particleFloat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
     opacity: 0.3;
   }
+
   50% {
     transform: translateY(-20px) rotate(180deg);
     opacity: 0.6;
