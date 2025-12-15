@@ -41,9 +41,9 @@ const translations: Record<string, { title: string; paragraph1: string; paragrap
     },
     es: {
         title: 'Sobre nosotros',
-        paragraph1: 'Idol be es la creación de Jacinto Jiménez. Por supuesto, no lo hizo solo. Desarrollar Idol be requirió el esfuerzo y la colaboración de numerosos artistas de diferentes disciplinas. Pero Jacinto fue una figura clave en la creación del proyecto, ya que diseñó el concepto del juego, la melodía principal de todas las canciones y sus letras. ¡También buscó y seleccionó a los desarrolladores!',
-        paragraph2: 'Pero sobre todo, si tenemos que agradecer a alguien la existencia de este proyecto, esa persona es Victoria Jiménez Diaz. Gracias por tu apoyo y confianza inquebrantables. Sin ti, Idol be no se habría convertido en realidad. ¡Muchas gracias, Victoria!',
-        paragraph3: '¿Y qué? ¿Cantamos un poco?'
+        paragraph1: 'Idol be es una creación de Jacinto Jiménez. Por supuesto no en solitario. Para desarrollar Idol be hizo falta el esfuerzo y la colaboración de numerosos artistas de diferentes disciplinas. Pero Jacinto fue una pieza fundamental para la creación del proyecto, ya que diseñó el concepto del juego, la melodía principal de todas las canciones y sus letras. Además, ¡buscó y seleccionó a los desarrolladores!',
+        paragraph2: 'Pero sobre todo, si tenemos que agradecer a alguien la existencia de este proyecto, esa persona es Victoria Jiménez Diaz. Gracias por tu apoyo y confianza inquebrantables, sin ti, Idol be no se hubiera hecho realidad. ¡Muchas gracias Victoria!',
+        paragraph3: '¿Entonces qué? ¿cantamos un poco?'
     }
 };
 
