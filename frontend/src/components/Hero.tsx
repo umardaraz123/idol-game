@@ -8,6 +8,7 @@ import './Hero.css';
 
 interface HeroContent {
   title: string;
+  subtitle: string;
   description: string;
   videoUrl?: string;
   imageUrl?: string;
@@ -33,7 +34,8 @@ const Hero = () => {
   const { language } = useLanguage();
   const [content, setContent] = useState<HeroContent>({
     title: 'IDOL BE',
-    description: 'Sing Your Dream • Express Your Feelings • Become a Star',
+    subtitle: 'Sing Your Dream • Express Your Feelings • Become a Star',
+    description: 'At Idol be, we love receiving your questions and suggestions, or anything else you want to share. We promise to do our best to respond and, even if we can\'t, you can be sure that we read all your messages.',
     videoUrl: '',
     imageUrl: ''
   });
@@ -60,7 +62,8 @@ const Hero = () => {
 
           setContent({
             title: mainContent?.title || 'IDOL BE',
-            description: mainContent?.description || 'Sing Your Dream • Express Your Feelings • Become a Star',
+            subtitle: mainContent?.subtitle || 'Sing Your Dream • Express Your Feelings • Become a Star',
+            description: mainContent?.description || 'At Idol be, we love receiving your questions and suggestions, or anything else you want to share. We promise to do our best to respond and, even if we can\'t, you can be sure that we read all your messages.',
             videoUrl: mediaContent?.videoUrl || '',
             imageUrl: mediaContent?.imageUrl || ''
           });
@@ -177,6 +180,9 @@ const Hero = () => {
             <span className="text-glow-blue">{content.title}</span>
           </h1>
           <p ref={subtitleRef} className="hero-subtitle">
+            {content.subtitle}
+          </p>
+          <p className="hero-description">
             {content.description}
           </p>
           <button

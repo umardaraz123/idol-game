@@ -150,13 +150,27 @@
   font-family: var(--font-secondary);
   font-weight: 600;
   color: #423c47;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
   max-width: 650px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.85;
   text-shadow: 0 2px 8px rgba(135, 120, 120, 0.8);
   filter: drop-shadow(0 1px 2px rgba(90, 74, 106, 0.1));
+}
+
+/* Description */
+.hero-description {
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  color: #111;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+  text-shadow: 3px 5px 8px rgba(58, 52, 52, 0.8);
 }
 
 /* CTA Button - Premium */
@@ -236,6 +250,10 @@
 
   .hero-subtitle {
     font-size: 1rem;
+  }
+
+  .hero-description {
+    font-size: 0.9rem;
   }
 
   .hero-content .btn-neon {

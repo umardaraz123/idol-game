@@ -60,7 +60,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 0.5rem;
-  text-align: center;
+  text-align: left;
   filter: drop-shadow(0 2px 4px rgba(199, 91, 122, 0.15));
 }
 
@@ -84,7 +84,7 @@
   font-size: 1.3rem;
   color: #2d2d42;
   max-width: 600px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   line-height: 1.75;
   font-weight: 500;
 }
@@ -305,6 +305,7 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
+  margin: auto;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1;
