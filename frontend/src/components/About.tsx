@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { publicAPI } from '../services/api';
-import { useLanguage } from '../context/LanguageContext';
+import { useContentByType } from '../context/ContentContext';
 import ContactModal from './ContactModal';
 import './About.css';
 
@@ -22,7 +21,8 @@ interface AboutFeature {
 }
 
 const About = () => {
-  const { language } = useLanguage();
+  const { data: aboutData } = useContentByType('about_section');
+
   const [content, setContent] = useState<AboutContent>({
     title: 'What is Idol be?',
     subtitle: 'About the Game',
@@ -31,63 +31,41 @@ const About = () => {
   const [features, setFeatures] = useState<AboutFeature[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Fetch content from backend
+  // Update content from cached context data
   useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const response = await publicAPI.getContent(language);
-        const contentData = response.data.data.content;
-        
-        // Get about_section content
-        const aboutData = contentData?.about_section || [];
-        
-        console.log('About Data:', aboutData, 'Language:', language); // Debug
-        
-        if (aboutData && aboutData.length > 0) {
-          // Get main content for title/description - specifically look for "aboutcontent" key or "What is Idol be" title
-          // Exclude any content related to "who_is_ana" or "Who is Ana"
-          const mainContent = aboutData.find((item: any) => 
-            (item.key === 'aboutcontent' || item.title?.toLowerCase().includes('idol be')) &&
-            item.metadata?.category === 'main' &&
-            !item.key?.includes('who_is_ana') &&
-            !item.title?.toLowerCase().includes('ana')
-          ) || aboutData.find((item: any) => 
-            item.metadata?.category === 'main' &&
-            !item.key?.includes('who_is_ana') &&
-            !item.title?.toLowerCase().includes('ana')
-          );
-          
-          // Get feature items - exclude who_is_ana related content
-          const featureItems = aboutData
-            .filter((item: any) => 
-              item.metadata?.category === 'feature' && 
-              item.metadata?.isActive &&
-              !item.key?.includes('who_is_ana')
-            )
-            .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0));
-          
-          console.log('Selected About Content:', mainContent); // Debug
-          console.log('About Features:', featureItems); // Debug
-          
-          if (mainContent) {
-            setContent({
-              title: mainContent.title || 'What is Idol be?',
-              subtitle: mainContent.subtitle || 'About the Game',
-              description: mainContent.description || 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
-            });
-          }
-          
-          setFeatures(featureItems);
-        }
-      } catch (error) {
-        console.error('Failed to fetch About content:', error);
-        // Keep default content on error
-      }
-    };
+    if (aboutData && aboutData.length > 0) {
+      // Get main content for title/description
+      const mainContent = aboutData.find((item: any) =>
+        (item.key === 'aboutcontent' || item.title?.toLowerCase().includes('idol be')) &&
+        item.metadata?.category === 'main' &&
+        !item.key?.includes('who_is_ana') &&
+        !item.title?.toLowerCase().includes('ana')
+      ) || aboutData.find((item: any) =>
+        item.metadata?.category === 'main' &&
+        !item.key?.includes('who_is_ana') &&
+        !item.title?.toLowerCase().includes('ana')
+      );
 
-    fetchContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+      // Get feature items - exclude who_is_ana related content
+      const featureItems = aboutData
+        .filter((item: any) =>
+          item.metadata?.category === 'feature' &&
+          item.metadata?.isActive &&
+          !item.key?.includes('who_is_ana')
+        )
+        .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0));
+
+      if (mainContent) {
+        setContent({
+          title: mainContent.title || 'What is Idol be?',
+          subtitle: mainContent.subtitle || 'About the Game',
+          description: mainContent.description || 'Idol be is a casual singing game designed for people who love to sing. The gameplay is beautifully simple: listen to a song, sing along, and receive a score that unlocks new songs and unique looks for your idol.'
+        });
+      }
+
+      setFeatures(featureItems);
+    }
+  }, [aboutData]);
 
   return (
     <section id="about" className="about-section">
@@ -128,11 +106,11 @@ const About = () => {
                 <span className="text-glow-blue">{content.title}</span>
               </h2>
               <div className="title-underline"></div>
-              
+
               <p className="about-text lead-text">
                 {content.description}
               </p>
-              
+
               <div id="features" className="feature-list">
                 {features.length > 0 ? (
                   features.map((feature) => (
@@ -159,7 +137,7 @@ const About = () => {
                         <p>Completely original music composed by talented artists worldwide</p>
                       </div>
                     </div>
-                    
+
                     <div className="feature-item">
                       <div className="feature-icon">👥</div>
                       <div className="feature-content">
@@ -167,7 +145,7 @@ const About = () => {
                         <p>Show off your singing skills to players around the world</p>
                       </div>
                     </div>
-                    
+
                     <div className="feature-item">
                       <div className="feature-icon">🌐</div>
                       <div className="feature-content">
@@ -179,7 +157,7 @@ const About = () => {
                 )}
               </div>
 
-           
+
 
               {/* <div className="cta-box">
                 <h4 className="cta-title">We Want to Hear From You!</h4>
@@ -201,7 +179,7 @@ const About = () => {
       </div>
 
       {/* Contact Modal */}
-      <ContactModal 
+      <ContactModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

@@ -1,27 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { publicAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
+import { useSongs } from '../context/ContentContext';
 import { FaPlay, FaPause, FaMusic, FaClock, FaMicrophone } from 'react-icons/fa';
 import './Songs.css';
-
-interface Song {
-  _id: string;
-  key: string;
-  title: string;
-  description: string;
-  artist: string;
-  audioUrl: string;
-  duration: number;
-  formattedDuration: string;
-  coverImage?: {
-    url: string;
-  };
-  genre: string;
-  metadata: {
-    playCount: number;
-    order: number;
-  };
-}
 
 // Translations for the Songs section
 const songsTranslations: Record<string, { title: string; titleHighlight: string; subtitle: string }> = {
@@ -64,40 +46,82 @@ const songsTranslations: Record<string, { title: string; titleHighlight: string;
 
 const Songs = () => {
   const { language } = useLanguage();
-  const [song, setSong] = useState<Song | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { songs: allSongs, isLoading: loading } = useSongs();
+  const song = allSongs.length > 0 ? allSongs[0] : null;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
+
+  // Track if song was playing before language change
+  const wasPlayingRef = useRef(false);
+  const previousSongIdRef = useRef<string | null>(null);
+  const previousLanguageRef = useRef(language);
+
+  // Handle song change when language changes - autoplay if previous song was playing
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    // Check if language actually changed
+    if (previousLanguageRef.current !== language) {
+      // Store current playing state before song changes
+      wasPlayingRef.current = isPlaying;
+      previousLanguageRef.current = language;
+
+      // Pause current audio if playing
+      if (audio && isPlaying) {
+        audio.pause();
+      }
+
+      // Reset playback state for new song
+      setCurrentTime(0);
+      setDuration(0);
+    }
+  }, [language, isPlaying]);
+
+  // Effect to handle autoplay when song data changes after language switch
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!song || !audio) return;
+
+    // Check if this is a new song (language switch caused song change)
+    if (previousSongIdRef.current !== null && previousSongIdRef.current !== song._id) {
+      // Song has changed - if we were playing before, autoplay the new song
+      if (wasPlayingRef.current) {
+        // Load and play the new song
+        audio.load();
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+              // Increment play count for new song
+              publicAPI.incrementSongPlay(song._id).catch(console.error);
+            })
+            .catch((error) => {
+              console.error('Autoplay failed:', error);
+              setIsPlaying(false);
+            });
+        }
+
+        // Reset the flag
+        wasPlayingRef.current = false;
+      }
+    }
+
+    // Update the previous song ID
+    previousSongIdRef.current = song._id;
+  }, [song]);
+
   // Get translations for current language
   const t = songsTranslations[language] || songsTranslations.en;
 
-  useEffect(() => {
-    fetchSong();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
-
-  const fetchSong = async () => {
-    try {
-      // Get songs for the selected language (backend returns all songs with localized content)
-      const response = await publicAPI.getSongs(language);
-      const songsData = response.data.data.songs || [];
-      
-      // Get only the first song
-      setSong(songsData.length > 0 ? songsData[0] : null);
-    } catch (error) {
-      console.error('Failed to fetch song:', error);
-      setSong(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handlePlayPause = async () => {
     const audio = audioRef.current;
-    
+
     if (!audio || !song) return;
 
     if (isPlaying) {
@@ -160,7 +184,7 @@ const Songs = () => {
   return (
     <section className="songs-section">
       <div className="songs-bg-effect"></div>
-      
+
       <div className="container">
         <div className="section-header" data-aos="fade-up">
           {/* <div className="section-tag">MUSIC LIBRARY</div> */}
@@ -189,7 +213,7 @@ const Songs = () => {
               preload="metadata"
               crossOrigin="anonymous"
             />
-          
+
             <div className="song-card">
               {/* Cover Image */}
               <div className="song-cover">
@@ -210,23 +234,23 @@ const Songs = () => {
                     </span>
                   </button>
                 </div>
-                
+
                 {/* Language Badge */}
                 <div className="song-badge">
-                  {t.title === 'Original' ? '🇬🇧 English' : 
-                   language === 'hi' ? '🇮🇳 हिन्दी' :
-                   language === 'ru' ? '🇷🇺 Русский' :
-                   language === 'ko' ? '🇰🇷 한국어' :
-                   language === 'zh' ? '🇨🇳 中文' :
-                   language === 'ja' ? '🇯🇵 日本語' :
-                   language === 'es' ? '🇪🇸 Español' : song.genre}
+                  {t.title === 'Original' ? '🇬🇧 English' :
+                    language === 'hi' ? '🇮🇳 हिन्दी' :
+                      language === 'ru' ? '🇷🇺 Русский' :
+                        language === 'ko' ? '🇰🇷 한국어' :
+                          language === 'zh' ? '🇨🇳 中文' :
+                            language === 'ja' ? '🇯🇵 日本語' :
+                              language === 'es' ? '🇪🇸 Español' : song.genre}
                 </div>
               </div>
 
               {/* Song Info */}
               <div className="song-info">
                 <h3 className="song-title">{song.title}</h3>
-                
+
                 {song.artist && (
                   <div className="song-artist">
                     <FaMicrophone />

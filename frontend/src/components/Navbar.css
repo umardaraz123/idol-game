@@ -40,6 +40,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  cursor: text;
+  user-select: none;
 }
 
 .logo-image {
@@ -196,11 +198,12 @@
 
 /* Responsive */
 @media (max-width: 991px) {
+
   .navbar-menu,
   .navbar-cta {
     display: none;
   }
-  
+
   .mobile-menu-toggle {
     display: block;
   }
@@ -210,15 +213,15 @@
   .navbar-container {
     padding: 0 16px;
   }
-  
+
   .navbar {
     padding: 10px 0;
   }
-  
+
   .logo-image {
     height: 60px;
   }
-  
+
   .mobile-menu {
     top: 56px;
   }
@@ -228,7 +231,7 @@
   .navbar-container {
     padding: 0 16px;
   }
-  
+
   .logo-image {
     height: 50px;
   }

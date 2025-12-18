@@ -1,55 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { footerAPI } from '../services/api';
+import { useFooter } from '../context/ContentContext';
 import ContactModal from './ContactModal';
 import './Footer.css';
 
-interface FooterData {
-  leftColumn: {
-    title: string;
-    subtitle: string;
-    description: string;
-  };
-  centerColumn: {
-    title: string;
-    subtitle: string;
-    description: string;
-  };
-  rightColumn: {
-    title: string;
-    subtitle: string;
-    description: string;
-  };
-  socialIcons: Array<{
-    platform: string;
-    url: string;
-    iconUrl: string;
-    order: number;
-    isActive: boolean;
-  }>;
-  copyrightText: string;
-}
-
 const Footer = () => {
-  const { language } = useLanguage();
-  const [footerData, setFooterData] = useState<FooterData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { footer: footerData, isLoading: loading } = useFooter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    fetchFooterData();
-  }, [language]);
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
 
-  const fetchFooterData = async () => {
-    try {
-      const response = await footerAPI.get(language);
-      setFooterData(response.data.data.footer);
-    } catch (error) {
-      console.error('Failed to fetch footer data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (loading) {
     return <footer className="footer"><div className="container">Loading...</div></footer>;
@@ -62,7 +28,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-glow"></div>
-      
+
       <div className="container">
         <div className="footer-content">
           {/* Left Column */}
@@ -79,8 +45,8 @@ const Footer = () => {
           {/* Center Column */}
           <div className="footer-social">
             {footerData.centerColumn.title && (
-              <h4 
-                className="footer-heading footer-heading-clickable" 
+              <h4
+                className="footer-heading footer-heading-clickable"
                 onClick={() => setIsModalOpen(true)}
                 style={{ cursor: 'pointer' }}
               >
@@ -89,7 +55,7 @@ const Footer = () => {
             )}
             {footerData.centerColumn.subtitle && <p className="footer-tagline">{footerData.centerColumn.subtitle}</p>}
             {footerData.centerColumn.description && <p className="contact-text">{footerData.centerColumn.description}</p>}
-            
+
             {/* Social Icons - Commented out
             {footerData.socialIcons.length > 0 && (
               <div className="social-icons">
@@ -134,10 +100,31 @@ const Footer = () => {
       </div>
 
       {/* Contact Modal */}
-      <ContactModal 
+      <ContactModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
+      {/* Floating Scroll to Top Button */}
+      <button
+        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Scroll to top"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
     </footer>
   );
 };

@@ -14,10 +14,10 @@
 
 .contact-modal-container {
   background: linear-gradient(135deg, rgba(255, 240, 245, 0.98) 0%, rgba(255, 245, 250, 0.98) 100%);
-  border: 3px solid rgba(200, 91, 122, 0.25);
+  border: 1px solid rgba(200, 91, 122, 0.25);
   border-radius: 28px;
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   max-height: 90vh;
   position: relative;
   overflow-y: auto;
@@ -80,33 +80,31 @@
 
 .modal-icon-wrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto 1.25rem;
 }
 
 .modal-icon-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: white;
+  width: 120px;
+  height: 120px;
+  border-radius: 0;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: white;
   position: relative;
   z-index: 2;
-  box-shadow: 0 8px 10px rgba(232, 137, 154, 0.4);
-  border: 3px solid rgba(255, 255, 255, 0.6);
-  overflow: hidden;
+  box-shadow: none;
+  border: none;
+  overflow: visible;
 }
 
 .modal-logo {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 8px;
+  padding: 0;
 }
 
 .modal-icon-glow {
@@ -212,12 +210,39 @@
   color: #b8a8b8;
 }
 
+/* Required field asterisk */
+.required-asterisk {
+  color: #e57373;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+/* Field error styles */
+.form-group-modal input.field-error,
+.form-group-modal textarea.field-error {
+  border-color: #e57373;
+  background: rgba(229, 115, 115, 0.05);
+}
+
+.form-group-modal input.field-error:focus,
+.form-group-modal textarea.field-error:focus {
+  border-color: #e57373;
+  box-shadow: 0 0 15px rgba(229, 115, 115, 0.2);
+}
+
+.field-error-message {
+  color: #e57373;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  display: block;
+}
+
 .contact-submit-btn {
-  background: linear-gradient(135deg, #f8b4c4 0%, #d4a5c9 100%);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgba(248, 180, 196, 0.5) 0%, rgba(212, 165, 201, 0.5) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 14px;
   padding: 1rem 1.5rem;
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -225,14 +250,27 @@
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   margin-top: 0.5rem;
-  box-shadow: 0 6px 25px rgba(248, 180, 196, 0.3);
+  box-shadow: 0 4px 15px rgba(248, 180, 196, 0.15);
 }
 
-.contact-submit-btn:hover:not(:disabled) {
+/* Active/Valid form state - bright and inviting */
+.contact-submit-btn.form-valid {
+  background: linear-gradient(135deg, #a26b78 0%, #965887 100%);
+  color: white;
+  box-shadow: 0 6px 25px rgba(248, 180, 196, 0.4);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.contact-submit-btn.form-valid:hover:not(:disabled) {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 35px rgba(212, 165, 201, 0.4);
+  box-shadow: 0 10px 35px rgba(212, 165, 201, 0.5);
+  background: linear-gradient(135deg, #ffc4d4 0%, #e4b5d9 100%);
+}
+
+.contact-submit-btn:hover:not(:disabled):not(.form-valid) {
+  background: linear-gradient(135deg, rgba(248, 180, 196, 0.65) 0%, rgba(212, 165, 201, 0.65) 100%);
 }
 
 .contact-submit-btn:active:not(:disabled) {
@@ -438,14 +476,13 @@
   }
 
   .modal-icon-wrapper {
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
   }
 
   .modal-icon-circle {
-    width: 70px;
-    height: 70px;
-    font-size: 1.8rem;
+    width: 100px;
+    height: 100px;
   }
 
   .contact-submit-btn {

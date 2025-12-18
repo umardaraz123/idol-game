@@ -5,6 +5,7 @@ import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { ContentProvider } from './context/ContentContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -87,7 +88,7 @@ function App() {
         <AuthProvider>
           <Routes>
             {/* Main website routes */}
-            <Route path="/" element={<MainSite />} />
+            <Route path="/" element={<ContentProvider><MainSite /></ContentProvider>} />
 
             {/* Admin routes */}
             <Route path="/admin/login" element={<AdminLogin />} />

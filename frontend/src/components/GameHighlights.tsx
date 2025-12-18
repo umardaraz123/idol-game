@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { publicAPI } from '../services/api';
-import { useLanguage } from '../context/LanguageContext';
+import { useContentByType } from '../context/ContentContext';
 import introVideo from '../assets/videos/intro.mp4';
 import './GameHighlights.css';
 
@@ -18,7 +17,8 @@ interface GameSlide {
 }
 
 const GameHighlights = () => {
-  const { language } = useLanguage();
+  const { data: highlightsData } = useContentByType('game_highlights');
+
   const [slides, setSlides] = useState<GameSlide[]>([
     {
       id: '1',
@@ -34,59 +34,42 @@ const GameHighlights = () => {
     subtitle: 'Immerse yourself in a world where your voice becomes your power'
   });
 
-  // Fetch game highlights from backend
+  // Update content from cached context data
   useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        const response = await publicAPI.getContent(language);
-        const contentData = response.data.data.content;
-        
-        const highlightsData = contentData?.game_highlights || [];
-        
-        console.log('Game Highlights Data:', highlightsData, 'Language:', language);
-        
-        // Get section header
-        const headerItem = highlightsData.find((item: any) => item.key === 'game_highlights_section_header');
-        if (headerItem) {
-          setSectionHeader({
-            title: headerItem.title || 'Experience Idol be',
-            subtitle: headerItem.subtitle || headerItem.description || 'Immerse yourself in a world where your voice becomes your power'
-          });
-        }
-        
-        // Filter out header and get actual highlights
-        const actualHighlights = highlightsData.filter((item: any) => item.key !== 'game_highlights_section_header');
-        
-        if (actualHighlights && actualHighlights.length > 0) {
-          // Map and sort by order
-          const mappedSlides = actualHighlights
-            .filter((item: any) => item.metadata?.isActive !== false)
-            .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
-            .map((item: any) => ({
-              id: item._id,
-              title: item.title || 'Game Highlight',
-              description: item.description || '',
-              image: item.imageUrl,
-              video: item.videoUrl,
-              type: item.videoUrl ? 'video' : 'image',
-              order: item.metadata?.order || 0
-            }));
-          
-          console.log('Mapped Slides:', mappedSlides);
-          
-          if (mappedSlides.length > 0) {
-            setSlides(mappedSlides);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch game highlights:', error);
-        // Keep default slides on error
+    if (highlightsData && highlightsData.length > 0) {
+      // Get section header
+      const headerItem = highlightsData.find((item: any) => item.key === 'game_highlights_section_header');
+      if (headerItem) {
+        setSectionHeader({
+          title: headerItem.title || 'Experience Idol be',
+          subtitle: headerItem.subtitle || headerItem.description || 'Immerse yourself in a world where your voice becomes your power'
+        });
       }
-    };
 
-    fetchSlides();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+      // Filter out header and get actual highlights
+      const actualHighlights = highlightsData.filter((item: any) => item.key !== 'game_highlights_section_header');
+
+      if (actualHighlights && actualHighlights.length > 0) {
+        // Map and sort by order
+        const mappedSlides = actualHighlights
+          .filter((item: any) => item.metadata?.isActive !== false)
+          .sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
+          .map((item: any) => ({
+            id: item._id,
+            title: item.title || 'Game Highlight',
+            description: item.description || '',
+            image: item.imageUrl,
+            video: item.videoUrl,
+            type: (item.videoUrl ? 'video' : 'image') as 'image' | 'video',
+            order: item.metadata?.order || 0
+          }));
+
+        if (mappedSlides.length > 0) {
+          setSlides(mappedSlides);
+        }
+      }
+    }
+  }, [highlightsData]);
 
   const settings = {
     dots: true,
@@ -147,7 +130,7 @@ const GameHighlights = () => {
                     ) : null}
                     <div className="slide-overlay-gradient"></div>
                   </div>
-                  
+
                   <div className="slide-text-content">
                     <div className="slide-number">0{index + 1}</div>
                     <h3 className="slide-title-large">{slide.title}</h3>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { publicAPI } from '../services/api';
+import { useContentByType } from '../context/ContentContext';
 import './ArtistTeam.css';
 
 interface TeamMember {
@@ -51,35 +51,24 @@ const sectionTranslations: Record<string, { title: string; description: string }
 
 const ArtistTeam = () => {
   const { language } = useLanguage();
+  const { data: teamData, isLoading: loading } = useContentByType('artist_team');
   const [members, setMembers] = useState<TeamMember[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Get translations for current language
   const sectionHeader = sectionTranslations[language] || sectionTranslations.en;
 
+  // Update members from cached context data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch all artist_team content (only team members)
-        const teamResponse = await publicAPI.getContent(language, { type: 'artist_team' });
-        const contentData = teamResponse.data.data.content?.artist_team || [];
-
-        // Filter only team members (exclude header content)
-        const teamMembers = Array.isArray(contentData)
-          ? contentData.sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
-          : [];
-
-        setMembers(teamMembers);
-      } catch (error) {
-        console.error('Failed to fetch team data:', error);
-        setMembers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [language]);
+    if (teamData && teamData.length > 0) {
+      // Filter only team members (exclude header content)
+      const teamMembers = Array.isArray(teamData)
+        ? teamData.sort((a: any, b: any) => (a.metadata?.order || 0) - (b.metadata?.order || 0))
+        : [];
+      setMembers(teamMembers);
+    } else {
+      setMembers([]);
+    }
+  }, [teamData]);
 
   // getCategoryTitle - commented by umar (not used, members displayed directly)
   // const getCategoryTitle = (category: string) => {

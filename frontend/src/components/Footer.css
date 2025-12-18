@@ -13,7 +13,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
+  background:
     radial-gradient(ellipse at 20% 30%, rgba(255, 200, 210, 0.3) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 70%, rgba(255, 150, 170, 0.2) 0%, transparent 50%);
   pointer-events: none;
@@ -211,13 +211,65 @@
   color: #8b3d5a;
 }
 
+/* Scroll to Top Button - Floating */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #6b1f3d 0%, #8b3d5a 100%);
+  border: 2px solid rgba(107, 31, 61, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffb4c4;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(107, 31, 61, 0.4);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  background: linear-gradient(135deg, #8b3d5a 0%, #a84d6a 100%);
+  border-color: transparent;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(107, 31, 61, 0.5);
+}
+
+.scroll-to-top.visible:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.scroll-to-top svg {
+  transition: transform 0.3s ease;
+}
+
+.scroll-to-top:hover svg {
+  transform: translateY(-2px);
+}
+
 /* Responsive */
 @media (max-width: 991px) {
   .footer-content {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
   }
-  
+
   .footer-contact {
     grid-column: 1 / -1;
     max-width: 100%;
@@ -229,18 +281,18 @@
     grid-template-columns: 1fr;
     gap: 36px;
   }
-  
+
   .footer-brand,
   .footer-contact {
     max-width: 100%;
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     gap: 16px;
     text-align: center;
   }
-  
+
   .footer-links {
     flex-wrap: wrap;
     justify-content: center;
@@ -251,15 +303,15 @@
   .footer {
     padding: 70px 0 30px;
   }
-  
+
   .footer-logo {
     font-size: 1.5rem;
   }
-  
+
   .footer-content {
     gap: 28px;
   }
-  
+
   .social-icon {
     width: 44px;
     height: 44px;
