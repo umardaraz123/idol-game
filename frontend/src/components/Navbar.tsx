@@ -100,13 +100,13 @@ const Navbar = () => {
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       <div className="navbar-container">
         {/* Logo */}
-        <a href="#home" className="navbar-logo" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
+        <span className="navbar-logo">
           <img
             src={dynamicLogo?.logoUrl || logo}
             alt={dynamicLogo?.altText || "Idol Be Logo"}
             className="logo-image"
           />
-        </a>
+        </span>
 
         {/* Desktop Menu */}
         <div className="navbar-menu">
