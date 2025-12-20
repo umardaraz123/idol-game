@@ -161,11 +161,12 @@ const Hero = () => {
           <h1 ref={titleRef} className="hero-title">
             <span className="text-glow-blue">{content.title}</span>
           </h1>
-          {content.subtitle && (
+          {/* Subtitle - commented out */}
+          {/* {content.subtitle && (
             <p ref={subtitleRef} className="hero-subtitle">
               {content.subtitle}
             </p>
-          )}
+          )} */}
           {content.description && (
             <p className="hero-description">
               {content.description}
@@ -181,12 +182,12 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="scroll-indicator">
+      {/* Scroll Indicator - commented out */}
+      {/* <div className="scroll-indicator">
         <div className="mouse">
           <div className="wheel"></div>
         </div>
-      </div>
+      </div> */}
 
       {/* Contact Modal */}
       <ContactModal

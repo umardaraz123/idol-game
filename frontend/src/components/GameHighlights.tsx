@@ -65,24 +65,24 @@ const GameHighlights = () => {
           }));
 
         if (mappedSlides.length > 0) {
-          setSlides(mappedSlides);
+          // Only show the latest slide (last one by order)
+          setSlides([mappedSlides[mappedSlides.length - 1]]);
         }
       }
     }
   }, [highlightsData]);
 
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    infinite: false,
     speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
+    autoplay: false,
+    pauseOnHover: false,
     fade: true,
     cssEase: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-    arrows: true,
+    arrows: false,
   };
 
   return (

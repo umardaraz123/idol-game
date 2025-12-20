@@ -3,6 +3,32 @@ import type { ReactNode } from 'react';
 import { publicAPI, footerAPI } from '../services/api';
 import { useLanguage } from './LanguageContext';
 
+// LocalStorage keys for persistent cache
+const STORAGE_KEYS = {
+    content: 'idol_content_cache',
+    songs: 'idol_songs_cache',
+    footer: 'idol_footer_cache',
+};
+
+// Helper functions for localStorage cache
+const getFromStorage = <T,>(key: string): Record<string, T> => {
+    try {
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : {};
+    } catch {
+        return {};
+    }
+};
+
+const saveToStorage = <T,>(key: string, data: Record<string, T>) => {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        // Storage might be full, clear old cache
+        console.warn('Failed to save to localStorage:', e);
+    }
+};
+
 // Types for the content data
 interface ContentData {
     [key: string]: any[];
@@ -81,10 +107,22 @@ const EMPTY_ARRAY: any[] = [];
 export const ContentProvider = ({ children }: { children: ReactNode }) => {
     const { language } = useLanguage();
 
-    // Content state
-    const [content, setContent] = useState<ContentData>({});
-    const [songs, setSongs] = useState<Song[]>([]);
-    const [footer, setFooter] = useState<FooterData | null>(null);
+    // Initialize state from localStorage cache for instant load
+    const [content, setContent] = useState<ContentData>(() => {
+        const cached = getFromStorage<ContentData>(STORAGE_KEYS.content);
+        const initialLang = localStorage.getItem('selectedLanguage') || 'en';
+        return cached[initialLang] || {};
+    });
+    const [songs, setSongs] = useState<Song[]>(() => {
+        const cached = getFromStorage<Song[]>(STORAGE_KEYS.songs);
+        const initialLang = localStorage.getItem('selectedLanguage') || 'en';
+        return cached[initialLang] || [];
+    });
+    const [footer, setFooter] = useState<FooterData | null>(() => {
+        const cached = getFromStorage<FooterData>(STORAGE_KEYS.footer);
+        const initialLang = localStorage.getItem('selectedLanguage') || 'en';
+        return cached[initialLang] || null;
+    });
 
     // Loading states - start as false to avoid loading flash when cache exists
     const [isContentLoading, setIsContentLoading] = useState(false);
@@ -92,9 +130,10 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
     const [isFooterLoading, setIsFooterLoading] = useState(false);
 
     // Cache refs to store data per language (persists across renders without causing them)
-    const contentCache = useRef<Record<string, ContentData>>({});
-    const songsCache = useRef<Record<string, Song[]>>({});
-    const footerCache = useRef<Record<string, FooterData>>({});
+    // Initialize from localStorage
+    const contentCache = useRef<Record<string, ContentData>>(getFromStorage<ContentData>(STORAGE_KEYS.content));
+    const songsCache = useRef<Record<string, Song[]>>(getFromStorage<Song[]>(STORAGE_KEYS.songs));
+    const footerCache = useRef<Record<string, FooterData>>(getFromStorage<FooterData>(STORAGE_KEYS.footer));
 
     // Fetch all main content in one call (with caching)
     const fetchContent = useCallback(async (forceRefresh = false) => {
@@ -108,7 +147,8 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
         try {
             const response = await publicAPI.getContent(language);
             const contentData = response.data.data.content || {};
-            contentCache.current[language] = contentData; // Cache it
+            contentCache.current[language] = contentData; // Cache in memory
+            saveToStorage(STORAGE_KEYS.content, contentCache.current); // Persist to localStorage
             setContent(contentData);
         } catch (error) {
             console.error('Failed to fetch content:', error);
@@ -130,7 +170,8 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
         try {
             const response = await publicAPI.getSongs(language);
             const songsData = response.data.data.songs || [];
-            songsCache.current[language] = songsData; // Cache it
+            songsCache.current[language] = songsData; // Cache in memory
+            saveToStorage(STORAGE_KEYS.songs, songsCache.current); // Persist to localStorage
             setSongs(songsData);
         } catch (error) {
             console.error('Failed to fetch songs:', error);
@@ -152,7 +193,8 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
         try {
             const response = await footerAPI.get(language);
             const footerData = response.data.data.footer;
-            footerCache.current[language] = footerData; // Cache it
+            footerCache.current[language] = footerData; // Cache in memory
+            saveToStorage(STORAGE_KEYS.footer, footerCache.current); // Persist to localStorage
             setFooter(footerData);
         } catch (error) {
             console.error('Failed to fetch footer:', error);

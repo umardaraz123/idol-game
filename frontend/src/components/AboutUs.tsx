@@ -1,4 +1,5 @@
 import { useLanguage } from '../context/LanguageContext';
+import logo from '../assets/images/logo.png';
 import './AboutUs.css';
 
 // Translations for all 7 languages
@@ -51,6 +52,10 @@ const AboutUs = () => {
     const { language } = useLanguage();
     const content = translations[language] || translations.en;
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <section className="aboutus-section">
             <div className="container">
@@ -70,6 +75,17 @@ const AboutUs = () => {
                         <p className="aboutus-cta">
                             {content.paragraph3}
                         </p>
+                    </div>
+
+                    {/* Logo - Click to scroll to top */}
+                    <div className="aboutus-logo-container" data-aos="fade-up" data-aos-delay="200">
+                        <img
+                            src={logo}
+                            alt="Idol be"
+                            className="aboutus-logo"
+                            onClick={scrollToTop}
+                            title="Back to top"
+                        />
                     </div>
                 </div>
             </div>
