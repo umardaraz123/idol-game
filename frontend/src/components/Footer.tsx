@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFooter } from '../context/ContentContext';
 import ContactModal from './ContactModal';
 import './Footer.css';
@@ -6,16 +6,6 @@ import './Footer.css';
 const Footer = () => {
   const { footer: footerData, isLoading: loading } = useFooter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   if (loading) {
     return <footer className="footer"><div className="container">Loading...</div></footer>;
@@ -105,26 +95,7 @@ const Footer = () => {
         onClose={() => setIsModalOpen(false)}
       />
 
-      {/* Floating Scroll to Top Button */}
-      <button
-        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Scroll to top"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-      </button>
+
     </footer>
   );
 };
