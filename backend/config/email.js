@@ -28,7 +28,7 @@ export const sendQueryNotification = async (queryData) => {
 
   const mailOptions = {
     from: `"Idol Be - Contact Form" <${process.env.SMTP_EMAIL || 'jacintojimenezjimenez@gmail.com'}>`,
-    to: process.env.SMTP_RECEIVER_EMAIL || 'jacintojimenezjimenez@gmail.com',
+    to: process.env.SMTP_RECEIVER_EMAIL || 'www.idolbe@gmail.com',
     subject: `🔔 New Contact Form Submission from ${name}`,
     html: `
       <!DOCTYPE html>

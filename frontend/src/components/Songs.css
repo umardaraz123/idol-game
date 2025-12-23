@@ -264,7 +264,7 @@
 }
 
 /* Song Badge - Language Badge */
-.song-badge {
+/* .song-badge {
   position: absolute;
   top: 18px;
   right: 18px;
@@ -292,7 +292,7 @@
   50% {
     box-shadow: 0 4px 30px rgba(181, 55, 242, 0.8);
   }
-}
+} */
 
 /* Song Info */
 .song-info {

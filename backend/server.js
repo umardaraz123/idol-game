@@ -74,6 +74,10 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.FRONTEND_URL_2,
   'https://idol-be.netlify.app',
+  'https://www.idolbe.com',
+  'http://www.idolbe.com',
+  'https://idolbe.com',
+  'http://idolbe.com',
   // Development URLs
   'http://localhost:5173',
   'http://localhost:5174',
