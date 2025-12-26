@@ -7,17 +7,17 @@
   --bg-card: rgba(255, 255, 255, 0.85);
   --bg-card-hover: rgba(255, 255, 255, 0.95);
   --bg-glass: rgba(255, 255, 255, 0.7);
-  
+
   /* Premium Pink Gradient Backgrounds */
   --gradient-primary: linear-gradient(135deg, #ff6b9d 0%, #d946a8 50%, #a855f7 100%);
   --gradient-secondary: linear-gradient(135deg, #ff6b9d 0%, #f472b6 100%);
   --gradient-accent: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
   --gradient-soft: linear-gradient(135deg, #ffd6e7 0%, #fff0f5 100%);
   --gradient-hero: linear-gradient(135deg, #fff5f8 0%, #ffe4ec 25%, #ffd6e7 50%, #ffcce0 75%, #ffc2d9 100%);
-  --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,248,250,0.8) 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 250, 0.8) 100%);
   --gradient-button: linear-gradient(135deg, #ff6b9d 0%, #d946a8 100%);
   --gradient-button-alt: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
-  
+
   /* Mesh Gradient Colors - Light Pink Theme */
   --mesh-purple: #a855f7;
   --mesh-violet: #d946a8;
@@ -28,20 +28,20 @@
   --mesh-teal: #fbcfe8;
   --mesh-mint: #fce7f3;
   --mesh-rose: #fff0f5;
-  
+
   /* Accent Colors - Pink Theme */
   --primary: #ff6b9d;
   --primary-light: #ff8fb3;
   --primary-dark: #e85a8c;
-  
+
   --secondary: #d946a8;
   --secondary-light: #e66dbd;
   --secondary-dark: #c23d95;
-  
+
   --accent: #f472b6;
   --accent-light: #f9a8d4;
   --accent-dark: #ec4899;
-  
+
   --purple: #a855f7;
   --violet: #c084fc;
   --pink: #ff6b9d;
@@ -49,7 +49,7 @@
   --gold: #fbbf24;
   --cyan: #f9a8d4;
   --sky: #fbcfe8;
-  
+
   /* Modern palette - Pink Theme */
   --pink-main: #ff6b9d;
   --pink-soft: #fce7f3;
@@ -64,19 +64,19 @@
   --peach-soft: #fff0f5;
   --cream: #fff8fa;
   --blush: #fce7f3;
-  
+
   /* Text Colors - Clear & Readable */
   --text-primary: #4a2040;
   --text-secondary: #6b5b7a;
   --text-muted: #8b7a98;
   --text-light: #b0a0b8;
   --text-white: #ffffff;
-  
+
   /* Borders & Dividers */
   --border-light: rgba(255, 107, 157, 0.2);
   --border-medium: rgba(255, 107, 157, 0.3);
   --border-glow: rgba(217, 70, 168, 0.4);
-  
+
   /* Shadows - Soft Pink */
   --shadow-sm: 0 2px 8px rgba(255, 107, 157, 0.1);
   --shadow-md: 0 8px 30px rgba(255, 107, 157, 0.15);
@@ -89,18 +89,18 @@
   --shadow-soft: 0 4px 24px rgba(255, 107, 157, 0.08);
   --shadow-button: 0 4px 15px rgba(255, 107, 157, 0.35);
   --shadow-inset: inset 0 1px 2px rgba(255, 107, 157, 0.05);
-  
+
   /* Glow Effects - Soft Pink */
   --glow-primary: 0 0 30px rgba(255, 107, 157, 0.3);
   --glow-secondary: 0 0 30px rgba(217, 70, 168, 0.3);
   --glow-accent: 0 0 30px rgba(168, 85, 247, 0.3);
-  
+
   /* Fonts - Multilingual Support */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Poppins', 'Inter', sans-serif;
   --font-tertiary: 'Inter', sans-serif;
-  
+
   /* Language-specific fonts */
   --font-hindi-display: 'Baloo Chettan 2', 'Noto Sans Devanagari', sans-serif;
   --font-hindi-body: 'Noto Sans Devanagari', sans-serif;
@@ -112,11 +112,11 @@
   --font-japanese-body: 'Noto Sans JP', sans-serif;
   --font-russian-display: 'Poppins', 'Nunito', sans-serif;
   --font-russian-body: 'Nunito', 'Inter', sans-serif;
-  
+
   /* Spacing */
   --section-padding: clamp(30px, 5vw, 30px);
   --container-max: 1280px;
-  
+
   /* Border Radius - Softer */
   --radius-sm: 14px;
   --radius-md: 18px;
@@ -126,7 +126,9 @@
 }
 
 /* Global Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -150,7 +152,8 @@ body {
   min-height: 100vh;
 }
 
-#root, .App {
+#root,
+.App {
   position: relative;
   min-height: 100vh;
 }
@@ -175,7 +178,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
@@ -184,9 +192,18 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; }
-h2 { font-size: clamp(2rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
 
 p {
   font-family: var(--font-secondary);
@@ -235,7 +252,7 @@ a:hover {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transition: left 0.5s ease;
 }
 
@@ -293,78 +310,190 @@ section {
 
 /* Animations - Softer & More Dreamy */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes floatSoft {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(2deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
 }
 
 @keyframes glow {
-  0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(248, 180, 196, 0.25); }
-  50% { opacity: 0.9; box-shadow: 0 0 35px rgba(212, 165, 201, 0.35); }
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(248, 180, 196, 0.25);
+  }
+
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 35px rgba(212, 165, 201, 0.35);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes sparkle {
-  0%, 100% { opacity: 0; transform: scale(0); }
-  50% { opacity: 1; transform: scale(1); }
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
-.slide-in-left { animation: slideInLeft 0.7s ease-out forwards; }
-.slide-in-right { animation: slideInRight 0.7s ease-out forwards; }
-.scale-in { animation: scaleIn 0.5s ease-out forwards; }
-.animate-float { animation: float 5s ease-in-out infinite; }
-.animate-float-soft { animation: floatSoft 6s ease-in-out infinite; }
-.animate-glow { animation: glow 4s ease-in-out infinite; }
-.spinning { animation: spin 1s linear infinite; }
+.fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.7s ease-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.7s ease-out forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-float-soft {
+  animation: floatSoft 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 4s ease-in-out infinite;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
 
 /* Utility Classes - Soft Gradients */
 .text-gradient {
@@ -398,8 +527,13 @@ section {
 }
 
 /* Toastify Fix */
-.Toastify { padding: 0 !important; }
-.Toastify__toast-container { padding: 0 !important; }
+.Toastify {
+  padding: 0 !important;
+}
+
+.Toastify__toast-container {
+  padding: 0 !important;
+}
 
 /* Language-Specific Font Classes */
 /* Hindi - Devanagari Script */
@@ -495,4 +629,74 @@ body[data-lang="ru"] h6,
 body[data-lang="ru"] .section-title,
 body[data-lang="ru"] .hero-title {
   font-family: var(--font-russian-display);
+}
+
+/* ============================================
+   Content Protection - Prevent Download/Copy
+   ============================================ */
+
+/* Prevent text selection globally */
+.content-protected,
+.content-protected * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Prevent image dragging */
+.content-protected img,
+.content-protected video {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+/* Add transparent overlay to images to prevent right-click save */
+.protected-media-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.protected-media-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.protected-media-wrapper img,
+.protected-media-wrapper video {
+  pointer-events: none;
+}
+
+/* Disable pointer events on media but allow parent interactions */
+.no-download img,
+.no-download video {
+  pointer-events: none;
+}
+
+/* Video specific protections */
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::--webkit-media-controls-panel {
+  display: none !important;
+}
+
+/* Prevent context menu on protected elements */
+.no-context-menu {
+  -webkit-touch-callout: none;
 }

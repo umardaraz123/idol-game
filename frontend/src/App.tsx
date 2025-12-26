@@ -40,10 +40,65 @@ const MainSite = () => {
       once: true,
       easing: 'ease-out-cubic',
     });
+
+    // Content Protection: Disable right-click context menu
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Content Protection: Disable keyboard shortcuts for copy/save/print/source
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+S (Save), Ctrl+C (Copy), Ctrl+U (View Source), Ctrl+P (Print), Ctrl+Shift+I (DevTools)
+      if (e.ctrlKey && (
+        e.key === 's' || e.key === 'S' ||
+        e.key === 'c' || e.key === 'C' ||
+        e.key === 'u' || e.key === 'U' ||
+        e.key === 'p' || e.key === 'P' ||
+        (e.shiftKey && (e.key === 'i' || e.key === 'I'))
+      )) {
+        e.preventDefault();
+        return false;
+      }
+      // F12 (DevTools)
+      if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Content Protection: Disable drag on images and videos
+    const handleDragStart = (e: DragEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'IMG' || target.tagName === 'VIDEO') {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    // Content Protection: Disable copy event
+    const handleCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Add event listeners
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('copy', handleCopy);
+
+    // Cleanup event listeners
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('copy', handleCopy);
+    };
   }, []);
 
   return (
-    <div className="App">
+    <div className="App content-protected no-context-menu">
       <Navbar />
       {/* 1. Image */}
       <section id="home">

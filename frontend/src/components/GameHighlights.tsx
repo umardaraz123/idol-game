@@ -118,6 +118,9 @@ const GameHighlights = () => {
                         muted
                         playsInline
                         className="slide-video"
+                        controlsList="nodownload nofullscreen noremoteplayback"
+                        disablePictureInPicture
+                        onContextMenu={(e) => e.preventDefault()}
                       >
                         <source src={slide.video} type="video/mp4" />
                       </video>

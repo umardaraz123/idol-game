@@ -124,6 +124,9 @@ const Hero = () => {
             muted
             playsInline
             className="hero-video"
+            controlsList="nodownload nofullscreen noremoteplayback"
+            disablePictureInPicture
+            onContextMenu={(e) => e.preventDefault()}
           >
             <source src={content.videoUrl} type="video/mp4" />
           </video>
